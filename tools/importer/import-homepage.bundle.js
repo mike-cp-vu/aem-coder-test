@@ -183,6 +183,7 @@ var CustomImportScript = (() => {
 
   // tools/importer/parsers/columns-about.js
   function parse5(element, { document }) {
+    var _a;
     const image = element.querySelector("img");
     const textWrapper = element.querySelector('.flex.flex-col, div[class*="w-267px"], div[class*="w-320px"]');
     if (!image && !textWrapper) {
@@ -205,11 +206,13 @@ var CustomImportScript = (() => {
           contentCell.push(p);
         });
       }
-      const button = inner.querySelector("button") || textWrapper.querySelector("button");
-      if (button) {
+      const existingLink = [...element.querySelectorAll("a[href]")].find((a) => /learn more about ensemble/i.test(a.textContent));
+      const button = [...element.querySelectorAll("button")].find((b) => /learn more about ensemble/i.test(b.textContent)) || [...element.querySelectorAll("button")].find((b) => !/^who we are$/i.test(b.textContent.trim()));
+      const label = (_a = existingLink || button) == null ? void 0 : _a.textContent.trim();
+      if (label) {
         const link = document.createElement("a");
         link.setAttribute("href", "/about/");
-        link.textContent = button.textContent.trim();
+        link.textContent = label;
         contentCell.push(link);
       }
     }

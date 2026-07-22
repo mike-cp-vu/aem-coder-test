@@ -47,12 +47,20 @@ export default function parse(element, { document }) {
       });
     }
 
-    // CTA: prefer the desktop primary button (first button), convert to link.
-    const button = inner.querySelector('button') || textWrapper.querySelector('button');
-    if (button) {
+    // CTA: use the desktop label "LEARN MORE ABOUT ENSEMBLE", not the mobile
+    // "WHO WE ARE" twin. The homepage-cleanup transformer may have already
+    // reconstructed the desktop button into an <a>, so accept an existing link
+    // too; otherwise choose the button whose label isn't the mobile variant.
+    const existingLink = [...element.querySelectorAll('a[href]')]
+      .find((a) => /learn more about ensemble/i.test(a.textContent));
+    const button = [...element.querySelectorAll('button')]
+      .find((b) => /learn more about ensemble/i.test(b.textContent))
+      || [...element.querySelectorAll('button')].find((b) => !/^who we are$/i.test(b.textContent.trim()));
+    const label = (existingLink || button)?.textContent.trim();
+    if (label) {
       const link = document.createElement('a');
       link.setAttribute('href', '/about/');
-      link.textContent = button.textContent.trim();
+      link.textContent = label;
       contentCell.push(link);
     }
   }
