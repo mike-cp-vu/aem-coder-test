@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { font-family: Arial, sans-serif; font-size: 11pt; color: #000; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; table-layout: fixed; }
+  td { border: 1px solid #000; padding: 6px 8px; vertical-align: top; }
+  /* block-name header row: single merged cell */
+  tr.block-name td { background: #d9d9d9; font-weight: bold; text-align: left; }
+  hr { border: none; border-top: 2px solid #000; margin: 24px 0; }
+  h1, h2, h3, h4 { margin: 8px 0; }
+  p { margin: 6px 0; }
+</style>
+</head>
+<body>
+
+<!-- ============ SECTION 1: Intro (default content) ============ -->
+<p>Contact</p>
+<h1>Contact us</h1>
+<p>Whether you&rsquo;re looking for a partner, a project or a position, we&rsquo;d love to hear from you.</p>
+
+<hr>
+
+<!-- ============ SECTION 2: Contact form ============ -->
+<h2>Contact Us</h2>
+<p>Need to get in touch with us? Fill out this form with your inquiry.</p>
+
+<table>
+  <tr class="block-name"><td colspan="4">form-contact</td></tr>
+  <tr><td>text</td><td>First Name</td><td>firstName</td><td>required</td></tr>
+  <tr><td>text</td><td>Last Name</td><td>lastName</td><td>required</td></tr>
+  <tr><td>text</td><td>Email</td><td>email</td><td>required</td></tr>
+  <tr><td>text</td><td>Company</td><td>company</td><td>required</td></tr>
+  <tr>
+    <td>select</td>
+    <td>What are you interested in?</td>
+    <td>interest</td>
+    <td>
+      <ul>
+        <li>Select Area of Interest</li>
+        <li>App Development</li>
+        <li>Web Development</li>
+        <li>Digital Strategy</li>
+        <li>Adobe Technologies</li>
+        <li>Content Creation</li>
+        <li>Streaming OTT</li>
+        <li>Joining Ensemble</li>
+        <li>Other</li>
+      </ul>
+    </td>
+  </tr>
+  <tr><td>textarea</td><td>What can we help you with?</td><td>message</td><td></td></tr>
+  <tr><td>submit</td><td>SUBMIT</td><td></td><td></td></tr>
+</table>
+
+<hr>
+
+<!-- ============ SECTION 3: Office locations grid ============ -->
+<table>
+  <tr class="block-name"><td colspan="2">cards-office</td></tr>
+  <tr>
+    <td>
+      <img src="https://www.ensemble.com/static/vancouver-office-c6e35132033100f72f44d62bb8da269b.webp" alt="Vancouver headquarters"><br>
+      <img src="https://www.ensemble.com/static/vancouver-downtown-9cf6102d0ac8ee47456768001a547bb4.jpeg" alt="Vancouver landscape">
+    </td>
+    <td>
+      <h2>VANCOUVER</h2>
+      <p><a href="tel:+16042319510">+1 604 231 9510</a></p>
+      <p>439 Helmcken Street</p>
+      <p>Vancouver, BC</p>
+      <p>V6B 2E6</p>
+      <p>Canada</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://www.ensemble.com/static/london-22b1271a88c5ff24ee0b2806fc17805d.webp" alt="London landscape">
+    </td>
+    <td>
+      <h2>LONDON</h2>
+      <p><a href="tel:+4407506598881">+44 (0) 75 0659 8881</a></p>
+      <p>123 Buckingham Palace Rd</p>
+      <p>London</p>
+      <p>SW1W 9SH</p>
+      <p>United Kingdom</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://www.ensemble.com/static/basel-office-1b488f9e708d0fc84bfd6f2e8fe4fc93.webp" alt="Basel Office">
+    </td>
+    <td>
+      <h2>Basel</h2>
+      <p>Grosspeteranlage 29</p>
+      <p>Basel</p>
+      <p>4052</p>
+      <p>Switzerland</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://www.ensemble.com/static/baia-mare-cfc71e3b557800c3889ff4638e2f0b56.webp" alt="Baia Mare street"><br>
+      <img src="https://www.ensemble.com/static/baia-mare-office-00e95b7109a2b66bb5a84c50be659063.png" alt="Baia Mare office">
+    </td>
+    <td>
+      <h2>BAIA MARE</h2>
+      <p><a href="tel:+40742894927">+40 742 894 927</a></p>
+      <p>31st Gheorghe &#536;incai Street</p>
+      <p>Baia Mare</p>
+      <p>430311</p>
+      <p>Romania</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://www.ensemble.com/static/brasov-1ce0b75a8e7f0da766a67f408544cf3a.webp" alt="Brasov landscape">
+    </td>
+    <td>
+      <h2>BRA&#536;OV</h2>
+      <p><a href="tel:+40742894927">+40 742 894 927</a></p>
+      <p>17E H&#259;rmanului Street</p>
+      <p>Bra&#537;ov</p>
+      <p>500222</p>
+      <p>Romania</p>
+    </td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- ============ SECTION 4: Leadership contacts (light-grey-blue background) ============ -->
+<table>
+  <tr class="block-name"><td>cards-team</td></tr>
+  <tr><td><h3>Mike Bacinschi</h3><p>PRESIDENT/FOUNDER</p><p><a href="mailto:president@ensemble.com">president@ensemble.com</a></p></td></tr>
+  <tr><td><h3>Brian Bacinschi</h3><p>CHIEF EXECUTIVE OFFICER</p><p><a href="mailto:ceo@ensemble.com">ceo@ensemble.com</a></p></td></tr>
+  <tr><td><h3>Vlad Ghelesel</h3><p>CHIEF CLIENT OFFICER</p><p><a href="mailto:cco@ensemble.com">cco@ensemble.com</a></p></td></tr>
+  <tr><td><h3>David Liao</h3><p>CHIEF OPERATING OFFICER</p><p><a href="mailto:coo@ensemble.com">coo@ensemble.com</a></p></td></tr>
+  <tr><td><h3>Zaheen Somani</h3><p>CHIEF STRATEGY OFFICER</p><p><a href="mailto:cso@ensemble.com">cso@ensemble.com</a></p></td></tr>
+  <tr><td><h3>Sebastien Couture</h3><p>CHIEF TECHNOLOGY OFFICER</p><p><a href="mailto:cto@ensemble.com">cto@ensemble.com</a></p></td></tr>
+  <tr><td><h3>Ray Blaak</h3><p>CHIEF SOFTWARE ARCHITECT</p><p><a href="mailto:csa@ensemble.com">csa@ensemble.com</a></p></td></tr>
+  <tr><td><h3>Radu Pop</h3><p>MANAGING DIRECTOR, ROMANIA</p><p><a href="mailto:md-ro@ensemble.com">md-ro@ensemble.com</a></p></td></tr>
+</table>
+
+<table>
+  <tr class="block-name"><td colspan="2">Section Metadata</td></tr>
+  <tr><td>style</td><td>light-grey-blue</td></tr>
+</table>
+
+<hr>
+
+<!-- ============ SECTION 5: Email CTA (centered) ============ -->
+<p>Send us an email.</p>
+<p>We will be in contact soon!</p>
+<p><strong><a href="mailto:inquiries@ensemble.com">inquiries@ensemble.com</a></strong></p>
+
+<table>
+  <tr class="block-name"><td colspan="2">Section Metadata</td></tr>
+  <tr><td>style</td><td>center</td></tr>
+</table>
+
+</body>
+</html>
