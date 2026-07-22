@@ -18,30 +18,26 @@
 /* --- Image area --- */
 
 /* On the source, multiple office photos sit side-by-side in a fixed-height row.
-   EDS wraps the images either in a <p> (multi-image cells) or a bare <picture>
-   (single-image cells). Treat the image cell as a horizontal flex row. */
+   EDS renders each photo either as a bare <picture> or wrapped in its own <p>
+   (one <p> per image). Treat the image cell as a horizontal flex row and make
+   each direct child (p or picture) an equal-width flex item. */
 .cards-office .cards-office-card-image {
-  display: flex;
-}
-
-.cards-office .cards-office-card-image > p {
   display: flex;
   flex-direction: row;
   gap: 8px;
-  margin: 0;
-  width: 100%;
 }
 
-.cards-office .cards-office-card-image picture {
-  display: block;
+.cards-office .cards-office-card-image > p,
+.cards-office .cards-office-card-image > picture {
   flex: 1 1 0;
   min-width: 0;
+  margin: 0;
   line-height: 0;
   overflow: hidden;
 }
 
-/* When the cell holds a single bare <picture>, let it fill the row */
-.cards-office .cards-office-card-image > picture {
+.cards-office .cards-office-card-image picture {
+  display: block;
   width: 100%;
 }
 

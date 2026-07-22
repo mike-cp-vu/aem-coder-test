@@ -7,7 +7,9 @@ export default function decorate(block) {
     const li = document.createElement('li');
     while (row.firstElementChild) li.append(row.firstElementChild);
     [...li.children].forEach((div) => {
-      if (div.children.length === 1 && div.querySelector('picture')) div.className = 'cards-office-card-image';
+      // Image cell = contains picture(s) and no meaningful text (handles
+      // single-image cells and multi-image cells wrapped in multiple <p>s).
+      if (div.querySelector('picture') && !div.textContent.trim()) div.className = 'cards-office-card-image';
       else div.className = 'cards-office-card-body';
     });
     ul.append(li);
