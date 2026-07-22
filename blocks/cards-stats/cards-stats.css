@@ -3,11 +3,12 @@
    white bg, white text, big bold number (30px/700) over a smaller semibold
    label (16px/600). Laid out as a responsive row (5 across on desktop). */
 
-/* Dark backdrop so the translucent bordered cells read correctly (matches the
-   source hero-overlay context). No extra vertical padding — the band hugs the
-   stat cells so there are no empty dark strips above/below. */
+/* Dark blue-tinted backdrop so the translucent bordered cells read correctly
+   AND the band visually continues the hero's blue-over-dark treatment (rather
+   than a disconnected flat-grey slab). No extra vertical padding — the band
+   hugs the stat cells so there are no empty strips above/below. */
 .cards-stats {
-  background-color: var(--dark-color);
+  background-color: #152a38; /* deep navy: link-blue (#2886bb) multiplied over dark, matching the hero */
   padding: 0;
 }
 
