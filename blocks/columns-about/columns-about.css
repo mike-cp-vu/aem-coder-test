@@ -1,0 +1,112 @@
+/* Block: columns-about -- side-by-side image + text, values from source computed styles */
+
+/* Mobile: stacked, image on top */
+.columns-about > div {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* image column */
+.columns-about > div > .columns-about-img-col {
+  order: 0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.columns-about > div > .columns-about-img-col picture,
+.columns-about > div > .columns-about-img-col img {
+  display: block;
+  width: 100%;
+}
+
+.columns-about > div > .columns-about-img-col img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* text column */
+.columns-about > div > div:not(.columns-about-img-col) {
+  order: 1;
+}
+
+/* lead line: first element in text column, large + semibold */
+.columns-about > div > div:not(.columns-about-img-col) > :first-child {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.33;
+  color: var(--text-color);
+}
+
+/* body paragraph */
+.columns-about > div > div:not(.columns-about-img-col) p {
+  margin: 24px 0 0;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text-color);
+}
+
+/* CTA: plain link rendered as an outline (secondary) button
+   (source: 1px solid black, transparent bg, uppercase, orange on hover).
+   The authored link is not bold/em, so EDS does not add .button --
+   style the link directly within the block. */
+.columns-about > div > div:not(.columns-about-img-col) p:last-child {
+  margin-top: 24px;
+}
+
+.columns-about a:any-link {
+  display: inline-block;
+  margin-top: 0;
+  border: 1px solid #000;
+  border-radius: 4px;
+  padding: 16px 48px;
+  color: #000;
+  background-color: transparent;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: -0.35px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.columns-about a:any-link:hover,
+.columns-about a:any-link:focus-visible {
+  border-color: var(--brand-orange);
+  background-color: var(--brand-orange);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Desktop: side-by-side, text vertically centered */
+@media (width >= 900px) {
+  .columns-about > div {
+    flex-direction: row;
+    align-items: center;
+    gap: 72px;
+    max-height: 520px;
+  }
+
+  .columns-about > div > .columns-about-img-col {
+    order: 0;
+    flex: 0 0 33%;
+    align-self: stretch;
+  }
+
+  .columns-about > div > .columns-about-img-col img {
+    height: 100%;
+  }
+
+  .columns-about > div > div:not(.columns-about-img-col) {
+    order: 1;
+    flex: 3;
+  }
+
+  .columns-about > div > div:not(.columns-about-img-col) > :first-child {
+    font-size: 24px;
+    line-height: 32px;
+  }
+}

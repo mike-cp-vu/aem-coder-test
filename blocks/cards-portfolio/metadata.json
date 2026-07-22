@@ -1,0 +1,38 @@
+{
+  "variantName": "cards-portfolio",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-22T20:40:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/",
+    "originPage": "homepage",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "wide",
+    "purpose": "portfolio",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "linked image + category label overlaid on top",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "portfolio / project galleries",
+      "image tiles with an overlaid category label",
+      "linked image grids"
+    ],
+    "notSuitableFor": [
+      "cards with body text below the image",
+      "text-only card grids"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-22T20:40:00.000Z"
+  }
+}

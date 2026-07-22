@@ -1,0 +1,81 @@
+/* cards-stats: row of stat counters on a dark background.
+   Source cells: 1px solid #EFF3F4 border, rgba(255,255,255,0.08) translucent
+   white bg, white text, big bold number (30px/700) over a smaller semibold
+   label (16px/600). Laid out as a responsive row (5 across on desktop). */
+
+/* Dark backdrop so the translucent cells read correctly. The section uses
+   style="dark"; the block supplies its own dark surface to match the source
+   hero-overlay context. */
+.cards-stats {
+  background-color: var(--dark-color);
+  padding: 40px 0;
+}
+
+.cards-stats > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+}
+
+.cards-stats > ul > li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  padding: 24px 12px;
+  border: 1px solid #eff3f4;
+  background-color: rgb(255 255 255 / 8%);
+  color: #fff;
+  text-align: center;
+
+  /* collapse shared borders between adjacent cells */
+  margin: 0 -1px -1px 0;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.cards-stats > ul > li:hover {
+  background-color: rgb(255 255 255 / 14%);
+  border-color: var(--brand-orange);
+}
+
+.cards-stats .cards-stats-card-body {
+  margin: 0;
+}
+
+/* first line of the body = the big number */
+.cards-stats .cards-stats-card-body > :first-child {
+  margin: 0 0 4px;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+  color: #fff;
+}
+
+/* remaining lines = the label */
+.cards-stats .cards-stats-card-body > :not(:first-child) {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: #fff;
+}
+
+@media (width >= 600px) {
+  .cards-stats > ul {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (width >= 900px) {
+  .cards-stats {
+    padding: 60px 0;
+  }
+
+  .cards-stats > ul {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

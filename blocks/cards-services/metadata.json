@@ -1,0 +1,38 @@
+{
+  "variantName": "cards-services",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-22T20:40:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/",
+    "originPage": "homepage",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "feature",
+    "imagePattern": "icon"
+  },
+  "contentPattern": {
+    "structure": "icon + title + tech-list subtitle + description",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "service / capability grids with icons",
+      "feature lists with icon + heading + description",
+      "icon-led offering summaries"
+    ],
+    "notSuitableFor": [
+      "cards with large photos",
+      "text-only grids without icons"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-22T20:40:00.000Z"
+  }
+}

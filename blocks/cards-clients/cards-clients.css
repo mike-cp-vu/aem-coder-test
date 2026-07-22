@@ -1,0 +1,66 @@
+/*
+ * cards-clients block
+ * Client logo grid: centered, wrapping row of uniform-height logos.
+ * Source: ensemble.com "Some of our clients" — logos normalized to a
+ * fixed 56px box, muted/greyscale, evenly spaced (4 per row on desktop).
+ */
+
+.cards-clients > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 40px 48px;
+}
+
+.cards-clients > ul > li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 calc(50% - 24px);
+}
+
+.cards-clients .cards-clients-card-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  width: 100%;
+}
+
+.cards-clients .cards-clients-card-image picture {
+  display: inline-flex;
+}
+
+.cards-clients > ul > li img {
+  width: auto;
+  height: auto;
+  max-height: 56px;
+  max-width: 176px;
+  object-fit: contain;
+  filter: grayscale(100%);
+  opacity: 0.85;
+}
+
+@media (width >= 600px) {
+  .cards-clients > ul {
+    gap: 48px 96px;
+  }
+
+  .cards-clients > ul > li {
+    flex: 0 0 calc(25% - 72px);
+  }
+}
+
+@media (width >= 900px) {
+  .cards-clients > ul {
+    gap: 56px 144px;
+  }
+
+  .cards-clients > ul > li {
+    flex: 0 0 calc(25% - 108px);
+  }
+}

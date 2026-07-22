@@ -1,0 +1,38 @@
+{
+  "variantName": "columns-about",
+  "baseBlock": "columns",
+  "version": "1.0.0",
+  "created": "2026-07-22T20:40:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/",
+    "originPage": "homepage",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "about",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "image column + (lead line + paragraph + button) column",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "about / intro sections pairing a photo with text",
+      "image-beside-text informational layouts",
+      "two-column story blocks with a CTA"
+    ],
+    "notSuitableFor": [
+      "repeating item grids (use cards)",
+      "3+ column layouts"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-22T20:40:00.000Z"
+  }
+}

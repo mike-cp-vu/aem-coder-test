@@ -1,0 +1,38 @@
+{
+  "variantName": "cards-clients",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-22T20:40:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/",
+    "originPage": "homepage",
+    "blockPosition": "bottom"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "logos",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "logo image only",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "client / partner logo walls",
+      "as-seen-in logo strips",
+      "greyscale logo grids"
+    ],
+    "notSuitableFor": [
+      "cards with text bodies",
+      "photo galleries with captions"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-22T20:40:00.000Z"
+  }
+}

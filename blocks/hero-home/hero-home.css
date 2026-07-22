@@ -1,0 +1,97 @@
+/* Block: hero-home
+ * Full-bleed dark hero: background image with a blue multiply overlay and a
+ * large white bold headline overlaid on the left, vertically centered.
+ * Values extracted from source computed styles (www.ensemble.com).
+ */
+
+/* full-bleed: escape the section max-width/padding */
+.hero-home-container .hero-home-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+.hero-home {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: 380px;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+/* background image row -- fills the hero */
+.hero-home > div:first-child {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  margin: 0;
+}
+
+.hero-home > div:first-child picture,
+.hero-home > div:first-child img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-home > div:first-child img {
+  object-fit: cover;
+  object-position: right;
+}
+
+/* blue multiply overlay (bg-ensemble-blue mix-blend-multiply) */
+.hero-home::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: var(--link-color); /* rgb(40, 134, 187) */
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* headline row -- overlaid, left, vertically centered */
+.hero-home > div:last-child {
+  position: relative;
+  z-index: 2;
+  max-width: 520px;
+  margin: 0;
+}
+
+.hero-home h1 {
+  margin: 0;
+  color: #fff;
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  font-size: 42px;
+  line-height: 64px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* no-image fallback: keep text readable on light background */
+.hero-home.no-image {
+  min-height: 0;
+}
+
+.hero-home.no-image::before {
+  display: none;
+}
+
+.hero-home.no-image h1 {
+  color: var(--heading-color);
+}
+
+@media (width >= 900px) {
+  .hero-home {
+    min-height: 523px;
+    padding: 80px;
+  }
+
+  .hero-home h1 {
+    font-size: 60px;
+    line-height: 82px;
+  }
+}

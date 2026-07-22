@@ -1,0 +1,91 @@
+/* cards-services -- "What we provide" services grid
+   Values extracted from https://www.ensemble.com/ computed styles. */
+
+.cards-services > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+/* Each service item: icon on top, then title / subtitle / description.
+   Source item is display:block with top+left padding so the icon indents
+   with the text column. */
+.cards-services > ul > li {
+  display: block;
+  margin: 0;
+  padding: 24px 0 0 40px;
+}
+
+/* icon */
+.cards-services .cards-services-card-image {
+  line-height: 0;
+}
+
+.cards-services .cards-services-card-image img {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+}
+
+/* text body */
+.cards-services .cards-services-card-body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+/* title */
+.cards-services .cards-services-card-body h3 {
+  order: 1;
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-xl);
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--heading-color, #333);
+}
+
+.cards-services .cards-services-card-body h3 a:any-link {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.cards-services .cards-services-card-body h3 a:hover {
+  text-decoration: none;
+}
+
+/* tech-list subtitle: first paragraph after the title */
+.cards-services .cards-services-card-body p {
+  order: 3;
+  margin: 4px 0 0;
+  font-size: var(--body-font-size-s);
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--heading-color, #333);
+}
+
+.cards-services .cards-services-card-body h3 + p {
+  order: 2;
+  margin: 0;
+  font-size: var(--body-font-size-xs);
+  color: #0079c0;
+}
+
+/* tablet: 2 columns */
+@media (width >= 600px) {
+  .cards-services > ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px;
+  }
+}
+
+/* xl desktop: 3 columns with generous gap */
+@media (width >= 1200px) {
+  .cards-services > ul {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 100px;
+  }
+}

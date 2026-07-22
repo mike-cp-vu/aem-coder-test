@@ -1,0 +1,37 @@
+{
+  "variantName": "hero-home",
+  "baseBlock": "hero",
+  "version": "1.0.0",
+  "created": "2026-07-22T20:40:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/",
+    "originPage": "homepage",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "spacious",
+    "purpose": "hero",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "full-bleed background image + large H1",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "full-bleed dark hero banners with overlaid heading",
+      "landing page intros with a background photo"
+    ],
+    "notSuitableFor": [
+      "text-only hero on light background",
+      "hero with foreground image beside text"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-22T20:40:00.000Z"
+  }
+}
