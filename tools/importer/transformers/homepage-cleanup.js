@@ -37,6 +37,38 @@ export default function transform(hookName, element, payload) {
       }
     }
 
+    // CTA buttons: the homepage renders its calls-to-action as <button> elements
+    // with no href, so they import as plain text. Reconstruct each known CTA as
+    // a formatted link (strong = primary/orange, em = secondary/outline) so
+    // decorateButtons renders it as a styled button. Destination is inferred
+    // from the button label.
+    const CTA_MAP = [
+      { re: /^view our portfolio$/i, href: '/portfolio/', variant: 'em' },
+      { re: /^learn more about what we do$/i, href: '/services/', variant: 'em' },
+      { re: /^learn more about ensemble$/i, href: '/about/', variant: 'em' },
+      { re: /^contact us$/i, href: '/contact/', variant: 'strong' },
+    ];
+    element.querySelectorAll('button').forEach((btn) => {
+      const label = btn.textContent.trim();
+      // Drop mobile-only duplicate CTAs (e.g. the short "LEARN MORE" twin of
+      // "LEARN MORE ABOUT WHAT WE DO") so they don't leak in as stray text.
+      if (/^learn more$/i.test(label)) {
+        btn.remove();
+        return;
+      }
+      const match = CTA_MAP.find((c) => c.re.test(label));
+      if (!match) return;
+      const doc = btn.ownerDocument;
+      const p = doc.createElement('p');
+      const wrap = doc.createElement(match.variant); // strong (primary) or em (secondary)
+      const a = doc.createElement('a');
+      a.setAttribute('href', match.href);
+      a.textContent = label;
+      wrap.append(a);
+      p.append(wrap);
+      btn.replaceWith(p);
+    });
+
     // Mobile-only duplicates: the portfolio section ships a desktop grid AND a
     // mobile slick-carousel (with cloned slides) hidden on desktop; the services
     // section similarly has a mobile-only accordion/list. These mirror the
@@ -44,10 +76,15 @@ export default function transform(hookName, element, payload) {
     // content. Remove the mobile carousel and any `.sm:hidden` wrapper that sits
     // alongside a desktop grid so only the desktop block content survives.
     element.querySelectorAll('.slick-slider, div[class*="sm:hidden"]').forEach((el) => {
-      // Keep small inline `sm:hidden` bits that are not structural duplicates
-      // (e.g. a lone mobile button) — only strip wrappers that contain images or
-      // a slick track (the true mobile mirrors of a desktop block).
-      if (el.querySelector('.slick-track, img') || el.classList.contains('slick-slider')) {
+      if (!el.isConnected) return; // already removed via an ancestor
+      // Strip true mobile mirrors of a desktop block: slick carousels, wrappers
+      // with images, or wrappers holding a repeating list of links (the mobile
+      // services accordion duplicates the desktop services grid). Keep small
+      // inline sm:hidden bits (e.g. a lone mobile button — 0-1 links, no img).
+      const isSlick = el.classList.contains('slick-slider') || el.querySelector('.slick-track');
+      const hasImg = !!el.querySelector('img');
+      const linkCount = el.querySelectorAll('a').length;
+      if (isSlick || hasImg || linkCount >= 3) {
         el.remove();
       }
     });

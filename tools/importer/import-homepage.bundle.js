@@ -251,8 +251,36 @@ var CustomImportScript = (() => {
           cookieBtn.remove();
         }
       }
+      const CTA_MAP = [
+        { re: /^view our portfolio$/i, href: "/portfolio/", variant: "em" },
+        { re: /^learn more about what we do$/i, href: "/services/", variant: "em" },
+        { re: /^learn more about ensemble$/i, href: "/about/", variant: "em" },
+        { re: /^contact us$/i, href: "/contact/", variant: "strong" }
+      ];
+      element.querySelectorAll("button").forEach((btn) => {
+        const label = btn.textContent.trim();
+        if (/^learn more$/i.test(label)) {
+          btn.remove();
+          return;
+        }
+        const match = CTA_MAP.find((c) => c.re.test(label));
+        if (!match) return;
+        const doc = btn.ownerDocument;
+        const p = doc.createElement("p");
+        const wrap = doc.createElement(match.variant);
+        const a = doc.createElement("a");
+        a.setAttribute("href", match.href);
+        a.textContent = label;
+        wrap.append(a);
+        p.append(wrap);
+        btn.replaceWith(p);
+      });
       element.querySelectorAll('.slick-slider, div[class*="sm:hidden"]').forEach((el) => {
-        if (el.querySelector(".slick-track, img") || el.classList.contains("slick-slider")) {
+        if (!el.isConnected) return;
+        const isSlick = el.classList.contains("slick-slider") || el.querySelector(".slick-track");
+        const hasImg = !!el.querySelector("img");
+        const linkCount = el.querySelectorAll("a").length;
+        if (isSlick || hasImg || linkCount >= 3) {
           el.remove();
         }
       });
