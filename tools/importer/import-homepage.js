@@ -40,7 +40,7 @@ const PAGE_TEMPLATE = {
     { name: 'section-cta', instances: ['main div > div.bg-background.py-16'], section: 'grey' },
   ],
   sections: [
-    { id: 'hp-hero', name: 'Hero + stats banner', selector: 'main div > div.relative.pt-36', style: 'dark', blocks: ['hero-home', 'cards-stats'], defaultContent: [] },
+    { id: 'hp-hero', name: 'Hero + stats banner', selector: 'main div > div.relative.pt-36', style: null, blocks: ['hero-home', 'cards-stats'], defaultContent: [] },
     { id: 'hp-portfolio', name: 'Portfolio project grid', selector: 'main div > div.pt-4.pb-4.pl-4:nth-of-type(2)', style: null, blocks: ['cards-portfolio'], defaultContent: ['main div > div.pt-4.pb-4.pl-4:nth-of-type(2) button'] },
     { id: 'hp-services', name: 'Services grid', selector: 'main div > div.pt-4.pb-4.pl-4:nth-of-type(3)', style: null, blocks: ['cards-services'], defaultContent: ['main div > div.pt-4.pb-4.pl-4:nth-of-type(3) h2'] },
     { id: 'hp-about', name: 'About section', selector: 'main div > div.pb-4.pl-4:nth-of-type(4)', style: null, blocks: ['columns-about'], defaultContent: [] },

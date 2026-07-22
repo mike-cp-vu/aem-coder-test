@@ -39,9 +39,15 @@
 .hero-home > div:first-child img {
   object-fit: cover;
   object-position: right;
+
+  /* Source desaturates the photo (mix-blend-saturation) before the blue tint;
+     grayscale on the image reproduces that muted base look. */
+  filter: grayscale(100%);
 }
 
-/* blue multiply overlay (bg-ensemble-blue mix-blend-multiply) */
+/* Blue tint over the desaturated photo (bg-ensemble-blue mix-blend-multiply).
+   Using multiply over a greyscale base keeps detail visible instead of a flat
+   solid-blue wash. */
 .hero-home::before {
   content: '';
   position: absolute;

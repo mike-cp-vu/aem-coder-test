@@ -138,7 +138,7 @@
           "id": "hp-hero",
           "name": "Hero + stats banner",
           "selector": "main div > div.relative.pt-36",
-          "style": "dark",
+          "style": null,
           "blocks": ["hero-home", "cards-stats"],
           "defaultContent": []
         },

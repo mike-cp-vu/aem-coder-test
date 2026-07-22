@@ -3,12 +3,12 @@
    white bg, white text, big bold number (30px/700) over a smaller semibold
    label (16px/600). Laid out as a responsive row (5 across on desktop). */
 
-/* Dark backdrop so the translucent cells read correctly. The section uses
-   style="dark"; the block supplies its own dark surface to match the source
-   hero-overlay context. */
+/* Dark backdrop so the translucent bordered cells read correctly (matches the
+   source hero-overlay context). No extra vertical padding — the band hugs the
+   stat cells so there are no empty dark strips above/below. */
 .cards-stats {
   background-color: var(--dark-color);
-  padding: 40px 0;
+  padding: 0;
 }
 
 .cards-stats > ul {
@@ -71,10 +71,6 @@
 }
 
 @media (width >= 900px) {
-  .cards-stats {
-    padding: 60px 0;
-  }
-
   .cards-stats > ul {
     grid-template-columns: repeat(5, 1fr);
   }
