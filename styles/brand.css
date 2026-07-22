@@ -1,0 +1,26 @@
+:root {
+  --heading-font-family: "Open Sans", arial, sans-serif;
+  --body-font-family: "Open Sans", arial, sans-serif;
+
+  /* colors */
+  --background-color: #fff;
+  --text-color: #1f2937;
+  --heading-color: #333;
+  --eyebrow-color: #9a9a9a;
+  --link-color: #2886bb;
+  --link-hover-color: #1f6b96;
+  --brand-orange: #ff8e2f;
+  --brand-orange-hover: #e57a1f;
+  --section-light-grey-blue: #eff3f4;
+
+  /* spacing */
+  --content-max-width: 1400px;
+
+  /* heading sizes (desktop) */
+  --heading-size-xxl: 36px;
+  --heading-size-xl: 30px;
+  --heading-size-l: 24px;
+  --heading-size-m: 20px;
+  --heading-size-s: 18px;
+  --heading-size-xs: 16px;
+}

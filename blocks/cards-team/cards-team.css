@@ -1,0 +1,76 @@
+/* cards-team -- leadership contacts grid
+   Source: ensemble.com/contact team grid (grid-cols-2, centered items).
+   Section background (light-grey-blue) comes from the section variant; not set here. */
+
+.cards-team > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 48px; /* mobile row rhythm ~ pt-12 (48px) */
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 688px; /* source grid width ~687px, mx-auto centered */
+}
+
+.cards-team > ul > li {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.cards-team .cards-team-card-body {
+  margin: 0;
+}
+
+/* Name -- font-semibold text-[18px] lg:font-bold lg:text-[24px] */
+.cards-team .cards-team-card-body h3 {
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  color: var(--text-color); /* rgb(31,41,55) */
+}
+
+/* Job title -- uppercase grey, semibold */
+.cards-team .cards-team-card-body p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 28px;
+  color: #7d7d7d; /* rgb(125,125,125) */
+  text-transform: uppercase;
+}
+
+/* Email link -- reset title styling, blue link */
+.cards-team .cards-team-card-body p:last-child {
+  font-weight: 400;
+  text-transform: none;
+}
+
+.cards-team .cards-team-card-body a,
+.cards-team .cards-team-card-body a:any-link {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28px;
+  color: var(--link-color); /* #2886bb */
+  text-decoration: none;
+}
+
+.cards-team .cards-team-card-body a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+@media (width >= 900px) {
+  .cards-team > ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px 240px; /* row rhythm ~ pt-20 (80px), col gap lg:gap-x-60 (15rem) */
+  }
+
+  .cards-team .cards-team-card-body h3 {
+    font-size: 24px;
+    font-weight: 700;
+  }
+}

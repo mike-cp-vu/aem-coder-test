@@ -1,0 +1,38 @@
+{
+  "variantName": "cards-team",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-22T17:36:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/contact/",
+    "originPage": "contact page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "grey",
+    "density": "spacious",
+    "purpose": "team",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "name + title + email-link",
+    "buttonCount": 0,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "leadership / team contact grids",
+      "text-only person or contact card grids",
+      "no-image directory listings"
+    ],
+    "notSuitableFor": [
+      "cards that require images",
+      "single feature highlights"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/contact/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-22T17:36:00.000Z"
+  }
+}

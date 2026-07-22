@@ -1,0 +1,39 @@
+{
+  "variantName": "form-contact",
+  "baseBlock": "form",
+  "version": "1.0.0",
+  "created": "2026-07-22T17:36:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/contact/",
+    "originPage": "contact page",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "contact-form",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "text inputs + select + textarea + submit button",
+    "buttonCount": 1,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "contact / inquiry forms",
+      "lead capture forms",
+      "simple multi-field forms"
+    ],
+    "notSuitableFor": [
+      "complex multi-step forms",
+      "forms requiring server-side validation via a dedicated forms platform"
+    ]
+  },
+  "notes": "Created during migration because no vanilla 'form' block exists and no forms plugin is configured. Minimal self-contained implementation; connect a submit endpoint during integration.",
+  "usage": {
+    "pagesUsing": ["/contact/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-22T17:36:00.000Z"
+  }
+}

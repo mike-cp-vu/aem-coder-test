@@ -1,3 +1,5 @@
+@import url('brand.css');
+
 /*
  * Copyright 2020 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -12,61 +14,48 @@
 
 :root {
   /* colors */
-  --background-color: white;
-  --light-color: #f8f8f8;
-  --dark-color: #505050;
-  --text-color: #131313;
-  --link-color: #3b63fb;
-  --link-hover-color: #1d3ecf;
+  --background-color: #fff;
+  --light-color: #eff3f4;
+  --dark-color: #333;
+  --text-color: #1f2937;
+  --link-color: #2886bb;
+  --link-hover-color: #1f6b96;
 
   /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
-  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
+  --body-font-family: "Open Sans", arial, sans-serif;
+  --heading-font-family: "Open Sans", arial, sans-serif;
 
   /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 19px;
-  --body-font-size-xs: 17px;
+  --body-font-size-m: 16px;
+  --body-font-size-s: 14px;
+  --body-font-size-xs: 12px;
 
   /* heading sizes */
-  --heading-font-size-xxl: 55px;
-  --heading-font-size-xl: 44px;
-  --heading-font-size-l: 34px;
-  --heading-font-size-m: 27px;
-  --heading-font-size-s: 24px;
-  --heading-font-size-xs: 22px;
+  --heading-font-size-xxl: 30px;
+  --heading-font-size-xl: 24px;
+  --heading-font-size-l: 20px;
+  --heading-font-size-m: 18px;
+  --heading-font-size-s: 16px;
+  --heading-font-size-xs: 14px;
 
   /* nav height */
   --nav-height: 64px;
 }
 
-/* fallback fonts */
-@font-face {
-  font-family: roboto-condensed-fallback;
-  size-adjust: 88.82%;
-  src: local('Arial');
-}
-
-@font-face {
-  font-family: roboto-fallback;
-  size-adjust: 99.529%;
-  src: local('Arial');
-}
-
 @media (width >= 900px) {
   :root {
     /* body sizes */
-    --body-font-size-m: 18px;
-    --body-font-size-s: 16px;
-    --body-font-size-xs: 14px;
+    --body-font-size-m: 16px;
+    --body-font-size-s: 14px;
+    --body-font-size-xs: 12px;
 
     /* heading sizes */
-    --heading-font-size-xxl: 45px;
-    --heading-font-size-xl: 36px;
-    --heading-font-size-l: 28px;
-    --heading-font-size-m: 22px;
-    --heading-font-size-s: 20px;
-    --heading-font-size-xs: 18px;
+    --heading-font-size-xxl: 36px;
+    --heading-font-size-xl: 30px;
+    --heading-font-size-l: 24px;
+    --heading-font-size-m: 20px;
+    --heading-font-size-s: 18px;
+    --heading-font-size-xs: 16px;
   }
 }
 
@@ -107,9 +96,15 @@ h6 {
   margin-top: 0.8em;
   margin-bottom: 0.25em;
   font-family: var(--heading-font-family);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.25;
+  color: var(--heading-color);
   scroll-margin: 40px;
+}
+
+h1,
+h2 {
+  font-weight: 800;
 }
 
 h1 { font-size: var(--heading-font-size-xxl); }
@@ -165,12 +160,32 @@ a:hover {
   text-decoration: underline;
 }
 
+/* default EDS button reset - plain links rendered as buttons render as text links */
+main .button-container {
+  display: inline;
+}
+
+main a.button:any-link:not(.primary, .secondary, .accent) {
+  border: none;
+  border-radius: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+  color: var(--link-color);
+  font-size: inherit;
+  font-weight: inherit;
+  white-space: normal;
+  text-decoration: underline;
+}
+
 /* buttons */
 p.button-wrapper {
   margin: 12px 0;
 }
 
-a.button:any-link,
+a.button.primary,
+a.button.secondary,
+a.button.accent,
 button.button {
   box-sizing: border-box;
   display: inline-flex;
@@ -178,12 +193,14 @@ button.button {
   justify-content: center;
   max-width: 100%;
   margin: 0;
-  border: 2px solid transparent;
-  border-radius: 2.4em;
-  padding: 0.5em 1.2em;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 16px 48px;
   font: inherit;
-  font-weight: 500;
+  font-size: var(--body-font-size-s);
+  font-weight: 700;
   line-height: 1.25;
+  letter-spacing: -0.35px;
   text-decoration: none;
   cursor: pointer;
   overflow: hidden;
@@ -199,18 +216,18 @@ button.button:disabled {
 
 a.button.primary,
 button.button.primary {
-  border-color: var(--text-color);
-  background-color: var(--text-color);
-  color: var(--background-color);
+  border-color: var(--brand-orange);
+  background-color: var(--brand-orange);
+  color: #fff;
 }
 
 a.button.primary:hover,
 a.button.primary:focus-visible,
 button.button.primary:hover,
 button.button.primary:focus-visible {
-  border-color: var(--dark-color);
-  background-color: var(--dark-color);
-  color: var(--light-color);
+  border-color: var(--brand-orange-hover);
+  background-color: var(--brand-orange-hover);
+  color: #fff;
 }
 
 a.button.primary[aria-disabled="true"],
@@ -254,17 +271,18 @@ button.button.secondary:disabled:focus-visible {
 /* high-impact call-to-action */
 a.button.accent,
 button.button.accent {
-  border-color: var(--link-color);
-  background-color: var(--link-color);
-  color: var(--background-color);
+  border-color: var(--brand-orange);
+  background-color: var(--brand-orange);
+  color: #fff;
 }
 
 a.button.accent:hover,
 a.button.accent:focus-visible,
 button.button.accent:hover,
 button.button.accent:focus-visible {
-  border-color: var(--link-hover-color);
-  background-color: var(--link-hover-color);
+  border-color: var(--brand-orange-hover);
+  background-color: var(--brand-orange-hover);
+  color: #fff;
 }
 
 a.button.accent[aria-disabled="true"],
@@ -301,25 +319,51 @@ main > .section {
 }
 
 main > .section > div {
-  max-width: 1200px;
+  max-width: var(--content-max-width);
   margin: auto;
-  padding: 0 24px;
+  padding: 0 16px;
 }
 
 main > .section:first-of-type {
   margin-top: 0;
 }
 
-@media (width >= 900px) {
+@media (width >= 600px) {
   main > .section > div {
     padding: 0 32px;
   }
 }
 
+@media (width >= 900px) {
+  main > .section > div {
+    padding: 0 80px;
+  }
+}
+
 /* section metadata */
 main .section.light,
-main .section.highlight {
-  background-color: var(--light-color);
+main .section.highlight,
+main .section.light-grey-blue {
+  background-color: var(--section-light-grey-blue);
   margin: 0;
   padding: 40px 0;
+}
+
+@media (width >= 900px) {
+  main .section.light,
+  main .section.highlight,
+  main .section.light-grey-blue {
+    padding: 80px 0;
+  }
+}
+
+/* centered call-to-action section */
+main .section.center {
+  text-align: center;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main .section.center .default-content-wrapper a.button {
+  display: inline-flex;
+  margin: 24px auto 0;
 }

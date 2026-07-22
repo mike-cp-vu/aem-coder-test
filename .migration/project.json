@@ -1,0 +1,10 @@
+{
+  "type": "doc",
+  "sites": {
+    "aem-coder-test": {
+      "previewOrg": "mike-cp-vu",
+      "previewSite": "aem-coder-test",
+      "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json"
+    }
+  }
+}

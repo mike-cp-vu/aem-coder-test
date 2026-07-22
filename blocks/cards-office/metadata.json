@@ -1,0 +1,38 @@
+{
+  "variantName": "cards-office",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-22T17:36:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/contact/",
+    "originPage": "contact page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "wide",
+    "purpose": "locations",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "image + heading + phone-link + address",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "office / location grids",
+      "store finder listings",
+      "image + address card grids"
+    ],
+    "notSuitableFor": [
+      "text-only card grids",
+      "single feature highlights"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/contact/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-22T17:36:00.000Z"
+  }
+}

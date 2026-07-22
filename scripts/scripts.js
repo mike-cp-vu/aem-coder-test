@@ -143,6 +143,37 @@ function decorateButtons(main) {
 }
 
 /**
+ * Applies section-metadata blocks as section classes/dataset, then removes them
+ * so they are not treated as loadable blocks. Mirrors the standard boilerplate
+ * behavior which this project's aem.js decorateSections omits.
+ * @param {Element} main The main element
+ */
+function decorateSectionMetadata(main) {
+  main.querySelectorAll('.section-metadata').forEach((sectionMeta) => {
+    const section = sectionMeta.closest('.section');
+    if (section) {
+      [...sectionMeta.children].forEach((row) => {
+        const [keyCell, valueCell] = row.children;
+        if (!keyCell || !valueCell) return;
+        const key = keyCell.textContent.trim().toLowerCase();
+        const value = valueCell.textContent.trim();
+        if (key === 'style') {
+          value.split(',').forEach((style) => {
+            const className = style.trim().toLowerCase().replace(/[^0-9a-z]+/g, '-').replace(/^-+|-+$/g, '');
+            if (className) section.classList.add(className);
+          });
+        } else if (key) {
+          section.dataset[key.replace(/[^0-9a-z]+([a-z0-9])/g, (m, c) => c.toUpperCase())] = value;
+        }
+      });
+    }
+    const wrapper = sectionMeta.parentElement;
+    sectionMeta.remove();
+    if (wrapper && wrapper !== section && wrapper.children.length === 0) wrapper.remove();
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -151,6 +182,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  decorateSectionMetadata(main);
   decorateBlocks(main);
   decorateButtons(main);
 }
