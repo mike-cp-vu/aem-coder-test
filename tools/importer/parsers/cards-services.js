@@ -22,14 +22,28 @@ export default function parse(element, { document }) {
 
   const cells = [];
 
+  // The source service icons are inline SVGs (no stable URL). They were
+  // extracted to committed files at /icons/service-<slug>.svg, keyed by the
+  // service title. Rebuild the icon <img> to point at that committed asset.
+  const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
   items.forEach((item) => {
-    const icon = item.querySelector('img');
     const heading = item.querySelector('h3, h2, h4');
     const subtitle = item.querySelector('span');
     const description = item.querySelector('p');
 
     // A valid service card needs at least a title.
     if (!heading) return;
+
+    // Icon: reference the committed SVG for this service. Inline source SVGs
+    // have no fetchable URL; they were extracted to /icons/service-<slug>.svg.
+    // Emit a placeholder host that the homepage-sections transformer rewrites
+    // to a root-relative /icons/ path (WebImporter.adjustImageUrls would
+    // otherwise absolutize a bare /icons/ path to the source origin).
+    const title = heading.textContent.trim();
+    const icon = document.createElement('img');
+    icon.setAttribute('src', `https://LOCAL.ICONS/icons/service-${slugify(title)}.svg`);
+    icon.setAttribute('alt', title);
 
     // Determine the link href for this service (icon anchor or heading anchor).
     const linkEl = item.querySelector('a[href]');

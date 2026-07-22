@@ -75,5 +75,16 @@ export default function transform(hookName, element, payload) {
       'source',
       'iframe',
     ]);
+
+    // Rewrite committed-icon placeholders to root-relative paths. The service
+    // and client parsers emit img src="https://LOCAL.ICONS/icons/<name>.svg"
+    // so WebImporter.adjustImageUrls (which absolutizes bare relative paths to
+    // the source origin) leaves them alone; here we strip the placeholder host
+    // to yield a proper /icons/<name>.svg reference served from this project.
+    element.querySelectorAll('img[src*="LOCAL.ICONS"]').forEach((img) => {
+      const src = img.getAttribute('src') || '';
+      const idx = src.indexOf('/icons/');
+      if (idx !== -1) img.setAttribute('src', src.slice(idx));
+    });
   }
 }

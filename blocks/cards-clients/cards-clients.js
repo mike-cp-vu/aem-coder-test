@@ -13,8 +13,19 @@ export default function decorate(block) {
     ul.append(li);
   });
   ul.querySelectorAll('picture > img').forEach((img) => {
-    const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '300' }]);
-    img.closest('picture').replaceWith(optimizedPic);
+    // SVG logos are vector — the image optimizer can't rasterize them (and
+    // returns an empty source), so keep the plain <img>. Only raster sources
+    // go through createOptimizedPicture.
+    if (/\.svg(\?|$)/i.test(img.src)) {
+      const plain = document.createElement('img');
+      plain.setAttribute('src', img.getAttribute('src').replace(/\?.*$/, ''));
+      plain.setAttribute('alt', img.getAttribute('alt') || '');
+      plain.setAttribute('loading', 'lazy');
+      img.closest('picture').replaceWith(plain);
+    } else {
+      const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '300' }]);
+      img.closest('picture').replaceWith(optimizedPic);
+    }
   });
   block.textContent = '';
   block.append(ul);

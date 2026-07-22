@@ -131,6 +131,17 @@ export default {
     WebImporter.rules.transformBackgroundImages(main, document);
     WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
 
+    // 5b. Normalize committed-icon references to root-relative /icons/ paths.
+    // The service/client parsers emit a placeholder host so adjustImageUrls
+    // (run above) leaves the local /icons/ path intact; it still absolutizes
+    // it to the source origin, so strip everything before /icons/ here — after
+    // adjustImageUrls — to yield a proper /icons/<name>.svg served by this site.
+    main.querySelectorAll('img[src*="/icons/service-"], img[src*="/icons/client-"]').forEach((img) => {
+      const src = img.getAttribute('src') || '';
+      const idx = src.indexOf('/icons/');
+      if (idx > 0) img.setAttribute('src', src.slice(idx));
+    });
+
     // 6. Generate sanitized path
     const path = WebImporter.FileUtils.sanitizePath(
       new URL(params.originalURL).pathname.replace(/\/$/, '').replace(/\.html$/, '') || '/index',

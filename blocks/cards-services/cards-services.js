@@ -13,8 +13,18 @@ export default function decorate(block) {
     ul.append(li);
   });
   ul.querySelectorAll('picture > img').forEach((img) => {
-    const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '128' }]);
-    img.closest('picture').replaceWith(optimizedPic);
+    // Service icons are SVG — vector, not rasterizable by the image optimizer.
+    // Keep the plain <img>; only raster sources go through createOptimizedPicture.
+    if (/\.svg(\?|$)/i.test(img.src)) {
+      const plain = document.createElement('img');
+      plain.setAttribute('src', img.getAttribute('src').replace(/\?.*$/, ''));
+      plain.setAttribute('alt', img.getAttribute('alt') || '');
+      plain.setAttribute('loading', 'lazy');
+      img.closest('picture').replaceWith(plain);
+    } else {
+      const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '128' }]);
+      img.closest('picture').replaceWith(optimizedPic);
+    }
   });
   block.textContent = '';
   block.append(ul);

@@ -146,12 +146,16 @@ var CustomImportScript = (() => {
       items = Array.from(element.querySelectorAll(":scope > div"));
     }
     const cells = [];
+    const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     items.forEach((item) => {
-      const icon = item.querySelector("img");
       const heading = item.querySelector("h3, h2, h4");
       const subtitle = item.querySelector("span");
       const description = item.querySelector("p");
       if (!heading) return;
+      const title = heading.textContent.trim();
+      const icon = document.createElement("img");
+      icon.setAttribute("src", `https://LOCAL.ICONS/icons/service-${slugify(title)}.svg`);
+      icon.setAttribute("alt", title);
       const linkEl = item.querySelector("a[href]");
       const href = linkEl ? linkEl.getAttribute("href") : null;
       const contentCell = [];
@@ -216,6 +220,7 @@ var CustomImportScript = (() => {
 
   // tools/importer/parsers/cards-clients.js
   function parse6(element, { document }) {
+    const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     const logos = Array.from(element.querySelectorAll("img"));
     if (logos.length === 0) {
       element.replaceWith(...element.childNodes);
@@ -223,7 +228,11 @@ var CustomImportScript = (() => {
     }
     const cells = [];
     logos.forEach((logo) => {
-      cells.push([logo]);
+      const alt = (logo.getAttribute("alt") || "").trim();
+      const icon = document.createElement("img");
+      icon.setAttribute("src", `https://LOCAL.ICONS/icons/client-${slugify(alt)}.svg`);
+      icon.setAttribute("alt", alt);
+      cells.push([icon]);
     });
     const block = WebImporter.Blocks.createBlock(document, { name: "cards-clients", cells });
     element.replaceWith(block);
@@ -262,6 +271,11 @@ var CustomImportScript = (() => {
         "source",
         "iframe"
       ]);
+      element.querySelectorAll('img[src*="LOCAL.ICONS"]').forEach((img) => {
+        const src = img.getAttribute("src") || "";
+        const idx = src.indexOf("/icons/");
+        if (idx !== -1) img.setAttribute("src", src.slice(idx));
+      });
     }
   }
 
@@ -396,6 +410,11 @@ var CustomImportScript = (() => {
       WebImporter.rules.createMetadata(main, document);
       WebImporter.rules.transformBackgroundImages(main, document);
       WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
+      main.querySelectorAll('img[src*="/icons/service-"], img[src*="/icons/client-"]').forEach((img) => {
+        const src = img.getAttribute("src") || "";
+        const idx = src.indexOf("/icons/");
+        if (idx > 0) img.setAttribute("src", src.slice(idx));
+      });
       const path = WebImporter.FileUtils.sanitizePath(
         new URL(params.originalURL).pathname.replace(/\/$/, "").replace(/\.html$/, "") || "/index"
       );
