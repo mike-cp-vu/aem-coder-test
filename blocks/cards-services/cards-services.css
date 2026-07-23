@@ -10,17 +10,21 @@
   gap: 40px;
 }
 
-/* Each service item: icon on top, then title / subtitle / description.
-   Source item is display:block with top+left padding so the icon indents
-   with the text column. */
+/* Each service item: icon to the LEFT of the title / subtitle / description,
+   tops aligned (matches source: two-column row, ~8px gap between icon and
+   text). */
 .cards-services > ul > li {
-  display: block;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
   margin: 0;
   padding: 24px 0 0 40px;
 }
 
 /* icon */
 .cards-services .cards-services-card-image {
+  flex: 0 0 58px;
   line-height: 0;
 }
 
@@ -72,6 +76,13 @@
   margin: 0;
   font-size: var(--body-font-size-xs);
   color: #0079c0;
+}
+
+/* "LEARN MORE ABOUT WHAT WE DO" CTA sits in the section's default content,
+   centered below the grid (matches source). */
+.cards-services-container .default-content-wrapper {
+  text-align: center;
+  margin-top: 40px;
 }
 
 /* tablet: 2 columns */
