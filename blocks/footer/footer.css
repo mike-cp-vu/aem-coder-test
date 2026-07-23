@@ -74,7 +74,7 @@ footer .footer .footer-column:last-child > p:nth-of-type(2) a:hover {
 
 /* lower row: logo, social icons, copyright */
 /* stylelint-disable no-descending-specificity */
-footer .footer > div:last-child {
+footer .footer .footer-meta {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -83,23 +83,23 @@ footer .footer > div:last-child {
   border-top: 1px solid rgb(255 255 255 / 15%);
 }
 
-footer .footer > div:last-child img {
+footer .footer .footer-meta img {
   height: 32px;
   width: auto;
 }
 
 /* social icon row */
-footer .footer > div:last-child p:nth-of-type(2) {
+footer .footer .footer-meta p:nth-of-type(2) {
   display: flex;
   gap: 16px;
   align-items: center;
 }
 
-footer .footer > div:last-child p:nth-of-type(2) img {
+footer .footer .footer-meta p:nth-of-type(2) img {
   height: 26px;
 }
 
-footer .footer > div:last-child p:last-child {
+footer .footer .footer-meta p:last-child {
   font-size: var(--body-font-size-xs);
   line-height: 1.6;
   color: rgb(255 255 255 / 80%);
@@ -117,7 +117,7 @@ footer .footer > div:last-child p:last-child {
     gap: 0 64px;
   }
 
-  footer .footer > div:last-child {
+  footer .footer .footer-meta {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;

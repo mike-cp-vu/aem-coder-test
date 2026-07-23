@@ -17,15 +17,16 @@ export default async function decorate(block) {
   while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
 
   // The authoring tool flattens nested column divs, so the upper row arrives as
-  // a single block with a sequence of <h4> headings each followed by their
-  // content. Re-group each heading + following siblings into a column so the
-  // CSS can lay them out side-by-side.
-  const [columnsSection] = footer.children;
-  if (columnsSection && columnsSection.querySelector('h4')) {
-    columnsSection.classList.add('footer-columns');
+  // a sequence of <h4> headings each followed by their content inside a single
+  // content wrapper. Re-group each heading + following siblings into a column
+  // so the CSS can lay them out side-by-side.
+  const headingWrapper = [...footer.querySelectorAll('div')]
+    .find((div) => div.querySelector(':scope > h4'));
+  if (headingWrapper) {
+    headingWrapper.classList.add('footer-columns');
     const columns = [];
     let current = null;
-    [...columnsSection.childNodes].forEach((node) => {
+    [...headingWrapper.childNodes].forEach((node) => {
       if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'H4') {
         current = document.createElement('div');
         current.className = 'footer-column';
@@ -33,8 +34,13 @@ export default async function decorate(block) {
       }
       if (current) current.append(node);
     });
-    columnsSection.textContent = '';
-    columns.forEach((col) => columnsSection.append(col));
+    headingWrapper.textContent = '';
+    columns.forEach((col) => headingWrapper.append(col));
+
+    // Tag the other content wrapper (logo / social / copyright) for styling.
+    footer.querySelectorAll('.default-content-wrapper').forEach((w) => {
+      if (!w.classList.contains('footer-columns')) w.classList.add('footer-meta');
+    });
   }
 
   block.append(footer);
