@@ -1,14 +1,13 @@
-/* cards-stats: row of stat counters on a dark background.
-   Source cells: 1px solid #EFF3F4 border, rgba(255,255,255,0.08) translucent
-   white bg, white text, big bold number (30px/700) over a smaller semibold
-   label (16px/600). Laid out as a responsive row (5 across on desktop). */
+/* cards-stats: 5 stat counters that overlay the hero image (right side) in a
+   staggered 3x3 grid on desktop, matching the source. Cells are translucent
+   white with a thin light border and white text, sitting directly on the blue
+   hero photo (no separate band). On mobile they stack as a simple dark band.
+   Source cell: 1px solid #EFF3F4 border, rgba(255,255,255,0.08) fill, white
+   text, number 30px/700 over label 16px/600. */
 
-/* Dark blue-tinted backdrop so the translucent bordered cells read correctly
-   AND the band visually continues the hero's blue-over-dark treatment (rather
-   than a disconnected flat-grey slab). No extra vertical padding — the band
-   hugs the stat cells so there are no empty strips above/below. */
+/* --- Mobile / default: simple dark band below the hero --- */
 .cards-stats {
-  background-color: #152a38; /* deep navy: link-blue (#2886bb) multiplied over dark, matching the hero */
+  background-color: #152a38; /* deep navy continuing the hero's blue-over-dark */
   padding: 0;
 }
 
@@ -71,8 +70,53 @@
   }
 }
 
+/* --- Desktop: overlay the hero in a staggered 3x3 grid, right-aligned --- */
 @media (width >= 900px) {
-  .cards-stats > ul {
-    grid-template-columns: repeat(5, 1fr);
+  /* the shared hero section is the positioning context */
+  .cards-stats-container {
+    position: relative;
   }
+
+  /* lift the stats out of flow and lay them over the hero image */
+  .cards-stats-container .cards-stats-wrapper {
+    position: absolute;
+    inset: 0;
+    max-width: var(--content-max-width);
+    margin-inline: auto;
+    padding-inline: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    pointer-events: none; /* clicks pass through the empty grid area */
+  }
+
+  .cards-stats {
+    background: none; /* no band — cells sit on the hero photo */
+    pointer-events: auto;
+  }
+
+  /* 3 fixed columns x 3 rows; the 5 cells are placed in a diagonal stagger */
+  .cards-stats > ul {
+    grid-template-columns: repeat(3, 204px);
+    grid-template-rows: repeat(3, auto);
+  }
+
+  .cards-stats > ul > li {
+    min-height: 174px;
+  }
+
+  /* 400+ employees */
+  .cards-stats > ul > li:nth-child(1) { grid-area: 1 / 3; }
+
+  /* 5 global offices */
+  .cards-stats > ul > li:nth-child(2) { grid-area: 2 / 2; }
+
+  /* 300+ clients */
+  .cards-stats > ul > li:nth-child(3) { grid-area: 2 / 3; }
+
+  /* 1995 established */
+  .cards-stats > ul > li:nth-child(4) { grid-area: 3 / 1; }
+
+  /* 2000+ projects */
+  .cards-stats > ul > li:nth-child(5) { grid-area: 3 / 2; }
 }
