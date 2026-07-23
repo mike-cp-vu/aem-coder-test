@@ -1,26 +1,9 @@
 /* eslint-disable */
 var CustomImportScript = (() => {
   var __defProp = Object.defineProperty;
-  var __defProps = Object.defineProperties;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
   var __getOwnPropNames = Object.getOwnPropertyNames;
-  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
-  var __propIsEnum = Object.prototype.propertyIsEnumerable;
-  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-  var __spreadValues = (a, b) => {
-    for (var prop in b || (b = {}))
-      if (__hasOwnProp.call(b, prop))
-        __defNormalProp(a, prop, b[prop]);
-    if (__getOwnPropSymbols)
-      for (var prop of __getOwnPropSymbols(b)) {
-        if (__propIsEnum.call(b, prop))
-          __defNormalProp(a, prop, b[prop]);
-      }
-    return a;
-  };
-  var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
   var __export = (target, all) => {
     for (var name in all)
       __defProp(target, name, { get: all[name], enumerable: true });
@@ -113,6 +96,9 @@ var CustomImportScript = (() => {
   }
 
   // tools/importer/parsers/cards-portfolio.js
+  var IMAGE_FALLBACKS = {
+    "/emea/portfolio/adobe-digital-experience-platform-development/": "https://LOCAL.IMAGES/images/portfolio-adobe.webp"
+  };
   function parse3(element, { document }) {
     const anchors = Array.from(
       element.querySelectorAll('a[href*="/portfolio/"], a[href*="/products/"], a.group[href]')
@@ -125,6 +111,10 @@ var CustomImportScript = (() => {
       const img = anchor.querySelector("img");
       const label = anchor.querySelector("p");
       if (!img || !label) return;
+      const src = img.getAttribute("src") || "";
+      if (IMAGE_FALLBACKS[href] && (src.startsWith("blob:") || src.startsWith("data:") || !src)) {
+        img.setAttribute("src", IMAGE_FALLBACKS[href]);
+      }
       seen.add(href);
       const link = document.createElement("a");
       link.setAttribute("href", href);
@@ -183,7 +173,6 @@ var CustomImportScript = (() => {
 
   // tools/importer/parsers/columns-about.js
   function parse5(element, { document }) {
-    var _a;
     const image = element.querySelector("img");
     const textWrapper = element.querySelector('.flex.flex-col, div[class*="w-267px"], div[class*="w-320px"]');
     if (!image && !textWrapper) {
@@ -208,7 +197,7 @@ var CustomImportScript = (() => {
       }
       const existingLink = [...element.querySelectorAll("a[href]")].find((a) => /learn more about ensemble/i.test(a.textContent));
       const button = [...element.querySelectorAll("button")].find((b) => /learn more about ensemble/i.test(b.textContent)) || [...element.querySelectorAll("button")].find((b) => !/^who we are$/i.test(b.textContent.trim()));
-      const label = (_a = existingLink || button) == null ? void 0 : _a.textContent.trim();
+      const label = (existingLink || button)?.textContent.trim();
       if (label) {
         const link = document.createElement("a");
         link.setAttribute("href", "/about/");
@@ -374,7 +363,7 @@ var CustomImportScript = (() => {
     ...PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [transform2] : []
   ];
   function executeTransformers(hookName, element, payload) {
-    const enhancedPayload = __spreadProps(__spreadValues({}, payload), { template: PAGE_TEMPLATE });
+    const enhancedPayload = { ...payload, template: PAGE_TEMPLATE };
     transformers.forEach((transformerFn) => {
       try {
         transformerFn.call(null, hookName, element, enhancedPayload);
@@ -444,6 +433,11 @@ var CustomImportScript = (() => {
       main.querySelectorAll('img[src*="/icons/service-"], img[src*="/icons/client-"]').forEach((img) => {
         const src = img.getAttribute("src") || "";
         const idx = src.indexOf("/icons/");
+        if (idx > 0) img.setAttribute("src", src.slice(idx));
+      });
+      main.querySelectorAll('img[src*="/images/"]').forEach((img) => {
+        const src = img.getAttribute("src") || "";
+        const idx = src.indexOf("/images/");
         if (idx > 0) img.setAttribute("src", src.slice(idx));
       });
       const path = WebImporter.FileUtils.sanitizePath(

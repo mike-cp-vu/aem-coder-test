@@ -142,6 +142,14 @@ export default {
       if (idx > 0) img.setAttribute('src', src.slice(idx));
     });
 
+    // Same normalization for committed portfolio images emitted via the
+    // LOCAL.IMAGES placeholder host — strip to a root-relative /images/ path.
+    main.querySelectorAll('img[src*="/images/"]').forEach((img) => {
+      const src = img.getAttribute('src') || '';
+      const idx = src.indexOf('/images/');
+      if (idx > 0) img.setAttribute('src', src.slice(idx));
+    });
+
     // 6. Generate sanitized path
     const path = WebImporter.FileUtils.sanitizePath(
       new URL(params.originalURL).pathname.replace(/\/$/, '').replace(/\.html$/, '') || '/index',

@@ -14,6 +14,14 @@
  * for 6 unique projects), so tiles are de-duplicated by href to yield the 6
  * unique projects.
  */
+// Some source tiles are lazy-loaded and were only a placeholder blob at scrape
+// time, leaving no usable image URL. Map those detail-page hrefs to the real
+// hosted image so the card renders correctly.
+const IMAGE_FALLBACKS = {
+  '/emea/portfolio/adobe-digital-experience-platform-development/':
+    'https://LOCAL.IMAGES/images/portfolio-adobe.webp',
+};
+
 export default function parse(element, { document }) {
   const anchors = Array.from(
     element.querySelectorAll('a[href*="/portfolio/"], a[href*="/products/"], a.group[href]'),
@@ -30,6 +38,12 @@ export default function parse(element, { document }) {
     const label = anchor.querySelector('p');
     // Require both an image and a label for a valid card.
     if (!img || !label) return;
+
+    // Replace unusable placeholder/blob src with the real hosted image.
+    const src = img.getAttribute('src') || '';
+    if (IMAGE_FALLBACKS[href] && (src.startsWith('blob:') || src.startsWith('data:') || !src)) {
+      img.setAttribute('src', IMAGE_FALLBACKS[href]);
+    }
 
     seen.add(href);
 
