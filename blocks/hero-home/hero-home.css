@@ -40,9 +40,11 @@
   object-fit: cover;
   object-position: right;
 
-  /* Source desaturates the photo (mix-blend-saturation) before the blue tint;
-     grayscale on the image reproduces that muted base look. */
-  filter: grayscale(100%);
+  /* Source lightly desaturates the photo (mix-blend-saturation) before the
+     blue tint. A partial grayscale keeps some of the photo's colour so the
+     blue multiply reads as the same vivid blue as the source rather than a
+     flat, dark wash from a fully greyscale base. */
+  filter: grayscale(55%);
 }
 
 /* Blue tint over the desaturated photo (bg-ensemble-blue mix-blend-multiply).

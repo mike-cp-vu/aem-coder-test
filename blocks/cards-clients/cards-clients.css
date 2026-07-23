@@ -5,6 +5,16 @@
  * fixed 56px box, muted/greyscale, evenly spaced (4 per row on desktop).
  */
 
+/* Section spacing: source has generous space above the heading and below it
+   before the logo row (heading margin-top ~100px, ~70px below). */
+.cards-clients-container .default-content-wrapper {
+  margin-top: 80px;
+}
+
+.cards-clients-container .default-content-wrapper h2 {
+  margin-bottom: 56px;
+}
+
 .cards-clients > ul {
   list-style: none;
   margin: 0;
