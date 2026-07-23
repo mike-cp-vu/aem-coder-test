@@ -77,7 +77,9 @@
     position: relative;
   }
 
-  /* lift the stats out of flow and lay them over the hero image */
+  /* lift the stats out of flow and lay them over the hero image, aligned to the
+     top-right so the staggered grid fits within the hero (matches source: cells
+     start at the hero's top edge, not vertically centered). */
   .cards-stats-container .cards-stats-wrapper {
     position: absolute;
     inset: 0;
@@ -85,7 +87,7 @@
     margin-inline: auto;
     padding-inline: 80px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-end;
     pointer-events: none; /* clicks pass through the empty grid area */
   }
@@ -95,14 +97,16 @@
     pointer-events: auto;
   }
 
-  /* 3 fixed columns x 3 rows; the 5 cells are placed in a diagonal stagger */
+  /* 3 fixed columns x 3 fixed-height rows; the 5 cells placed in a diagonal
+     stagger. Cell size matches the source (204 x 161). */
   .cards-stats > ul {
     grid-template-columns: repeat(3, 204px);
-    grid-template-rows: repeat(3, auto);
+    grid-template-rows: repeat(3, 161px);
   }
 
   .cards-stats > ul > li {
-    min-height: 174px;
+    min-height: 0;
+    height: 161px;
   }
 
   /* 400+ employees */
