@@ -183,6 +183,68 @@
           "defaultContent": ["main div > div.pb-4.pl-4:nth-of-type(6) h2"]
         }
       ]
+    },
+    {
+      "name": "services",
+      "urls": [
+        "https://www.ensemble.com/services/"
+      ],
+      "representativeUrl": "https://www.ensemble.com/services/",
+      "coverageGaps": [],
+      "description": "Services page: intro heading, service quick-nav pills, 8 repeating media-rich service detail blocks, and a closing team-augmentation CTA",
+      "blocks": [
+        {
+          "name": "cards-service-nav",
+          "instances": ["main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(2)"]
+        },
+        {
+          "name": "cards-service-detail",
+          "instances": [
+            "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(4)",
+            "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(5)",
+            "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(6)",
+            "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(7)",
+            "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(8)",
+            "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(9)",
+            "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(10)",
+            "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(11)"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "svc-intro",
+          "name": "Intro heading",
+          "selector": "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(1)",
+          "style": null,
+          "blocks": [],
+          "defaultContent": ["main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(1)"]
+        },
+        {
+          "id": "svc-nav",
+          "name": "Service quick-nav pills",
+          "selector": "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(2)",
+          "style": null,
+          "blocks": ["cards-service-nav"],
+          "defaultContent": []
+        },
+        {
+          "id": "svc-details",
+          "name": "Service detail blocks",
+          "selector": "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1)",
+          "style": null,
+          "blocks": ["cards-service-detail"],
+          "defaultContent": []
+        },
+        {
+          "id": "svc-cta",
+          "name": "Closing team-augmentation CTA",
+          "selector": "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(12)",
+          "style": "center",
+          "blocks": [],
+          "defaultContent": ["main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(12)"]
+        }
+      ]
     }
   ]
 }

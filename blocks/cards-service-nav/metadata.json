@@ -1,0 +1,39 @@
+{
+  "variantName": "cards-service-nav",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-23T20:16:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/services/",
+    "originPage": "services",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "nav",
+    "imagePattern": "icon"
+  },
+  "contentPattern": {
+    "structure": "icon + short label (anchor link)",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "icon-above-label quick-nav / jump-link grids",
+      "compact category or section navigation rows",
+      "icon + short-label chips with no descriptions"
+    ],
+    "notSuitableFor": [
+      "feature cards that include descriptions (use cards-services)",
+      "logo walls (use cards-clients)",
+      "media-rich cards with buttons (use cards-service-detail)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/services/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-23T20:16:00.000Z"
+  }
+}
