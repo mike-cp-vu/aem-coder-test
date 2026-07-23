@@ -29,7 +29,7 @@
   min-height: 140px;
   padding: 24px 12px;
   border: 1px solid #eff3f4;
-  background-color: rgb(255 255 255 / 8%);
+  background-color: transparent;
   color: #fff;
   text-align: center;
 
@@ -39,7 +39,6 @@
 }
 
 .cards-stats > ul > li:hover {
-  background-color: rgb(255 255 255 / 14%);
   border-color: var(--brand-orange);
 }
 
