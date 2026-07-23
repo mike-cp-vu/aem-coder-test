@@ -83,6 +83,7 @@
   .cards-stats-container .cards-stats-wrapper {
     position: absolute;
     inset: 0;
+    z-index: 2; /* above the hero's blue multiply overlay (z-index 1) */
     max-width: var(--content-max-width);
     margin-inline: auto;
     padding-inline: 80px;
