@@ -16,5 +16,26 @@ export default async function decorate(block) {
   const footer = document.createElement('div');
   while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
 
+  // The authoring tool flattens nested column divs, so the upper row arrives as
+  // a single block with a sequence of <h4> headings each followed by their
+  // content. Re-group each heading + following siblings into a column so the
+  // CSS can lay them out side-by-side.
+  const [columnsSection] = footer.children;
+  if (columnsSection && columnsSection.querySelector('h4')) {
+    columnsSection.classList.add('footer-columns');
+    const columns = [];
+    let current = null;
+    [...columnsSection.childNodes].forEach((node) => {
+      if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'H4') {
+        current = document.createElement('div');
+        current.className = 'footer-column';
+        columns.push(current);
+      }
+      if (current) current.append(node);
+    });
+    columnsSection.textContent = '';
+    columns.forEach((col) => columnsSection.append(col));
+  }
+
   block.append(footer);
 }
