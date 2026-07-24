@@ -1,27 +1,51 @@
+/* Block: cards-departments -- department photo grid with label below each photo */
+
 .cards-departments > ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  grid-gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px 24px;
 }
 
 .cards-departments > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
-}
-
-.cards-departments .cards-departments-card-body {
-  margin: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
 .cards-departments .cards-departments-card-image {
   line-height: 0;
 }
 
-.cards-departments > ul > li img {
+.cards-departments .cards-departments-card-image img {
+  display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 189 / 192;
   object-fit: cover;
+}
+
+.cards-departments .cards-departments-card-body {
+  margin: 12px 0 0;
+}
+
+.cards-departments .cards-departments-card-body h1,
+.cards-departments .cards-departments-card-body h2,
+.cards-departments .cards-departments-card-body h3,
+.cards-departments .cards-departments-card-body h4 {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--text-color);
+  text-transform: uppercase;
+  text-align: left;
+}
+
+@media (width >= 900px) {
+  .cards-departments > ul {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+  }
 }

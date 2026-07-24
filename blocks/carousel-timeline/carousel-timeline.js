@@ -1,152 +1,83 @@
-import { fetchPlaceholders } from '../../scripts/aem.js';
-import { moveInstrumentation } from '../../scripts/scripts.js';
+/*
+ * carousel-timeline — horizontal "Our story" timeline.
+ * Source: https://www.ensemble.com/about/ ("Our story")
+ * Each row -> <li> with a card image + body (bold year heading + description).
+ * Adds prev/next arrow buttons that scroll the track horizontally.
+ * Vanilla, dependency-free (no slick.js / carousel lib).
+ */
 
-function updateActiveSlide(slide) {
-  const block = slide.closest('.carousel-timeline');
-  const slideIndex = parseInt(slide.dataset.slideIndex, 10);
-  block.dataset.activeSlide = slideIndex;
+/**
+ * Scrolls the track by roughly one card in the given direction.
+ * @param {HTMLElement} track The scrollable <ul> track
+ * @param {number} dir -1 for previous, 1 for next
+ */
+function scrollTrack(track, dir) {
+  const firstCard = track.querySelector('li');
+  // step = one card width incl. gap; fall back to ~80% of the viewport width
+  let step = track.clientWidth * 0.8;
+  if (firstCard) {
+    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    step = firstCard.getBoundingClientRect().width + gap;
+  }
+  track.scrollBy({ left: dir * step, behavior: 'smooth' });
+}
 
-  const slides = block.querySelectorAll('.carousel-timeline-slide');
+/**
+ * Enables/disables arrow buttons based on current scroll position.
+ * @param {HTMLElement} track
+ * @param {HTMLButtonElement} prev
+ * @param {HTMLButtonElement} next
+ */
+function updateArrows(track, prev, next) {
+  const maxScroll = track.scrollWidth - track.clientWidth;
+  const atStart = track.scrollLeft <= 1;
+  const atEnd = track.scrollLeft >= maxScroll - 1;
+  prev.disabled = atStart;
+  next.disabled = atEnd;
+}
 
-  slides.forEach((aSlide, idx) => {
-    aSlide.setAttribute('aria-hidden', idx !== slideIndex);
-    aSlide.querySelectorAll('a').forEach((link) => {
-      if (idx !== slideIndex) {
-        link.setAttribute('tabindex', '-1');
+export default function decorate(block) {
+  // 1. Transform authored rows into a <ul>/<li> track.
+  const ul = document.createElement('ul');
+  ul.className = 'carousel-timeline-track';
+
+  [...block.children].forEach((row) => {
+    const li = document.createElement('li');
+    li.className = 'carousel-timeline-card';
+    while (row.firstElementChild) li.append(row.firstElementChild);
+    [...li.children].forEach((div) => {
+      if (div.children.length === 1 && div.querySelector('picture')) {
+        div.className = 'carousel-timeline-card-image';
       } else {
-        link.removeAttribute('tabindex');
+        div.className = 'carousel-timeline-card-body';
       }
     });
+    ul.append(li);
   });
 
-  const indicators = block.querySelectorAll('.carousel-timeline-slide-indicator');
-  indicators.forEach((indicator, idx) => {
-    if (idx !== slideIndex) {
-      indicator.querySelector('button').removeAttribute('disabled');
-    } else {
-      indicator.querySelector('button').setAttribute('disabled', 'true');
-    }
-  });
-}
+  block.textContent = '';
+  block.append(ul);
 
-export function showSlide(block, slideIndex = 0) {
-  const slides = block.querySelectorAll('.carousel-timeline-slide');
-  let realSlideIndex = slideIndex < 0 ? slides.length - 1 : slideIndex;
-  if (slideIndex >= slides.length) realSlideIndex = 0;
-  const activeSlide = slides[realSlideIndex];
+  // 2. Build the arrow navigation.
+  const nav = document.createElement('div');
+  nav.className = 'carousel-timeline-nav';
+  nav.innerHTML = `
+    <button type="button" class="carousel-timeline-arrow carousel-timeline-prev" aria-label="Previous slides"></button>
+    <button type="button" class="carousel-timeline-arrow carousel-timeline-next" aria-label="Next slides"></button>
+  `;
+  block.append(nav);
 
-  activeSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
-  block.querySelector('.carousel-timeline-slides').scrollTo({
-    top: 0,
-    left: activeSlide.offsetLeft,
-    behavior: 'smooth',
-  });
-}
+  const prev = nav.querySelector('.carousel-timeline-prev');
+  const next = nav.querySelector('.carousel-timeline-next');
 
-function bindEvents(block) {
-  const slideIndicators = block.querySelector('.carousel-timeline-slide-indicators');
-  if (!slideIndicators) return;
+  prev.addEventListener('click', () => scrollTrack(ul, -1));
+  next.addEventListener('click', () => scrollTrack(ul, 1));
 
-  slideIndicators.querySelectorAll('button').forEach((button) => {
-    button.addEventListener('click', (e) => {
-      const slideIndicator = e.currentTarget.parentElement;
-      showSlide(block, parseInt(slideIndicator.dataset.targetSlide, 10));
-    });
-  });
-
-  block.querySelector('.slide-prev').addEventListener('click', () => {
-    showSlide(block, parseInt(block.dataset.activeSlide, 10) - 1);
-  });
-  block.querySelector('.slide-next').addEventListener('click', () => {
-    showSlide(block, parseInt(block.dataset.activeSlide, 10) + 1);
-  });
-
-  const slideObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) updateActiveSlide(entry.target);
-    });
-  }, { threshold: 0.5 });
-  block.querySelectorAll('.carousel-timeline-slide').forEach((slide) => {
-    slideObserver.observe(slide);
-  });
-}
-
-function createSlide(row, slideIndex, carouselId) {
-  const slide = document.createElement('li');
-  slide.dataset.slideIndex = slideIndex;
-  slide.setAttribute('id', `carousel-timeline-${carouselId}-slide-${slideIndex}`);
-  slide.classList.add('carousel-timeline-slide');
-
-  row.querySelectorAll(':scope > div').forEach((column, colIdx) => {
-    column.classList.add(`carousel-timeline-slide-${colIdx === 0 ? 'image' : 'content'}`);
-    slide.append(column);
-  });
-
-  const labeledBy = slide.querySelector('h1, h2, h3, h4, h5, h6');
-  if (labeledBy) {
-    slide.setAttribute('aria-labelledby', labeledBy.getAttribute('id'));
-  }
-
-  return slide;
-}
-
-let carouselId = 0;
-export default async function decorate(block) {
-  carouselId += 1;
-  block.setAttribute('id', `carousel-timeline-${carouselId}`);
-  const rows = block.querySelectorAll(':scope > div');
-  const isSingleSlide = rows.length < 2;
-
-  const placeholders = await fetchPlaceholders();
-
-  block.setAttribute('role', 'region');
-  block.setAttribute('aria-roledescription', placeholders.carousel || 'Carousel');
-
-  const container = document.createElement('div');
-  container.classList.add('carousel-timeline-slides-container');
-
-  const slidesWrapper = document.createElement('ul');
-  slidesWrapper.classList.add('carousel-timeline-slides');
-  block.prepend(slidesWrapper);
-
-  let slideIndicators;
-  if (!isSingleSlide) {
-    const slideIndicatorsNav = document.createElement('nav');
-    slideIndicatorsNav.setAttribute('aria-label', placeholders.carouselSlideControls || 'Carousel Slide Controls');
-    slideIndicators = document.createElement('ol');
-    slideIndicators.classList.add('carousel-timeline-slide-indicators');
-    slideIndicatorsNav.append(slideIndicators);
-    block.append(slideIndicatorsNav);
-
-    const slideNavButtons = document.createElement('div');
-    slideNavButtons.classList.add('carousel-timeline-navigation-buttons');
-    slideNavButtons.innerHTML = `
-      <button type="button" class= "slide-prev" aria-label="${placeholders.previousSlide || 'Previous Slide'}"></button>
-      <button type="button" class="slide-next" aria-label="${placeholders.nextSlide || 'Next Slide'}"></button>
-    `;
-
-    container.append(slideNavButtons);
-  }
-
-  rows.forEach((row, idx) => {
-    const slide = createSlide(row, idx, carouselId);
-    moveInstrumentation(row, slide);
-    slidesWrapper.append(slide);
-
-    if (slideIndicators) {
-      const indicator = document.createElement('li');
-      indicator.classList.add('carousel-timeline-slide-indicator');
-      indicator.dataset.targetSlide = idx;
-      indicator.innerHTML = `<button type="button" aria-label="${placeholders.showSlide || 'Show Slide'} ${idx + 1} ${placeholders.of || 'of'} ${rows.length}"></button>`;
-      slideIndicators.append(indicator);
-    }
-    row.remove();
-  });
-
-  container.append(slidesWrapper);
-  block.prepend(container);
-
-  if (!isSingleSlide) {
-    bindEvents(block);
-  }
+  // 3. Keep arrow state in sync with scroll position.
+  const sync = () => updateArrows(ul, prev, next);
+  ul.addEventListener('scroll', sync, { passive: true });
+  window.addEventListener('resize', sync);
+  // initial state (also after images load, since scrollWidth may change)
+  sync();
+  window.requestAnimationFrame(sync);
 }

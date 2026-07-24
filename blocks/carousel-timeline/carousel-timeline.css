@@ -1,153 +1,154 @@
-.carousel-timeline .carousel-timeline-slides-container {
+/*
+ * carousel-timeline — horizontal "Our story" timeline carousel.
+ * Source: https://www.ensemble.com/about/ ("Our story")
+ * Fixed-width cards (image + bold year + description) in a horizontally
+ * scrolling, scroll-snapping track with prev/next arrow buttons.
+ * Values extracted from source computed styles:
+ *   card slot 320px (10px right gap), image ~242px tall, radius 4px,
+ *   year 24px/800/32px, description 14px/400/20px, color #1f2937.
+ */
+
+.carousel-timeline {
   position: relative;
 }
 
-.carousel-timeline .carousel-timeline-slides,
-.carousel-timeline .carousel-timeline-slide-indicators {
+.carousel-timeline .carousel-timeline-track {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.carousel-timeline .carousel-timeline-slides {
   display: flex;
-  scroll-behavior: smooth;
+  gap: 20px;
+  overflow-x: auto;
   scroll-snap-type: x mandatory;
-  overflow: scroll clip;
+  scroll-behavior: smooth;
+
+  /* room so a card's box-shadow / focus ring is not clipped */
+  padding-bottom: 4px;
+
+  /* hide the native scrollbar — navigation is via arrows / swipe */
+  scrollbar-width: none;
 }
 
-.carousel-timeline .carousel-timeline-slides::-webkit-scrollbar {
+.carousel-timeline .carousel-timeline-track::-webkit-scrollbar {
   display: none;
 }
 
-.carousel-timeline .carousel-timeline-slide {
-  flex: 0 0 100%;
+.carousel-timeline .carousel-timeline-card {
+  flex: 0 0 auto;
+
+  /* one card per view on small phones */
+  width: 80%;
+  max-width: 320px;
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  position: relative;
-  width: 100%;
-  min-height: min(50vw, calc(100dvh - var(--header-height)));
 }
 
-.carousel-timeline .carousel-timeline-slide:has(.carousel-timeline-slide-content[data-align='center']) {
-  align-items: center;
-}
-
-.carousel-timeline .carousel-timeline-slide:has(.carousel-timeline-slide-content[data-align='right']) {
-  align-items: flex-end;
-}
-
-.carousel-timeline .carousel-timeline-slide .carousel-timeline-slide-image picture {
-  position: absolute;
-  inset: 0;
-}
-
-.carousel-timeline .carousel-timeline-slide .carousel-timeline-slide-image picture > img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}
-
-.carousel-timeline .carousel-timeline-slide .carousel-timeline-slide-content {
-  z-index: 1;
-  margin: 68px;
-  padding: 16px;
-  color: white;
-  background-color: rgba(19 19 19 / 75%);
-  position: relative;
-  width: var(--slide-content-width, auto);
-}
-
-.carousel-timeline .carousel-timeline-slide-indicators {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px 12px;
-  padding: 12px;
-  background-color: var(--light-color);
+.carousel-timeline .carousel-timeline-card-image {
   line-height: 0;
 }
 
-.carousel-timeline .carousel-timeline-slide-indicator button {
-  width: 24px;
-  height: 24px;
-  margin: 0;
-  padding: 0;
-  border-radius: 50%;
-  background-color: #dadada;
-  transition: background-color 0.2s;
-}
-
-.carousel-timeline .carousel-timeline-slide-indicator button:disabled,
-.carousel-timeline .carousel-timeline-slide-indicator button:hover,
-.carousel-timeline .carousel-timeline-slide-indicator button:focus-visible {
-  background-color: var(--text-color);
-}
-
-.carousel-timeline .carousel-timeline-navigation-buttons {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 12px;
-  right: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 1;
-}
-
-/* stylelint-disable-next-line no-descending-specificity */
-.carousel-timeline .carousel-timeline-navigation-buttons button {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  margin: 0;
-  border-radius: 50%;
-  padding: 0;
-  background-color: rgba(19 19 19 / 25%);
-  transition: background-color 0.2s;
-}
-
-.carousel-timeline .carousel-timeline-navigation-buttons button:hover,
-.carousel-timeline .carousel-timeline-navigation-buttons button:focus-visible {
-  background-color: rgba(19 19 19 / 75%);
-}
-
-.carousel-timeline .carousel-timeline-navigation-buttons button::after {
+.carousel-timeline .carousel-timeline-card-image picture,
+.carousel-timeline .carousel-timeline-card-image img {
   display: block;
-  content: '';
-  border: 2px solid;
+  width: 100%;
+  height: 242px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.carousel-timeline .carousel-timeline-card-body {
+  padding-top: 12px;
+}
+
+/* bold year (authored as an h3) */
+.carousel-timeline .carousel-timeline-card-body :is(h2, h3, h4) {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--text-color);
+}
+
+.carousel-timeline .carousel-timeline-card-body p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--text-color);
+}
+
+/* arrow navigation — top-right, transparent chevron buttons */
+.carousel-timeline .carousel-timeline-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 32px;
+  margin-top: 16px;
+}
+
+.carousel-timeline .carousel-timeline-arrow {
+  width: 31px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.carousel-timeline .carousel-timeline-arrow::after {
+  content: "";
+  display: block;
+  width: 14px;
+  height: 14px;
+  margin: 0 auto;
+  border: 2px solid currentcolor;
   border-bottom: 0;
   border-left: 0;
-  height: 12px;
-  width: 12px;
-  position: absolute;
-  top: 50%;
-  left: calc(50% + 2px);
-  transform: translate(-50%, -50%) rotate(-135deg);
 }
 
-.carousel-timeline .carousel-timeline-navigation-buttons button.slide-next::after {
-  transform: translate(-50%, -50%) rotate(45deg);
-  left: calc(50% - 2px);
+.carousel-timeline .carousel-timeline-prev::after {
+  transform: rotate(-135deg);
+}
+
+.carousel-timeline .carousel-timeline-next::after {
+  transform: rotate(45deg);
+}
+
+.carousel-timeline .carousel-timeline-arrow:hover {
+  opacity: 0.6;
+}
+
+.carousel-timeline .carousel-timeline-arrow:disabled {
+  opacity: 0.25;
+  cursor: default;
 }
 
 @media (width >= 600px) {
-  .carousel-timeline .carousel-timeline-navigation-buttons {
-    left: 24px;
-    right: 24px;
+  .carousel-timeline .carousel-timeline-card {
+    /* ~2 cards per view on tablet */
+    width: 320px;
   }
 
-  .carousel-timeline .carousel-timeline-slide .carousel-timeline-slide-content {
-    --slide-content-width: calc((100% - 184px) / 2);
-
-    margin: 92px;
+  .carousel-timeline .carousel-timeline-card-body :is(h2, h3, h4) {
+    font-size: 20px;
   }
 
-  .carousel-timeline .carousel-timeline-slide .carousel-timeline-slide-content[data-align='justify'] {
-    --slide-content-width: auto;
+  .carousel-timeline .carousel-timeline-card-body {
+    padding-right: 8px;
+  }
+}
+
+@media (width >= 900px) {
+  /* ~3-4 cards per view on desktop */
+  .carousel-timeline .carousel-timeline-card-body :is(h2, h3, h4) {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .carousel-timeline .carousel-timeline-card-body {
+    padding-top: 16px;
+    padding-right: 24px;
   }
 }

@@ -1,47 +1,52 @@
-.hero-about-container .hero-about-wrapper {
-  max-width: unset;
+/* hero-about: text-on-light hero (eyebrow + headline + intro), left-aligned */
+
+.hero-about {
+  padding: 0;
+  color: var(--text-color);
+  text-align: left;
+}
+
+.hero-about > div > div {
   padding: 0;
 }
 
-.hero-about {
-  position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+/* eyebrow -- "ABOUT US" (authored as <p><strong>) */
+.hero-about > div > div > p:first-child {
+  margin: 0 0 16px;
+  font-size: var(--body-font-size-s);
+  font-weight: 400;
+  line-height: 20px;
+  text-transform: uppercase;
+  color: var(--eyebrow-color);
 }
 
-.hero-about h1,
-.hero-about h2,
-.hero-about h3,
-.hero-about h4,
-.hero-about h5,
-.hero-about h6,
-.hero-about p {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
+.hero-about > div > div > p:first-child strong {
+  font-weight: 400;
 }
 
-.hero-about.no-image * {
+/* headline */
+.hero-about h1 {
+  margin: 0;
+  font-size: var(--heading-size-l);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: normal;
   color: var(--text-color);
 }
 
-.hero-about picture {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
-}
-
-.hero-about img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
+/* intro paragraph */
+.hero-about > div > div > p:last-child {
+  margin: 24px 0 0;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: -0.9px;
+  color: var(--text-color);
 }
 
 @media (width >= 900px) {
-  .hero-about {
-    padding: 40px 32px;
+  .hero-about h1 {
+    font-size: 36px;
+    line-height: 40px;
   }
 }
