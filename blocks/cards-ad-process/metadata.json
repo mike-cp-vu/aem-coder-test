@@ -1,0 +1,39 @@
+{
+  "variantName": "cards-ad-process",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-24T03:42:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/adsGenStudio/",
+    "originPage": "ad landing page (adsGenStudio)",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "colored",
+    "density": "spacious",
+    "purpose": "ad-process",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "horizontal sequence of ordered step items (image/label per step) laid out left-to-right on desktop, stacked on mobile",
+    "buttonCount": 0,
+    "imageCount": 3
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "'Our Process' style horizontal step flows on ad landing pages",
+      "ordered multi-step diagrams where each step is a labeled image",
+      "left-to-right process/journey rows on a colored background"
+    ],
+    "notSuitableFor": [
+      "unordered feature grids (use cards-ad-feature)",
+      "icon + short label tiles (use cards-tech-stack)"
+    ],
+    "note": "Source rendered steps as pre-composed images with arrow connectors between them. This variant models each step as a card item; arrow connectors can be added via CSS or authored as separate inline images if needed."
+  },
+  "usage": {
+    "pagesUsing": ["/adsgenstudio/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T03:42:00.000Z"
+  }
+}

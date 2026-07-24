@@ -745,6 +745,82 @@
       "coverageGaps": [],
       "description": "Legal/utility prose pages (privacy, cookies, terms, thank-you) — pure default content, no blocks",
       "blocks": []
+    },
+    {
+      "name": "ad-landing",
+      "urls": [
+        "https://www.ensemble.com/adsAEM/",
+        "https://www.ensemble.com/adsAEM2/",
+        "https://www.ensemble.com/adsAI/",
+        "https://www.ensemble.com/adsAI2/",
+        "https://www.ensemble.com/adsAnalytics/",
+        "https://www.ensemble.com/adsAnalytics2/",
+        "https://www.ensemble.com/adsAssets/",
+        "https://www.ensemble.com/adsAssets2/",
+        "https://www.ensemble.com/adsCommerce/",
+        "https://www.ensemble.com/adsCommerce2/",
+        "https://www.ensemble.com/adsEdge/",
+        "https://www.ensemble.com/adsEdge2/",
+        "https://www.ensemble.com/adsEnterprise/",
+        "https://www.ensemble.com/adsEnterprise2/",
+        "https://www.ensemble.com/adsGenStudio/",
+        "https://www.ensemble.com/adsGenStudio2/",
+        "https://www.ensemble.com/adsPartner/",
+        "https://www.ensemble.com/adsPartner2/",
+        "https://www.ensemble.com/adsWorkfront/",
+        "https://www.ensemble.com/adsWorkfront2/"
+      ],
+      "representativeUrl": "https://www.ensemble.com/adsGenStudio/",
+      "coverageGaps": [],
+      "description": "Adobe ad landing page: minimal chrome, hero with lead-capture form, alternating image+text info bands, icon feature grids on brand bands, why-choose proof points + Adobe product tiles, a process band, a case-study carousel, and a closing quote CTA. Reused across all 20 ads* pages.",
+      "blocks": [
+        {
+          "name": "hero-ad",
+          "instances": [
+            "main .flex.flex-col.place-self-center > section"
+          ]
+        },
+        {
+          "name": "columns-ad",
+          "instances": [
+            "main .flex.flex-col.place-self-center > div.relative:has(img[alt=\"adobe-partner-image\"])",
+            "main .flex.flex-col.place-self-center > div:has(> div img[alt=\"right-image\"])",
+            "main .flex.flex-col.place-self-center > div:has(> div img[alt=\"left-image\"])",
+            "main .flex.flex-col.place-self-center > div:has(> div img[alt=\"meeting-photo\"])"
+          ]
+        },
+        {
+          "name": "cards-ad-feature",
+          "instances": [
+            "main .flex.flex-col.place-self-center > div.bg-\\[\\#2886BB\\]:has(img[alt=\"Row one\"]) .flex.flex-col.lg\\:flex-row:has(img[alt=\"Row one\"])",
+            "main .flex.flex-col.place-self-center > div.bg-\\[\\#2886BB\\]:has(img[alt=\"First service\"]) div:has(> div img[alt=\"First service\"])"
+          ]
+        },
+        {
+          "name": "cards-ad-points",
+          "instances": [
+            "main .flex.flex-col.place-self-center > div:has(img[alt=\"Expertise first photo\"]) div:has(> div img[alt=\"Expertise first photo\"])"
+          ]
+        },
+        {
+          "name": "cards-ad-process",
+          "instances": [
+            "main .flex.flex-col.place-self-center > div:has(img[alt=\"First process\"])"
+          ]
+        },
+        {
+          "name": "carousel-cases",
+          "instances": [
+            "main .flex.flex-col.place-self-center > div:has(img[alt=\"Slide 1\"])"
+          ]
+        },
+        {
+          "name": "hero-ad-cta",
+          "instances": [
+            "main .flex.flex-col.place-self-center > div.relative:not(:has(img))"
+          ]
+        }
+      ]
     }
   ]
 }

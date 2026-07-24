@@ -1,0 +1,38 @@
+{
+  "variantName": "cards-ad-points",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-24T03:42:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/adsGenStudio/",
+    "originPage": "ad landing page (adsGenStudio)",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "ad-points",
+    "imagePattern": "icon"
+  },
+  "contentPattern": {
+    "structure": "icon above a short bold text point, arranged in a centered row/grid (no description paragraph)",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "'why choose us' stat/point rows: icon above a short bold statement (e.g. '25+ year Adobe partnership')",
+      "4-up value-point rows with a large icon and a single line of emphasized text",
+      "icon-led proof points without descriptive paragraphs"
+    ],
+    "notSuitableFor": [
+      "cards with descriptions (use cards-ad-feature)",
+      "small icon + one-word platform labels (use cards-tech-stack)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/adsgenstudio/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T03:42:00.000Z"
+  }
+}

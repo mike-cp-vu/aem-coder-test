@@ -1,0 +1,38 @@
+{
+  "variantName": "hero-ad",
+  "baseBlock": "hero",
+  "version": "1.0.0",
+  "created": "2026-07-24T03:42:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/adsGenStudio/",
+    "originPage": "ad landing page (adsGenStudio)",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "colored",
+    "density": "spacious",
+    "purpose": "ad-hero",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "full-bleed background image + white H1 + intro paragraph (paired with a lead-capture form beside it)",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "ad / campaign landing page heroes with a background image and overlaid white heading + intro",
+      "lead-gen landing hero where a consultation form sits beside the headline",
+      "brand-colored focused landing intros"
+    ],
+    "notSuitableFor": [
+      "content-page heroes on the main marketing site (use hero-home)",
+      "plain text heroes without a background image"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/adsgenstudio/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T03:42:00.000Z"
+  }
+}

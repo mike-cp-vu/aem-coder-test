@@ -1,0 +1,39 @@
+{
+  "variantName": "cards-ad-feature",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-24T03:42:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/adsGenStudio/",
+    "originPage": "ad landing page (adsGenStudio)",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "colored",
+    "density": "spacious",
+    "purpose": "ad-feature",
+    "imagePattern": "icon"
+  },
+  "contentPattern": {
+    "structure": "icon + bold title + optional subtitle line + description paragraph, in a responsive grid on a colored (blue) band",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "ad landing icon feature grids on a brand-colored background (e.g. 'Connecting Your AI Ecosystem', 'Our Services')",
+      "3-to-7 item capability/service grids with icon + title + description",
+      "icon-led offering summaries where the section background is a solid brand color"
+    ],
+    "notSuitableFor": [
+      "logo-only walls (use cards-clients)",
+      "small icon + one-word label tiles (use cards-tech-stack)",
+      "image-beside-text bands (use columns-ad)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/adsgenstudio/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T03:42:00.000Z"
+  }
+}

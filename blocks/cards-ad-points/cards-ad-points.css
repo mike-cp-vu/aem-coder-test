@@ -1,0 +1,31 @@
+.cards-ad-points > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+  text-align: center;
+}
+
+.cards-ad-points > ul > li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.cards-ad-points .cards-ad-points-card-body {
+  margin: 0;
+  font-weight: 600;
+}
+
+.cards-ad-points .cards-ad-points-card-image {
+  line-height: 0;
+}
+
+.cards-ad-points > ul > li img {
+  width: 112px;
+  height: 112px;
+  object-fit: contain;
+}

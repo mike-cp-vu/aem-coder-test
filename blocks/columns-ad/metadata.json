@@ -1,0 +1,38 @@
+{
+  "variantName": "columns-ad",
+  "baseBlock": "columns",
+  "version": "1.0.0",
+  "created": "2026-07-24T03:42:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/adsGenStudio/",
+    "originPage": "ad landing page (adsGenStudio)",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "mixed",
+    "density": "spacious",
+    "purpose": "ad-info-band",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "image column + text column (title + subheading + paragraph, optional CTA); image can be left or right per band",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "ad landing image-beside-text information bands (partner logo + intro, implementation write-ups)",
+      "alternating image-left / image-right value-prop sections",
+      "colored promotional bands pairing a photo with a heading + CTA (e.g. 'We Help You Build Extraordinary Digital Products')"
+    ],
+    "notSuitableFor": [
+      "repeating card grids (use cards-ad-* variants)",
+      "full-bleed hero banners (use hero-ad / hero-ad-cta)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/adsgenstudio/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T03:42:00.000Z"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "variantName": "hero-ad-cta",
+  "baseBlock": "hero",
+  "version": "1.0.0",
+  "created": "2026-07-24T03:42:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/adsGenStudio/",
+    "originPage": "ad landing page (adsGenStudio)",
+    "blockPosition": "bottom"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "colored",
+    "density": "spacious",
+    "purpose": "ad-cta-banner",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "full-bleed background image + centered white heading + paragraph + single centered CTA button",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "closing call-to-action banners on ad landing pages (e.g. a values quote + REQUEST A CONSULTATION button)",
+      "centered heading + text + single CTA over a full-bleed background image",
+      "mid/bottom-of-page conversion banners"
+    ],
+    "notSuitableFor": [
+      "top-of-page heroes with a lead form (use hero-ad)",
+      "side-by-side image + text info bands (use columns-ad)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/adsgenstudio/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T03:42:00.000Z"
+  }
+}

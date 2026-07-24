@@ -1,0 +1,38 @@
+{
+  "variantName": "carousel-cases",
+  "baseBlock": "carousel",
+  "version": "1.0.0",
+  "created": "2026-07-24T03:42:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/adsGenStudio/",
+    "originPage": "ad landing page (adsGenStudio)",
+    "blockPosition": "bottom"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "colored",
+    "density": "spacious",
+    "purpose": "case-studies",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "per slide: client logos + 'Case Study' label + headline + description paragraph + results list + image; prev/next navigation and indicators",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "rotating case-study / proof-point carousels on ad landing pages",
+      "slide sets combining a headline, description, bulleted results and an image with prev/next controls",
+      "customer-story galleries on a brand-colored card"
+    ],
+    "notSuitableFor": [
+      "simple photo + quote testimonial carousels (use carousel-testimonials)",
+      "static (non-rotating) content sections"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/adsgenstudio/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T03:42:00.000Z"
+  }
+}
