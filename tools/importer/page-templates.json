@@ -732,6 +732,19 @@
           ]
         }
       ]
+    },
+    {
+      "name": "legal",
+      "urls": [
+        "https://www.ensemble.com/privacy/",
+        "https://www.ensemble.com/cookies/",
+        "https://www.ensemble.com/terms/",
+        "https://www.ensemble.com/thank-you/"
+      ],
+      "representativeUrl": "https://www.ensemble.com/privacy/",
+      "coverageGaps": [],
+      "description": "Legal/utility prose pages (privacy, cookies, terms, thank-you) — pure default content, no blocks",
+      "blocks": []
     }
   ]
 }
