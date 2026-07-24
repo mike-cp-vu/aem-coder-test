@@ -1,27 +1,87 @@
+/*
+ * cards-service-nav — service quick-nav pills.
+ * Source: https://www.ensemble.com/services/ (services-list-container)
+ * Icon-above-label grid: no borders, no card backgrounds.
+ * Grid: 2 cols mobile -> 3 (>=600) -> 4 (>=900) -> 8 (>=1200).
+ */
+
 .cards-service-nav > ul {
   list-style: none;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  grid-gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 48px;
+  justify-items: center;
+  width: fit-content;
+  max-width: 100%;
 }
 
 .cards-service-nav > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
-}
-
-.cards-service-nav .cards-service-nav-card-body {
-  margin: 16px;
+  /* no border, no background — just icon + label */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding-top: 8px;
+  cursor: pointer;
+  color: var(--text-color);
 }
 
 .cards-service-nav .cards-service-nav-card-image {
   line-height: 0;
+  display: flex;
+  justify-content: center;
 }
 
-.cards-service-nav > ul > li img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+.cards-service-nav .cards-service-nav-card-image img {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+
+  /* icons ship dark (#333); animate to brand orange on hover */
+  transition: filter 0.15s ease;
+}
+
+.cards-service-nav .cards-service-nav-card-body,
+.cards-service-nav .cards-service-nav-card-body p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: inherit;
+  text-align: center;
+}
+
+/* hover: icon + label turn brand orange */
+.cards-service-nav > ul > li:hover {
+  color: var(--brand-orange);
+}
+
+.cards-service-nav > ul > li:hover .cards-service-nav-card-image img {
+  /* recolor icon to brand orange (#ff8e2f) on hover */
+  filter: brightness(0) saturate(100%) invert(66%) sepia(58%) saturate(1200%)
+    hue-rotate(334deg) brightness(101%) contrast(101%);
+}
+
+@media (width >= 600px) {
+  .cards-service-nav > ul {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 72px;
+  }
+}
+
+@media (width >= 900px) {
+  .cards-service-nav > ul {
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 96px;
+  }
+}
+
+@media (width >= 1200px) {
+  .cards-service-nav > ul {
+    grid-template-columns: repeat(8, 1fr);
+    column-gap: 40px;
+  }
 }

@@ -1,27 +1,157 @@
+/*
+ * cards-service-detail
+ * Full-width, stacked service-detail rows separated by a thin rule.
+ * Each block is a single service item. The decorated DOM is:
+ *   .cards-service-detail > ul > li
+ *     > .cards-service-detail-card-image  (service icon)
+ *     > .cards-service-detail-card-body   (h2, logo strips, description, actions)
+ */
+
 .cards-service-detail > ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  grid-gap: 24px;
 }
 
+/* one service item */
 .cards-service-detail > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 40px 28px;
+  border: 0;
+  border-top: 1px solid var(--eyebrow-color);
+  padding: 56px 0;
+  background-color: transparent;
 }
 
-.cards-service-detail .cards-service-detail-card-body {
-  margin: 16px;
+@media (width >= 900px) {
+  .cards-service-detail > ul > li {
+    padding: 96px 64px;
+  }
 }
 
+/* service icon — sits beside the heading in the first row */
 .cards-service-detail .cards-service-detail-card-image {
+  grid-column: 1;
+  grid-row: 1;
+  line-height: 0;
+  color: var(--text-color);
+}
+
+.cards-service-detail .cards-service-detail-card-image img {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+}
+
+/* body spans full width; content is stacked and left aligned */
+.cards-service-detail .cards-service-detail-card-body {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin: 0;
+}
+
+/* heading clears the icon that overlaps the first row */
+.cards-service-detail .cards-service-detail-card-body h2 {
+  margin: 0;
+  padding-left: 86px;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  font-size: var(--heading-size-xl);
+  font-weight: 800;
+  line-height: 36px;
+  color: var(--text-color);
+}
+
+/* description text */
+.cards-service-detail .cards-service-detail-card-body p {
+  margin: 0;
+  font-size: var(--body-font-size-m);
+  line-height: 24px;
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+/* logo strips — a paragraph that only contains images */
+.cards-service-detail .cards-service-detail-logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 32px 64px;
   line-height: 0;
 }
 
-.cards-service-detail > ul > li img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+.cards-service-detail .cards-service-detail-logos picture {
+  line-height: 0;
+}
+
+/* platform logo strip (small, left aligned) — the first logo paragraph */
+.cards-service-detail .cards-service-detail-logos img {
+  width: auto;
+  height: 28px;
+  object-fit: contain;
+}
+
+@media (width >= 900px) {
+  .cards-service-detail .cards-service-detail-logos img {
+    height: 32px;
+  }
+}
+
+/* client logo strip — larger, centered, wrapping. It is the second (last)
+   logo paragraph, appearing after the description paragraph. */
+.cards-service-detail .cards-service-detail-logos ~ .cards-service-detail-logos {
+  justify-content: center;
+  gap: 48px 96px;
+}
+
+.cards-service-detail .cards-service-detail-logos ~ .cards-service-detail-logos img {
+  height: 44px;
+  max-width: 176px;
+}
+
+@media (width >= 900px) {
+  .cards-service-detail .cards-service-detail-logos ~ .cards-service-detail-logos img {
+    height: 56px;
+  }
+}
+
+/* CTA buttons — outlined, uppercase, transparent, orange on hover.
+   The links are grouped into an actions row by the block JS. */
+.cards-service-detail .cards-service-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.cards-service-detail .cards-service-detail-actions a,
+.cards-service-detail .cards-service-detail-actions a.button:any-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 1px solid #000;
+  border-radius: 4px;
+  padding: 16px 48px;
+  background: transparent;
+  color: #000;
+  font-size: var(--body-font-size-s);
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: -0.35px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.cards-service-detail .cards-service-detail-actions a:hover,
+.cards-service-detail .cards-service-detail-actions a.button:any-link:hover {
+  border-color: var(--brand-orange);
+  background: var(--brand-orange);
+  color: #fff;
+  text-decoration: none;
 }

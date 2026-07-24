@@ -127,6 +127,22 @@ var CustomImportScript = (() => {
         if (banner) banner.remove();
         else cookieBtn.remove();
       }
+      const contactSection = element.querySelector('[data-testid="contact-container"]');
+      if (contactSection) {
+        contactSection.querySelectorAll("button").forEach((btn) => {
+          const label = btn.textContent.trim();
+          if (!label) return;
+          const doc = btn.ownerDocument;
+          const p = doc.createElement("p");
+          const strong = doc.createElement("strong");
+          const a = doc.createElement("a");
+          a.setAttribute("href", "/contact/");
+          a.textContent = label;
+          strong.append(a);
+          p.append(strong);
+          btn.replaceWith(p);
+        });
+      }
     }
     if (hookName === TransformHook.afterTransform) {
       element.querySelectorAll('div[class*="sticky"][class*="z-[100]"]').forEach((el) => el.remove());
