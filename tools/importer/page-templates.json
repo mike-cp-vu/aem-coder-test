@@ -705,6 +705,33 @@
           ]
         }
       ]
+    },
+    {
+      "name": "product-detail",
+      "urls": [
+        "https://www.ensemble.com/products/ensemble-qai/",
+        "https://www.ensemble.com/products/ensembe-streams/",
+        "https://www.ensemble.com/products/ensemble-flow/",
+        "https://www.ensemble.com/products/sales-journal/",
+        "https://www.ensemble.com/products/bprime/"
+      ],
+      "representativeUrl": "https://www.ensemble.com/products/ensemble-qai/",
+      "coverageGaps": [],
+      "description": "Product detail: breadcrumb + title + hero + narrative prose + Services list + Device Support icon grid + Key Features/Transforming key-point grids + footer buttons",
+      "blocks": [
+        {
+          "name": "cards-tech-stack",
+          "instances": [
+            "main .flex.flex-col.gap-8 ul:has(img)"
+          ]
+        },
+        {
+          "name": "cards-key-points",
+          "instances": [
+            "main .flex.flex-col.gap-8 div.grid:has(> div h1)"
+          ]
+        }
+      ]
     }
   ]
 }

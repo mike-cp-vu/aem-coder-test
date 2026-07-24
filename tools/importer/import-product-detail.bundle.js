@@ -18,10 +18,10 @@ var CustomImportScript = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // tools/importer/import-portfolio-detail.js
-  var import_portfolio_detail_exports = {};
-  __export(import_portfolio_detail_exports, {
-    default: () => import_portfolio_detail_default
+  // tools/importer/import-product-detail.js
+  var import_product_detail_exports = {};
+  __export(import_product_detail_exports, {
+    default: () => import_product_detail_default
   });
 
   // tools/importer/parsers/cards-tech-stack.js
@@ -136,23 +136,22 @@ var CustomImportScript = (() => {
     }
   }
 
-  // tools/importer/import-portfolio-detail.js
+  // tools/importer/import-product-detail.js
   var parsers = {
     "cards-tech-stack": parse,
     "cards-key-points": parse2
   };
   var PAGE_TEMPLATE = {
-    name: "portfolio-detail",
-    description: "Portfolio case-study detail: breadcrumb + title + hero + narrative prose + Technologies icon grid + two key-point grids + footer buttons",
-    urls: ["https://www.ensemble.com/portfolio/identity-data-management-platform-idmp-ui-development-global/"],
+    name: "product-detail",
+    description: "Product detail: breadcrumb + title + hero + narrative prose + Services list + Device Support icon grid + Key Features/Transforming key-point grids + footer buttons",
+    urls: ["https://www.ensemble.com/products/ensemble-qai/"],
     blocks: [
-      // Technologies icon grid: the only <ul> in the article carrying <img>s.
+      // "Comprehensive Device Support" icon grid: the only <ul> carrying <img>s.
       { name: "cards-tech-stack", instances: ["main .flex.flex-col.gap-8 ul:has(img)"] },
-      // "Initiative Key Considerations" + "Results and Deliverables" text grids:
-      // the inner grid container whose item divs carry <h1> headings.
+      // "Key Features & Capabilities" + "Transforming ..." text grids: inner grid
+      // containers whose item divs carry <h1> headings.
       { name: "cards-key-points", instances: ["main .flex.flex-col.gap-8 div.grid:has(> div h1)"] }
     ],
-    // Single flowing article — no section breaks.
     sections: []
   };
   var transformers = [
@@ -193,7 +192,7 @@ var CustomImportScript = (() => {
     console.log(`Found ${pageBlocks.length} block instances on page`);
     return pageBlocks;
   }
-  var import_portfolio_detail_default = {
+  var import_product_detail_default = {
     transform: (payload) => {
       const {
         document,
@@ -235,5 +234,5 @@ var CustomImportScript = (() => {
       }];
     }
   };
-  return __toCommonJS(import_portfolio_detail_exports);
+  return __toCommonJS(import_product_detail_exports);
 })();

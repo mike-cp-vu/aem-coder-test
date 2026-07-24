@@ -42,6 +42,8 @@ export default function transform(hookName, element, payload) {
 
       if (/^back to portfolio$/i.test(label)) {
         makeLink('/portfolio/', 'Back to portfolio', false);
+      } else if (/^back to products$/i.test(label)) {
+        makeLink('/products/', 'Back to products', false);
       } else if (/^contact us$/i.test(label)) {
         makeLink('/contact/', 'Contact us', true);
       } else if (/^download report$/i.test(label)) {

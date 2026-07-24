@@ -17,5 +17,25 @@
     "structure": "small technology/platform icon above a short text label, arranged in a wrapping flex grid",
     "buttonCount": 0,
     "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "technology/platform icon grids on portfolio detail pages",
+      "supported-device / supported-platform icon grids on product detail pages (e.g. Roku, FireTV, Apple TV, Android TV)",
+      "logo-with-label rows where each item is a small icon above a short caption"
+    ],
+    "notSuitableFor": [
+      "text-only heading + paragraph grids (use cards-key-points)",
+      "grids with large photos (use cards-departments or cards-products)",
+      "stat / number grids (use cards-stats)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": [
+      "/portfolio/identity-data-management-platform-idmp-ui-development-global/index",
+      "/products/ensemble-qai/index"
+    ],
+    "reuseCount": 2,
+    "lastUsed": "2026-07-24T00:00:00.000Z"
   }
 }
