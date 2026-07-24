@@ -1,0 +1,39 @@
+{
+  "variantName": "cards-departments",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-24T00:50:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/about/",
+    "originPage": "about page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "team",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "photo + short uppercase label",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "department / discipline photo grids",
+      "image + short-label card grids without body copy",
+      "category tiles led by a photo"
+    ],
+    "notSuitableFor": [
+      "text-only person cards (use cards-team)",
+      "location cards with address details (use cards-office)",
+      "icon-led feature cards with descriptions (use cards-services)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/about/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T00:50:00.000Z"
+  }
+}

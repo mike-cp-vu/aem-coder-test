@@ -1,0 +1,37 @@
+{
+  "variantName": "hero-about",
+  "baseBlock": "hero",
+  "version": "1.0.0",
+  "created": "2026-07-24T00:50:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/about/",
+    "originPage": "about page",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "hero",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "eyebrow label + large headline + lead paragraph",
+    "buttonCount": 0,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "text-only page intros on a light background",
+      "about / overview page heros without a background image"
+    ],
+    "notSuitableFor": [
+      "full-bleed dark heros with a background photo (use hero-home)",
+      "heros with a foreground image beside text"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/about/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T00:50:00.000Z"
+  }
+}

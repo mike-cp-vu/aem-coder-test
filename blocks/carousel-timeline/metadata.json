@@ -1,0 +1,38 @@
+{
+  "variantName": "carousel-timeline",
+  "baseBlock": "carousel",
+  "version": "1.0.0",
+  "created": "2026-07-24T00:50:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/about/",
+    "originPage": "about page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "timeline",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "per slide: image + year heading + short description",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "company history / milestone timelines",
+      "rotating image + caption galleries",
+      "year-by-year story carousels with prev/next navigation"
+    ],
+    "notSuitableFor": [
+      "static (non-interactive) content that should not rotate",
+      "logo walls (use cards-clients)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/about/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T00:50:00.000Z"
+  }
+}

@@ -245,6 +245,35 @@
           "defaultContent": ["main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(12)"]
         }
       ]
+    },
+    {
+      "name": "about",
+      "urls": ["https://www.ensemble.com/about/"],
+      "representativeUrl": "https://www.ensemble.com/about/",
+      "coverageGaps": [],
+      "description": "About page: hero, company values, value statement, team departments, offices, farm, story timeline carousel, clients, partners, certifications, join-us CTA",
+      "blocks": [
+        { "name": "hero-about", "instances": ["main > div > *:nth-child(2)"] },
+        { "name": "cards-services", "instances": ["main > div > *:nth-child(3) div.flex.flex-col.space-y-10"] },
+        { "name": "cards-departments", "instances": ["main > div > *:nth-child(5) div.grid"] },
+        { "name": "cards-office", "instances": ["main > div > *:nth-child(6)"] },
+        { "name": "columns-about", "instances": ["main > div > *:nth-child(7)"] },
+        { "name": "carousel-timeline", "instances": ["main > div > *:nth-child(8)"] },
+        { "name": "cards-clients", "instances": ["main > div > *:nth-child(9) div.flex.flex-wrap"] }
+      ],
+      "sections": [
+        { "id": "ab-hero", "name": "Hero intro", "selector": "main > div > *:nth-child(2)", "style": null, "blocks": ["hero-about"], "defaultContent": [] },
+        { "id": "ab-values", "name": "Company values", "selector": "main > div > *:nth-child(3)", "style": null, "blocks": ["cards-services"], "defaultContent": [] },
+        { "id": "ab-value-statement", "name": "Do right by people", "selector": "main > div > *:nth-child(4)", "style": "grey", "blocks": [], "defaultContent": ["main > div > *:nth-child(4)"] },
+        { "id": "ab-team", "name": "Our Team", "selector": "main > div > *:nth-child(5)", "style": null, "blocks": ["cards-departments"], "defaultContent": ["main > div > *:nth-child(5) h1"] },
+        { "id": "ab-offices", "name": "Our Offices", "selector": "main > div > *:nth-child(6)", "style": "grey", "blocks": ["cards-office"], "defaultContent": [] },
+        { "id": "ab-farm", "name": "Our Farm", "selector": "main > div > *:nth-child(7)", "style": null, "blocks": ["columns-about"], "defaultContent": [] },
+        { "id": "ab-story", "name": "Our story", "selector": "main > div > *:nth-child(8)", "style": null, "blocks": ["carousel-timeline"], "defaultContent": ["main > div > *:nth-child(8) h1"] },
+        { "id": "ab-clients", "name": "Some of our clients", "selector": "main > div > *:nth-child(9)", "style": null, "blocks": ["cards-clients"], "defaultContent": ["main > div > *:nth-child(9) h2"] },
+        { "id": "ab-partners", "name": "Partner with the best", "selector": "main > div > *:nth-child(10)", "style": null, "blocks": [], "defaultContent": ["main > div > *:nth-child(10)"] },
+        { "id": "ab-certs", "name": "Our Certifications", "selector": "main > div > *:nth-child(11)", "style": null, "blocks": [], "defaultContent": ["main > div > *:nth-child(11)"] },
+        { "id": "ab-join", "name": "Join us CTA", "selector": "main > div > *:nth-child(12)", "style": "center", "blocks": [], "defaultContent": ["main > div > *:nth-child(12)"] }
+      ]
     }
   ]
 }
