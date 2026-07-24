@@ -1,0 +1,108 @@
+/* portfolio listing grid: square image tiles with a two-line label
+   (grey category over white bold title) overlaid at the top-left over a dark
+   top-down gradient scrim, with a subtle hover zoom. Values derived from
+   www.ensemble.com/portfolio computed styles. */
+
+.cards-portfolio-listing > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* each tile: a square, clipped image with an overlaid label */
+.cards-portfolio-listing > ul > li {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+/* image wrapper fills the tile; image scales up slightly on hover */
+.cards-portfolio-listing .cards-portfolio-listing-card-image {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.cards-portfolio-listing .cards-portfolio-listing-card-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cards-portfolio-listing .cards-portfolio-listing-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+}
+
+.cards-portfolio-listing > ul > li:hover .cards-portfolio-listing-card-image img {
+  transform: scale(1.05);
+}
+
+/* dark top-down gradient scrim so the top-left label stays legible */
+.cards-portfolio-listing > ul > li::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: linear-gradient(to bottom, rgb(0 0 0 / 65%) 0%, rgb(0 0 0 / 0%) 45%);
+  pointer-events: none;
+}
+
+/* two-line label overlaid at top-left */
+.cards-portfolio-listing .cards-portfolio-listing-card-body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  margin: 0;
+  padding: 16px;
+  width: 100%;
+  color: #fff;
+}
+
+.cards-portfolio-listing .cards-portfolio-listing-card-body p,
+.cards-portfolio-listing .cards-portfolio-listing-card-body h3 {
+  margin: 0;
+}
+
+/* category label: smaller, grey, above the title */
+.cards-portfolio-listing .cards-portfolio-listing-card-category {
+  color: var(--eyebrow-color);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* project title: white, bold; clamp to a short heading like the source */
+.cards-portfolio-listing .cards-portfolio-listing-card-title {
+  display: -webkit-box;
+  color: #fff;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* tablet: 2 columns */
+@media (width >= 600px) {
+  .cards-portfolio-listing > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* desktop: 3 columns */
+@media (width >= 900px) {
+  .cards-portfolio-listing > ul {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

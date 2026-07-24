@@ -1,0 +1,41 @@
+{
+  "variantName": "cards-portfolio-listing",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-24T02:20:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/portfolio/",
+    "originPage": "portfolio listing page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "wide",
+    "purpose": "portfolio",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "image + overlaid two-line label (grey category over white title)",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "portfolio / project listing galleries",
+      "image tiles that need a category label AND a title overlaid",
+      "unlinked image tile grids"
+    ],
+    "notSuitableFor": [
+      "tiles with a single overlaid category label only (use cards-portfolio)",
+      "cards with body text below the image",
+      "text-only card grids"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/portfolio/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T02:20:00.000Z"
+  },
+  "derivedFrom": "cards-portfolio",
+  "differencesFromBase": "cards-portfolio renders one overlaid text line (linked category) at top-left; this variant renders two overlaid lines (grey category + white title) at bottom-left with a bottom gradient, and tiles are not links."
+}

@@ -568,6 +568,53 @@
           ]
         }
       ]
+    },
+    {
+      "name": "portfolio-listing",
+      "urls": [
+        "https://www.ensemble.com/portfolio/"
+      ],
+      "representativeUrl": "https://www.ensemble.com/portfolio/",
+      "coverageGaps": [],
+      "description": "Portfolio listing: intro hero + grid of 12 project tiles (image + category + title) + Contact CTA",
+      "blocks": [
+        {
+          "name": "hero-about",
+          "instances": [
+            "main > div > *:nth-child(1)"
+          ]
+        },
+        {
+          "name": "cards-portfolio-listing",
+          "instances": [
+            "main > div > *:nth-child(2) div.grid"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "pl-hero",
+          "name": "Intro hero",
+          "selector": "main > div > *:nth-child(1)",
+          "style": null,
+          "blocks": [
+            "hero-about"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "pl-grid",
+          "name": "Project grid",
+          "selector": "main > div > *:nth-child(2)",
+          "style": null,
+          "blocks": [
+            "cards-portfolio-listing"
+          ],
+          "defaultContent": [
+            "main > div > *:nth-child(2) button"
+          ]
+        }
+      ]
     }
   ]
 }
