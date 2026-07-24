@@ -1,4 +1,5 @@
 import { getMetadata } from '../../scripts/aem.js';
+import { normalizeInternalLinks } from '../../scripts/scripts.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
@@ -168,4 +169,8 @@ export default async function decorate(block) {
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
   block.append(navWrapper);
+
+  // Migrated nav links carry trailing slashes (/services/) that 404 on EDS;
+  // normalize them to the slash-less routes the site actually serves.
+  normalizeInternalLinks(nav);
 }

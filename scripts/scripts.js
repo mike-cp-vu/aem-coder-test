@@ -177,6 +177,43 @@ function decorateSectionMetadata(main) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
+/**
+ * Normalizes internal links by removing the trailing slash from the pathname.
+ * The migrated content (from a Gatsby source) links to routes like
+ * `/services/`, but Edge Delivery serves those pages without a trailing slash
+ * (`/services`), so the slashed form 404s. Strip the trailing slash from
+ * same-site links, preserving the site root, any query string, and hash.
+ * @param {HTMLElement} el The container element to process
+ */
+export function normalizeInternalLinks(el) {
+  el.querySelectorAll('a[href]').forEach((a) => {
+    const href = a.getAttribute('href');
+    if (!href) return;
+    // Only touch internal links: root-relative paths or same-origin absolute.
+    let path = href;
+    let isAbsolute = false;
+    if (/^https?:\/\//i.test(href)) {
+      try {
+        const u = new URL(href);
+        if (u.origin !== window.location.origin) return; // external — leave alone
+        path = u.pathname + u.search + u.hash;
+        isAbsolute = true;
+      } catch { return; }
+    } else if (!href.startsWith('/')) {
+      return; // relative, mailto:, tel:, #hash, etc. — leave alone
+    }
+    // Split off query/hash, trim a single trailing slash from the pathname only.
+    const m = path.match(/^([^?#]*)([?#].*)?$/);
+    let pathname = m[1];
+    const rest = m[2] || '';
+    if (pathname.length > 1 && pathname.endsWith('/')) {
+      pathname = pathname.replace(/\/+$/, '');
+      const next = pathname + rest;
+      a.setAttribute('href', isAbsolute ? `${window.location.origin}${next}` : next);
+    }
+  });
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   decorateIcons(main);
@@ -185,6 +222,7 @@ export function decorateMain(main) {
   decorateSectionMetadata(main);
   decorateBlocks(main);
   decorateButtons(main);
+  normalizeInternalLinks(main);
 }
 
 /**

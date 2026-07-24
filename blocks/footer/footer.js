@@ -1,4 +1,5 @@
 import { getMetadata } from '../../scripts/aem.js';
+import { normalizeInternalLinks } from '../../scripts/scripts.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 /**
@@ -42,6 +43,10 @@ export default async function decorate(block) {
       if (!w.classList.contains('footer-columns')) w.classList.add('footer-meta');
     });
   }
+
+  // Migrated footer links carry trailing slashes (/privacy/) that 404 on EDS;
+  // normalize them to the slash-less routes the site actually serves.
+  normalizeInternalLinks(footer);
 
   block.append(footer);
 }
