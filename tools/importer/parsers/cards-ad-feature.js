@@ -13,13 +13,15 @@
  *   cell 2: body — title (h3), optional subtitle (p), description (p)
  *
  * IMAGE HANDLING: the source icons are inline data: base64 placeholders (no
- * fetchable URL). The "Our Services" icons are IDENTICAL across all 20 ad pages,
- * so they were extracted once and committed to /icons/ad-svc-*.png; this parser
- * restores them by keying off each source item's img alt (First service, ...).
- * We emit a LOCAL.ICONS placeholder host that the ad-cleanup transformer rewrites
- * to a root-relative /icons/ path (so WebImporter.adjustImageUrls leaves it
- * alone). The "Connecting Your AI Ecosystem" icons (alt "Row one") vary per
- * campaign and are intentionally NOT restored — those items stay body-only.
+ * fetchable URL), so they were extracted and committed under /icons/.
+ *  - "Our Services" icons are IDENTICAL across all 20 ad pages → committed once
+ *    as /icons/ad-svc-*.png, keyed off each item's img alt (First service, ...).
+ *  - "Connecting Your AI Ecosystem" icons (alt "Row one") VARY per campaign →
+ *    committed per page as /icons/ad-eco-<slug>-<n>.png (n = 1-based position),
+ *    where <slug> is the page path (e.g. adsgenstudio). Resolved from the page
+ *    URL passed to the parser.
+ * Both emit a LOCAL.ICONS placeholder host that the ad-cleanup transformer
+ * rewrites to a root-relative /icons/ path (so adjustImageUrls leaves it alone).
  */
 
 // Source item alt -> committed shared service icon slug. "Sixth service" is
@@ -34,13 +36,29 @@ const SERVICE_ICONS = {
   'Sixth service': ['ad-svc-adobe', 'ad-svc-fde'],
 };
 
-export default function parse(element, { document }) {
+export default function parse(element, { document, url, params }) {
+  // Derive the page slug (e.g. "adsgenstudio") for per-campaign ecosystem icons.
+  let pageSlug = '';
+  try {
+    const u = (params && params.originalURL) || url || '';
+    const seg = new URL(u).pathname.replace(/\/+$/, '').split('/').filter(Boolean).pop() || '';
+    pageSlug = seg.toLowerCase();
+  } catch (e) {
+    pageSlug = '';
+  }
+
   const items = Array.from(element.children)
     .filter((c) => c.textContent.trim() || c.querySelector('img'));
 
-  // Resolve the committed shared icon slug for an item from its source img alt.
+  // Is this the ecosystem instance? (its items carry alt "Row one")
+  const isEcosystem = items.some((it) => {
+    const img = it.querySelector('img');
+    return img && (img.getAttribute('alt') || '').trim() === 'Row one';
+  });
+
+  // Resolve the committed shared SERVICE icon slug for an item from its img alt.
   const occ = {};
-  const iconSlugFor = (item) => {
+  const serviceSlugFor = (item) => {
     const img = item.querySelector('img');
     const alt = img ? (img.getAttribute('alt') || '').trim() : '';
     const map = SERVICE_ICONS[alt];
@@ -52,12 +70,12 @@ export default function parse(element, { document }) {
     return map;
   };
 
-  // Decide table shape once: 2-column only if at least one item maps to a
-  // shared service icon (i.e. this is the "Our Services" instance).
-  const anyIcon = items.some((it) => iconSlugFor(it));
-  // reset occurrence counter consumed by the probe above
-  Object.keys(occ).forEach((k) => delete occ[k]);
+  // 2-column table when icons apply: the "Our Services" instance (mapped service
+  // icons) OR the "Connecting Your AI Ecosystem" instance (per-page eco icons).
+  const anyIcon = isEcosystem || items.some((it) => serviceSlugFor(it));
+  Object.keys(occ).forEach((k) => delete occ[k]); // reset probe counter
 
+  let ecoIndex = 0;
   const cells = [];
   items.forEach((item) => {
     const body = [];
@@ -86,7 +104,14 @@ export default function parse(element, { document }) {
     if (!body.length) return;
 
     if (anyIcon) {
-      const slug = iconSlugFor(item);
+      let slug = null;
+      if (isEcosystem) {
+        // Per-campaign eco icon, keyed by page slug + 1-based position.
+        ecoIndex += 1;
+        slug = pageSlug ? `ad-eco-${pageSlug}-${ecoIndex}` : null;
+      } else {
+        slug = serviceSlugFor(item);
+      }
       const iconCell = [];
       if (slug) {
         const icon = document.createElement('img');

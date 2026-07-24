@@ -219,10 +219,22 @@ var CustomImportScript = (() => {
     "Fifth service": "ad-svc-content",
     "Sixth service": ["ad-svc-adobe", "ad-svc-fde"]
   };
-  function parse4(element, { document }) {
+  function parse4(element, { document, url, params }) {
+    let pageSlug = "";
+    try {
+      const u = params && params.originalURL || url || "";
+      const seg = new URL(u).pathname.replace(/\/+$/, "").split("/").filter(Boolean).pop() || "";
+      pageSlug = seg.toLowerCase();
+    } catch (e) {
+      pageSlug = "";
+    }
     const items = Array.from(element.children).filter((c) => c.textContent.trim() || c.querySelector("img"));
+    const isEcosystem = items.some((it) => {
+      const img = it.querySelector("img");
+      return img && (img.getAttribute("alt") || "").trim() === "Row one";
+    });
     const occ = {};
-    const iconSlugFor = (item) => {
+    const serviceSlugFor = (item) => {
       const img = item.querySelector("img");
       const alt = img ? (img.getAttribute("alt") || "").trim() : "";
       const map = SERVICE_ICONS[alt];
@@ -233,8 +245,9 @@ var CustomImportScript = (() => {
       }
       return map;
     };
-    const anyIcon = items.some((it) => iconSlugFor(it));
+    const anyIcon = isEcosystem || items.some((it) => serviceSlugFor(it));
     Object.keys(occ).forEach((k) => delete occ[k]);
+    let ecoIndex = 0;
     const cells = [];
     items.forEach((item) => {
       const body = [];
@@ -256,7 +269,13 @@ var CustomImportScript = (() => {
       });
       if (!body.length) return;
       if (anyIcon) {
-        const slug = iconSlugFor(item);
+        let slug = null;
+        if (isEcosystem) {
+          ecoIndex += 1;
+          slug = pageSlug ? `ad-eco-${pageSlug}-${ecoIndex}` : null;
+        } else {
+          slug = serviceSlugFor(item);
+        }
         const iconCell = [];
         if (slug) {
           const icon = document.createElement("img");
