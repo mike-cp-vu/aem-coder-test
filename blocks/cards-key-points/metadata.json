@@ -1,0 +1,40 @@
+{
+  "variantName": "cards-key-points",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-24T02:55:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/portfolio/identity-data-management-platform-idmp-ui-development-global/",
+    "originPage": "portfolio detail (case study)",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "key-points",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "bold sub-heading + descriptive paragraph, arranged in a responsive two-column grid",
+    "buttonCount": 0,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "text-only two-column heading + paragraph grids (e.g. 'Initiative Key Considerations', 'Results and Deliverables')",
+      "case-study consideration / outcome grids without images or icons",
+      "feature-point grids where each cell is a short bold title plus a paragraph"
+    ],
+    "notSuitableFor": [
+      "grids with icons (use cards-service-nav or cards-services)",
+      "grids with large photos (use cards-departments or cards-products)",
+      "logo walls (use cards-clients)",
+      "stat / number grids (use cards-stats)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/portfolio/identity-data-management-platform-idmp-ui-development-global/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T02:55:00.000Z"
+  }
+}

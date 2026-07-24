@@ -1,0 +1,56 @@
+.cards-key-points > ul {
+  list-style: none;
+  margin: 0 8px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px 64px;
+}
+
+@media (min-width: 900px) {
+  .cards-key-points > ul {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.cards-key-points > ul > li {
+  border: none;
+  background: none;
+}
+
+.cards-key-points .cards-key-points-card-body {
+  margin: 0;
+}
+
+.cards-key-points .cards-key-points-card-body :is(h1, h2, h3, h4, h5, h6, strong) {
+  display: block;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  color: #000;
+  margin: 0 0 16px;
+}
+
+@media (min-width: 900px) {
+  .cards-key-points .cards-key-points-card-body :is(h1, h2, h3, h4, h5, h6, strong) {
+    font-size: 24px;
+    line-height: 33px;
+    min-height: 60px;
+  }
+}
+
+.cards-key-points .cards-key-points-card-body p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  color: #000;
+  margin: 0;
+  text-align: justify;
+}
+
+@media (min-width: 640px) {
+  .cards-key-points .cards-key-points-card-body p {
+    font-size: 16px;
+    line-height: 22px;
+  }
+}

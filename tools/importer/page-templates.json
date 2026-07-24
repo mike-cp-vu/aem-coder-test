@@ -662,6 +662,49 @@
           ]
         }
       ]
+    },
+    {
+      "name": "portfolio-detail",
+      "urls": [
+        "https://www.ensemble.com/portfolio/identity-data-management-platform-idmp-ui-development-global/",
+        "https://www.ensemble.com/portfolio/adobe-genstudio-white-paper/",
+        "https://www.ensemble.com/portfolio/porsche-case-study-sap-crm-integration/",
+        "https://www.ensemble.com/portfolio/cloud-federation-services-global/",
+        "https://www.ensemble.com/portfolio/live-streaming-platform-global/",
+        "https://www.ensemble.com/portfolio/cloud-application-orchestration-and-management-platform-global/",
+        "https://www.ensemble.com/portfolio/podcast-network-automation-testing-global/",
+        "https://www.ensemble.com/portfolio/orthodontic-technology-web-development-and-maintenance-global/",
+        "https://www.ensemble.com/portfolio/gabrielle-website-development-global/",
+        "https://www.ensemble.com/portfolio/botanical-products-information-platform-design-and-development-global/",
+        "https://www.ensemble.com/portfolio/cloud-based-media-creation-platform-quality-assurance-global/",
+        "https://www.ensemble.com/portfolio/talent-management-platforms-global/",
+        "https://www.ensemble.com/portfolio/adobe-digital-experience-platform-development-global/",
+        "https://www.ensemble.com/portfolio/multimedia-platform-automation-testing-and-development-global/",
+        "https://www.ensemble.com/portfolio/url-management-platform-website-development-global/",
+        "https://www.ensemble.com/portfolio/ifrs-website-development-and-feature-enhancement-global/",
+        "https://www.ensemble.com/portfolio/intelligence-data-interaction-platform-global/",
+        "https://www.ensemble.com/portfolio/sports-news-mobile-app-development-global/",
+        "https://www.ensemble.com/portfolio/electronic-payment-system-application-development-global/",
+        "https://www.ensemble.com/portfolio/automotive-marketplace-mobile-app-development-global/",
+        "https://www.ensemble.com/portfolio/human-resource-information-system-global/"
+      ],
+      "representativeUrl": "https://www.ensemble.com/portfolio/identity-data-management-platform-idmp-ui-development-global/",
+      "coverageGaps": [],
+      "description": "Portfolio case-study detail: breadcrumb + title + hero + narrative prose + Technologies icon grid + two key-point grids + footer buttons",
+      "blocks": [
+        {
+          "name": "cards-tech-stack",
+          "instances": [
+            "main .flex.flex-col.gap-8 ul:has(img)"
+          ]
+        },
+        {
+          "name": "cards-key-points",
+          "instances": [
+            "main .flex.flex-col.gap-8 div.grid:has(> div h1)"
+          ]
+        }
+      ]
     }
   ]
 }

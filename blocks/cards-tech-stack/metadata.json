@@ -1,0 +1,21 @@
+{
+  "variantName": "cards-tech-stack",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/portfolio/identity-data-management-platform-idmp-ui-development-global/",
+    "originPage": "portfolio detail (case study)",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "tech-stack",
+    "imagePattern": "icon"
+  },
+  "contentPattern": {
+    "structure": "small technology/platform icon above a short text label, arranged in a wrapping flex grid",
+    "buttonCount": 0,
+    "imageCount": 1
+  }
+}

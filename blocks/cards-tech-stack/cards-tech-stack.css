@@ -1,0 +1,46 @@
+/*
+ * cards-tech-stack — technology/platform icon grid.
+ * Source: portfolio detail pages (Technologies section).
+ * Icon-above-label grid: no borders, no card backgrounds.
+ */
+
+.cards-tech-stack > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 48px;
+}
+
+.cards-tech-stack > ul > li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  width: 80px;
+  color: var(--text-color);
+}
+
+.cards-tech-stack .cards-tech-stack-card-image {
+  line-height: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.cards-tech-stack .cards-tech-stack-card-image img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.cards-tech-stack .cards-tech-stack-card-body,
+.cards-tech-stack .cards-tech-stack-card-body p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: inherit;
+  text-align: center;
+}
