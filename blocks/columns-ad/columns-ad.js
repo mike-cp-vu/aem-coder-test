@@ -12,6 +12,14 @@ export default function decorate(block) {
           // picture is only content in column
           picWrapper.classList.add('columns-ad-img-col');
         }
+      } else {
+        // text column: the first paragraph following the heading acts as a
+        // bold lead/sub-heading, but only when body paragraphs follow it.
+        const heading = col.querySelector('h1, h2, h3, h4, h5, h6');
+        const paragraphs = [...col.querySelectorAll(':scope > p')];
+        if (heading && paragraphs.length > 1) {
+          paragraphs[0].classList.add('columns-ad-lead');
+        }
       }
     });
   });

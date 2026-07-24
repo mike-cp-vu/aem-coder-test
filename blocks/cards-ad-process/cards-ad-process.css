@@ -1,3 +1,30 @@
+/*
+ * cards-ad-process — "Our Process" horizontal step flow.
+ *
+ * Source (ensemble.com/adsGenStudio "Our Process:"): a row of orange rounded
+ * step cards separated by right-pointing orange arrow connectors, sitting on a
+ * blue background band. On mobile the steps stack vertically with the arrows
+ * pointing down.
+ *
+ * On the source the step copy is baked into each graphic (inline data: images
+ * that carry the icon + label). Those did not import, so this block may render
+ * with no content on the migrated page. The rules below are layout scaffolding:
+ * they render correctly as a horizontal step flow the moment step content
+ * (image OR text label) is present, and they also style text step labels as a
+ * fallback so the flow reads correctly without the baked-in graphics.
+ *
+ * DOM after decorate(): .cards-ad-process > ul > li, each <li> holds a
+ * .cards-ad-process-card-image (step graphic) and/or .cards-ad-process-card-body
+ * (text label). Arrow connectors are synthesized in CSS between steps.
+ */
+
+.cards-ad-process {
+  /* blue background band behind the flow (brand blue) */
+  background-color: #2886bb;
+  padding: 40px 16px;
+  box-sizing: border-box;
+}
+
 .cards-ad-process > ul {
   list-style: none;
   margin: 0;
@@ -5,19 +32,34 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: 0;
 }
 
+/* step item */
 .cards-ad-process > ul > li {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   text-align: center;
+  box-sizing: border-box;
+
+  /* keep steps reasonably sized while stacked on mobile */
+  width: 100%;
+  max-width: 350px;
 }
 
-.cards-ad-process .cards-ad-process-card-body {
-  margin: 0;
+/* arrow connector between steps — down-pointing on mobile */
+.cards-ad-process > ul > li:not(:last-child)::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  margin: 16px 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 22px solid #ff8e2f;
 }
 
 .cards-ad-process .cards-ad-process-card-image {
@@ -25,19 +67,79 @@
 }
 
 .cards-ad-process > ul > li img {
-  max-width: 100%;
+  display: block;
+  width: 100%;
   height: auto;
+  max-width: 100%;
   object-fit: contain;
 }
 
+/* text step label fallback (used when steps are authored as text, not baked
+   into the graphic) — mimics the orange rounded step card */
+.cards-ad-process .cards-ad-process-card-body {
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px 20px;
+  border-radius: 12px;
+  background-color: #ff8e2f;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cards-ad-process .cards-ad-process-card-body :is(h1, h2, h3, h4, h5, h6, p) {
+  margin: 0;
+  color: inherit;
+}
+
 @media (width >= 900px) {
+  .cards-ad-process {
+    padding: 80px;
+  }
+
   .cards-ad-process > ul {
     flex-direction: row;
     justify-content: space-between;
-    align-items: stretch;
+    align-items: center;
+    gap: 0;
   }
 
+  /* each step grows equally; arrows keep their intrinsic size */
   .cards-ad-process > ul > li {
-    flex: 1;
+    flex: 1 1 0;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+  }
+
+  /* leave room between steps for the arrow connector */
+  .cards-ad-process > ul > li:not(:last-child) {
+    margin-right: 48px;
+  }
+
+  /* arrow connector between steps — right-pointing on desktop, centered in
+     the gap to the right of each step */
+  .cards-ad-process > ul > li:not(:last-child)::after {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translate(24px, -50%);
+    margin: 0;
+    border-top: 22px solid transparent;
+    border-bottom: 22px solid transparent;
+    border-left: 24px solid #ff8e2f;
+    border-right: 0;
+  }
+}
+
+@media (width >= 1200px) {
+  .cards-ad-process > ul > li:not(:last-child) {
+    margin-right: 56px;
+  }
+
+  .cards-ad-process > ul > li:not(:last-child)::after {
+    transform: translate(28px, -50%);
   }
 }

@@ -1,3 +1,6 @@
+/* Block: hero-ad -- lead-capture hero with background image + static form card */
+
+/* full-bleed: escape the section's max-width/padding */
 .hero-ad-container .hero-ad-wrapper {
   max-width: unset;
   padding: 0;
@@ -6,42 +9,181 @@
 .hero-ad {
   position: relative;
   padding: 40px 24px;
-  min-height: 300px;
+  overflow: hidden;
+  color: #fff;
 }
 
-.hero-ad h1,
-.hero-ad h2,
-.hero-ad h3,
-.hero-ad h4,
-.hero-ad h5,
-.hero-ad h6,
-.hero-ad p {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
-}
-
-.hero-ad.no-image * {
-  color: var(--text-color);
-}
-
-.hero-ad picture {
+/* background image cell (row 1) */
+/* stylelint-disable no-descending-specificity */
+.hero-ad > div:first-child {
   position: absolute;
-  z-index: -1;
   inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
+  z-index: 0;
+  margin: 0;
 }
 
-.hero-ad img {
-  object-fit: cover;
-  width: 100%;
+.hero-ad > div:first-child > div,
+.hero-ad > div:first-child picture {
   height: 100%;
 }
 
+.hero-ad > div:first-child picture {
+  display: block;
+}
+
+.hero-ad > div:first-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* content row (row 2) sits above the image */
+.hero-ad > div:last-child {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+}
+/* stylelint-enable no-descending-specificity */
+
+.hero-ad > div:last-child > div {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* --- Left column: headline + intro --- */
+.hero-ad-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hero-ad-copy h1 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #fff;
+}
+
+.hero-ad-copy p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #fff;
+}
+
+/* --- Right column: white form card --- */
+.hero-ad-form {
+  box-sizing: border-box;
+  padding: 32px;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text-color);
+}
+
+.hero-ad-form h3 {
+  margin: 0 0 4px;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--link-color);
+}
+
+.hero-ad-form ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* each list item is a labeled faux input */
+.hero-ad-form ul li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-color);
+}
+
+/* the faux input box shown under the label */
+.hero-ad-form ul li::after {
+  content: attr(data-placeholder);
+  display: block;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #9ca3af;
+  border-radius: 4px;
+  background: #fff;
+  color: #9ca3af;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Email + Company span the full width of the card */
+.hero-ad-form ul li:nth-child(3),
+.hero-ad-form ul li:nth-child(4),
+.hero-ad-form ul li:last-child {
+  grid-column: 1 / -1;
+}
+
+/* the inquiry field (last) is a taller textarea */
+.hero-ad-form ul li:last-child::after {
+  min-height: 96px;
+}
+
+/* submit button: full-width orange (a.button.primary comes from styles.css) */
+.hero-ad-form .button-wrapper {
+  margin: 24px 0 0;
+}
+
+.hero-ad-form a.button.primary {
+  display: flex;
+  width: 100%;
+  padding: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.35px;
+  text-transform: uppercase;
+}
+
+/* --- tablet --- */
+@media (width >= 600px) {
+  .hero-ad {
+    padding: 40px;
+  }
+}
+
+/* --- desktop: two columns side by side --- */
 @media (width >= 900px) {
   .hero-ad {
-    padding: 40px 32px;
+    padding: 40px 80px;
+  }
+
+  .hero-ad > div:last-child > div {
+    flex-direction: row;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .hero-ad-copy,
+  .hero-ad-form {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .hero-ad-copy h1 {
+    font-size: 60px;
+    line-height: 1.15;
+  }
+
+  .hero-ad-copy p {
+    font-size: 20px;
   }
 }
