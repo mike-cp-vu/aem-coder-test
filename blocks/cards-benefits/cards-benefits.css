@@ -1,0 +1,32 @@
+.cards-benefits > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.cards-benefits > ul > li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  background-color: var(--background-color);
+}
+
+.cards-benefits .cards-benefits-card-image {
+  line-height: 0;
+}
+
+.cards-benefits .cards-benefits-card-image img {
+  width: 100px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.cards-benefits .cards-benefits-card-body {
+  font-weight: 600;
+  font-size: var(--body-font-size-s);
+}

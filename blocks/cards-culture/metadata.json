@@ -1,0 +1,39 @@
+{
+  "variantName": "cards-culture",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-24T01:36:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/careers/",
+    "originPage": "careers page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "culture",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "photo + bold title + description paragraph",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "culture / value grids pairing a photo with a title and description",
+      "image + heading + paragraph card grids",
+      "benefit-of-working-here style photo cards with body copy"
+    ],
+    "notSuitableFor": [
+      "photo + short label only grids (use cards-departments)",
+      "icon-led feature grids (use cards-services)",
+      "photo cards with bullet lists (use cards-team-detail)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/careers/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T01:36:00.000Z"
+  }
+}

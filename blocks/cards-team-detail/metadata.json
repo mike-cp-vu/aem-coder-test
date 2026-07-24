@@ -1,0 +1,39 @@
+{
+  "variantName": "cards-team-detail",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-24T01:36:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/careers/",
+    "originPage": "careers page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "team-detail",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "photo + uppercase title + description paragraph + bulleted responsibilities list",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "department / discipline grids with a photo, title, description and bullet list",
+      "detailed team or capability cards that include body copy and bullets",
+      "photo cards that pair a heading with a paragraph and list"
+    ],
+    "notSuitableFor": [
+      "photo + short label only grids (use cards-departments)",
+      "text-only person cards (use cards-team)",
+      "photo + title + description without bullets (use cards-culture)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/careers/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T01:36:00.000Z"
+  }
+}

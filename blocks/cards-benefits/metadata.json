@@ -1,0 +1,39 @@
+{
+  "variantName": "cards-benefits",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-24T01:36:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/careers/",
+    "originPage": "careers page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "benefits",
+    "imagePattern": "icon"
+  },
+  "contentPattern": {
+    "structure": "icon + short bold label (no description)",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "benefit / perk grids of icon + short label",
+      "icon-above-label feature summaries without descriptions",
+      "value or highlight chips centered under an icon"
+    ],
+    "notSuitableFor": [
+      "jump-link navigation grids (use cards-service-nav)",
+      "feature cards that include descriptions (use cards-services)",
+      "photo cards with body copy (use cards-culture)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/careers/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T01:36:00.000Z"
+  }
+}

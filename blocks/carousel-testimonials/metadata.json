@@ -1,0 +1,39 @@
+{
+  "variantName": "carousel-testimonials",
+  "baseBlock": "carousel",
+  "version": "1.0.0",
+  "created": "2026-07-24T01:36:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/careers/",
+    "originPage": "careers page",
+    "blockPosition": "bottom"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "testimonials",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "per slide: image + quote text + attribution; prev/next controls",
+    "buttonCount": 0,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "employee / customer testimonial carousels with a photo and rotating quotes",
+      "rotating quote panels with attribution and prev/next navigation",
+      "image + rotating text-quote galleries"
+    ],
+    "notSuitableFor": [
+      "milestone / history timelines (use carousel-timeline)",
+      "static content that should not rotate",
+      "logo walls (use cards-clients)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/careers/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T01:36:00.000Z"
+  }
+}

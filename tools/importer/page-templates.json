@@ -105,31 +105,45 @@
       "blocks": [
         {
           "name": "hero-home",
-          "instances": ["main div > div.relative.pt-36 > div.relative.w-full"]
+          "instances": [
+            "main div > div.relative.pt-36 > div.relative.w-full"
+          ]
         },
         {
           "name": "cards-stats",
-          "instances": ["main div > div.relative.pt-36 div.grid.grid-cols-3"]
+          "instances": [
+            "main div > div.relative.pt-36 div.grid.grid-cols-3"
+          ]
         },
         {
           "name": "cards-portfolio",
-          "instances": ["main div > div.pt-4.pb-4 > div.container.mx-auto > div.relative > div.hidden.grid-cols-2"]
+          "instances": [
+            "main div > div.pt-4.pb-4 > div.container.mx-auto > div.relative > div.hidden.grid-cols-2"
+          ]
         },
         {
           "name": "cards-services",
-          "instances": ["main div > div.pt-4.pb-4 > div.container.mx-auto > div > div.grid.hidden"]
+          "instances": [
+            "main div > div.pt-4.pb-4 > div.container.mx-auto > div > div.grid.hidden"
+          ]
         },
         {
           "name": "columns-about",
-          "instances": ["main div > div.pb-4.pl-4:nth-of-type(4) div.items-stretch.grid-cols-2"]
+          "instances": [
+            "main div > div.pb-4.pl-4:nth-of-type(4) div.items-stretch.grid-cols-2"
+          ]
         },
         {
           "name": "cards-clients",
-          "instances": ["main div > div.pb-4.pl-4:nth-of-type(6) div.flex.justify-center"]
+          "instances": [
+            "main div > div.pb-4.pl-4:nth-of-type(6) div.flex.justify-center"
+          ]
         },
         {
           "name": "section-cta",
-          "instances": ["main div > div.bg-background.py-16"],
+          "instances": [
+            "main div > div.bg-background.py-16"
+          ],
           "section": "grey"
         }
       ],
@@ -139,7 +153,10 @@
           "name": "Hero + stats banner",
           "selector": "main div > div.relative.pt-36",
           "style": null,
-          "blocks": ["hero-home", "cards-stats"],
+          "blocks": [
+            "hero-home",
+            "cards-stats"
+          ],
           "defaultContent": []
         },
         {
@@ -147,23 +164,33 @@
           "name": "Portfolio project grid",
           "selector": "main div > div.pt-4.pb-4.pl-4:nth-of-type(2)",
           "style": null,
-          "blocks": ["cards-portfolio"],
-          "defaultContent": ["main div > div.pt-4.pb-4.pl-4:nth-of-type(2) button"]
+          "blocks": [
+            "cards-portfolio"
+          ],
+          "defaultContent": [
+            "main div > div.pt-4.pb-4.pl-4:nth-of-type(2) button"
+          ]
         },
         {
           "id": "hp-services",
           "name": "Services grid",
           "selector": "main div > div.pt-4.pb-4.pl-4:nth-of-type(3)",
           "style": null,
-          "blocks": ["cards-services"],
-          "defaultContent": ["main div > div.pt-4.pb-4.pl-4:nth-of-type(3) h2"]
+          "blocks": [
+            "cards-services"
+          ],
+          "defaultContent": [
+            "main div > div.pt-4.pb-4.pl-4:nth-of-type(3) h2"
+          ]
         },
         {
           "id": "hp-about",
           "name": "About section",
           "selector": "main div > div.pb-4.pl-4:nth-of-type(4)",
           "style": null,
-          "blocks": ["columns-about"],
+          "blocks": [
+            "columns-about"
+          ],
           "defaultContent": []
         },
         {
@@ -172,15 +199,21 @@
           "selector": "main div > div.bg-background.py-16",
           "style": "grey",
           "blocks": [],
-          "defaultContent": ["main div > div.bg-background.py-16"]
+          "defaultContent": [
+            "main div > div.bg-background.py-16"
+          ]
         },
         {
           "id": "hp-clients",
           "name": "Client logos",
           "selector": "main div > div.pb-4.pl-4:nth-of-type(6)",
           "style": null,
-          "blocks": ["cards-clients"],
-          "defaultContent": ["main div > div.pb-4.pl-4:nth-of-type(6) h2"]
+          "blocks": [
+            "cards-clients"
+          ],
+          "defaultContent": [
+            "main div > div.pb-4.pl-4:nth-of-type(6) h2"
+          ]
         }
       ]
     },
@@ -195,7 +228,9 @@
       "blocks": [
         {
           "name": "cards-service-nav",
-          "instances": ["main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(2)"]
+          "instances": [
+            "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(2)"
+          ]
         },
         {
           "name": "cards-service-detail",
@@ -218,14 +253,18 @@
           "selector": "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(1)",
           "style": null,
           "blocks": [],
-          "defaultContent": ["main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(1)"]
+          "defaultContent": [
+            "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(1)"
+          ]
         },
         {
           "id": "svc-nav",
           "name": "Service quick-nav pills",
           "selector": "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(2)",
           "style": null,
-          "blocks": ["cards-service-nav"],
+          "blocks": [
+            "cards-service-nav"
+          ],
           "defaultContent": []
         },
         {
@@ -233,7 +272,9 @@
           "name": "Service detail blocks",
           "selector": "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1)",
           "style": null,
-          "blocks": ["cards-service-detail"],
+          "blocks": [
+            "cards-service-detail"
+          ],
           "defaultContent": []
         },
         {
@@ -242,37 +283,290 @@
           "selector": "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(12)",
           "style": "center",
           "blocks": [],
-          "defaultContent": ["main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(12)"]
+          "defaultContent": [
+            "main > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > *:nth-child(12)"
+          ]
         }
       ]
     },
     {
       "name": "about",
-      "urls": ["https://www.ensemble.com/about/"],
+      "urls": [
+        "https://www.ensemble.com/about/"
+      ],
       "representativeUrl": "https://www.ensemble.com/about/",
       "coverageGaps": [],
       "description": "About page: hero, company values, value statement, team departments, offices, farm, story timeline carousel, clients, partners, certifications, join-us CTA",
       "blocks": [
-        { "name": "hero-about", "instances": ["main > div > *:nth-child(2)"] },
-        { "name": "cards-services", "instances": ["main > div > *:nth-child(3) div.flex.flex-col.space-y-10"] },
-        { "name": "cards-departments", "instances": ["main > div > *:nth-child(5) div.grid"] },
-        { "name": "cards-office", "instances": ["main > div > *:nth-child(6)"] },
-        { "name": "columns-about", "instances": ["main > div > *:nth-child(7)"] },
-        { "name": "carousel-timeline", "instances": ["main > div > *:nth-child(8)"] },
-        { "name": "cards-clients", "instances": ["main > div > *:nth-child(9) div.flex.flex-wrap"] }
+        {
+          "name": "hero-about",
+          "instances": [
+            "main > div > *:nth-child(2)"
+          ]
+        },
+        {
+          "name": "cards-services",
+          "instances": [
+            "main > div > *:nth-child(3) div.flex.flex-col.space-y-10"
+          ]
+        },
+        {
+          "name": "cards-departments",
+          "instances": [
+            "main > div > *:nth-child(5) div.grid"
+          ]
+        },
+        {
+          "name": "cards-office",
+          "instances": [
+            "main > div > *:nth-child(6)"
+          ]
+        },
+        {
+          "name": "columns-about",
+          "instances": [
+            "main > div > *:nth-child(7)"
+          ]
+        },
+        {
+          "name": "carousel-timeline",
+          "instances": [
+            "main > div > *:nth-child(8)"
+          ]
+        },
+        {
+          "name": "cards-clients",
+          "instances": [
+            "main > div > *:nth-child(9) div.flex.flex-wrap"
+          ]
+        }
       ],
       "sections": [
-        { "id": "ab-hero", "name": "Hero intro", "selector": "main > div > *:nth-child(2)", "style": null, "blocks": ["hero-about"], "defaultContent": [] },
-        { "id": "ab-values", "name": "Company values", "selector": "main > div > *:nth-child(3)", "style": null, "blocks": ["cards-services"], "defaultContent": [] },
-        { "id": "ab-value-statement", "name": "Do right by people", "selector": "main > div > *:nth-child(4)", "style": "grey", "blocks": [], "defaultContent": ["main > div > *:nth-child(4)"] },
-        { "id": "ab-team", "name": "Our Team", "selector": "main > div > *:nth-child(5)", "style": null, "blocks": ["cards-departments"], "defaultContent": ["main > div > *:nth-child(5) h1"] },
-        { "id": "ab-offices", "name": "Our Offices", "selector": "main > div > *:nth-child(6)", "style": "grey", "blocks": ["cards-office"], "defaultContent": [] },
-        { "id": "ab-farm", "name": "Our Farm", "selector": "main > div > *:nth-child(7)", "style": null, "blocks": ["columns-about"], "defaultContent": [] },
-        { "id": "ab-story", "name": "Our story", "selector": "main > div > *:nth-child(8)", "style": null, "blocks": ["carousel-timeline"], "defaultContent": ["main > div > *:nth-child(8) h1"] },
-        { "id": "ab-clients", "name": "Some of our clients", "selector": "main > div > *:nth-child(9)", "style": null, "blocks": ["cards-clients"], "defaultContent": ["main > div > *:nth-child(9) h2"] },
-        { "id": "ab-partners", "name": "Partner with the best", "selector": "main > div > *:nth-child(10)", "style": null, "blocks": [], "defaultContent": ["main > div > *:nth-child(10)"] },
-        { "id": "ab-certs", "name": "Our Certifications", "selector": "main > div > *:nth-child(11)", "style": null, "blocks": [], "defaultContent": ["main > div > *:nth-child(11)"] },
-        { "id": "ab-join", "name": "Join us CTA", "selector": "main > div > *:nth-child(12)", "style": "center", "blocks": [], "defaultContent": ["main > div > *:nth-child(12)"] }
+        {
+          "id": "ab-hero",
+          "name": "Hero intro",
+          "selector": "main > div > *:nth-child(2)",
+          "style": null,
+          "blocks": [
+            "hero-about"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "ab-values",
+          "name": "Company values",
+          "selector": "main > div > *:nth-child(3)",
+          "style": null,
+          "blocks": [
+            "cards-services"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "ab-value-statement",
+          "name": "Do right by people",
+          "selector": "main > div > *:nth-child(4)",
+          "style": "grey",
+          "blocks": [],
+          "defaultContent": [
+            "main > div > *:nth-child(4)"
+          ]
+        },
+        {
+          "id": "ab-team",
+          "name": "Our Team",
+          "selector": "main > div > *:nth-child(5)",
+          "style": null,
+          "blocks": [
+            "cards-departments"
+          ],
+          "defaultContent": [
+            "main > div > *:nth-child(5) h1"
+          ]
+        },
+        {
+          "id": "ab-offices",
+          "name": "Our Offices",
+          "selector": "main > div > *:nth-child(6)",
+          "style": "grey",
+          "blocks": [
+            "cards-office"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "ab-farm",
+          "name": "Our Farm",
+          "selector": "main > div > *:nth-child(7)",
+          "style": null,
+          "blocks": [
+            "columns-about"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "ab-story",
+          "name": "Our story",
+          "selector": "main > div > *:nth-child(8)",
+          "style": null,
+          "blocks": [
+            "carousel-timeline"
+          ],
+          "defaultContent": [
+            "main > div > *:nth-child(8) h1"
+          ]
+        },
+        {
+          "id": "ab-clients",
+          "name": "Some of our clients",
+          "selector": "main > div > *:nth-child(9)",
+          "style": null,
+          "blocks": [
+            "cards-clients"
+          ],
+          "defaultContent": [
+            "main > div > *:nth-child(9) h2"
+          ]
+        },
+        {
+          "id": "ab-partners",
+          "name": "Partner with the best",
+          "selector": "main > div > *:nth-child(10)",
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            "main > div > *:nth-child(10)"
+          ]
+        },
+        {
+          "id": "ab-certs",
+          "name": "Our Certifications",
+          "selector": "main > div > *:nth-child(11)",
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            "main > div > *:nth-child(11)"
+          ]
+        },
+        {
+          "id": "ab-join",
+          "name": "Join us CTA",
+          "selector": "main > div > *:nth-child(12)",
+          "style": "center",
+          "blocks": [],
+          "defaultContent": [
+            "main > div > *:nth-child(12)"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "careers",
+      "urls": [
+        "https://www.ensemble.com/careers/"
+      ],
+      "representativeUrl": "https://www.ensemble.com/careers/",
+      "coverageGaps": [],
+      "description": "Careers page: dark hero, culture photo+text grid, benefits icon grid, team department cards, testimonials carousel, apply CTA",
+      "blocks": [
+        {
+          "name": "hero-home",
+          "instances": [
+            "main > div > *:nth-child(2)"
+          ]
+        },
+        {
+          "name": "cards-culture",
+          "instances": [
+            "main > div > *:nth-child(3) [data-testid=\"cultureContainer\"]"
+          ]
+        },
+        {
+          "name": "cards-benefits",
+          "instances": [
+            "main > div > *:nth-child(4) [data-testid=\"benefitsContainer\"]"
+          ]
+        },
+        {
+          "name": "cards-team-detail",
+          "instances": [
+            "main > div > *:nth-child(5) [data-testid=\"teams-container\"]"
+          ]
+        },
+        {
+          "name": "carousel-testimonials",
+          "instances": [
+            "main > div > *:nth-child(6)"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "ca-hero",
+          "name": "Hero",
+          "selector": "main > div > *:nth-child(2)",
+          "style": null,
+          "blocks": [
+            "hero-home"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "ca-culture",
+          "name": "Culture",
+          "selector": "main > div > *:nth-child(3)",
+          "style": null,
+          "blocks": [
+            "cards-culture"
+          ],
+          "defaultContent": [
+            "main > div > *:nth-child(3) h1"
+          ]
+        },
+        {
+          "id": "ca-benefits",
+          "name": "Benefits",
+          "selector": "main > div > *:nth-child(4)",
+          "style": null,
+          "blocks": [
+            "cards-benefits"
+          ],
+          "defaultContent": [
+            "main > div > *:nth-child(4) h1"
+          ]
+        },
+        {
+          "id": "ca-team",
+          "name": "Our Team",
+          "selector": "main > div > *:nth-child(5)",
+          "style": null,
+          "blocks": [
+            "cards-team-detail"
+          ],
+          "defaultContent": [
+            "main > div > *:nth-child(5) h1"
+          ]
+        },
+        {
+          "id": "ca-testimonials",
+          "name": "Testimonials",
+          "selector": "main > div > *:nth-child(6)",
+          "style": null,
+          "blocks": [
+            "carousel-testimonials"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "ca-apply",
+          "name": "Apply CTA",
+          "selector": "main > div > *:nth-child(7)",
+          "style": "grey",
+          "blocks": [],
+          "defaultContent": [
+            "main > div > *:nth-child(7)"
+          ]
+        }
       ]
     }
   ]
