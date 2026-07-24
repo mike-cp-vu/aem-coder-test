@@ -131,21 +131,29 @@ var CustomImportScript = (() => {
 
   // tools/importer/parsers/cards-services.js
   function parse4(element, { document }) {
+    const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     let items = Array.from(element.querySelectorAll(':scope > div[class*="max-w-"]'));
     if (items.length === 0) {
       items = Array.from(element.querySelectorAll(":scope > div"));
     }
     const cells = [];
-    const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     items.forEach((item) => {
       const heading = item.querySelector("h3, h2, h4");
       const subtitle = item.querySelector("span");
       const description = item.querySelector("p");
       if (!heading) return;
       const title = heading.textContent.trim();
+      const srcImg = item.querySelector("img");
+      const alt = srcImg ? (srcImg.getAttribute("alt") || "").trim() : "";
       const icon = document.createElement("img");
-      icon.setAttribute("src", `https://LOCAL.ICONS/icons/service-${slugify(title)}.svg`);
-      icon.setAttribute("alt", title);
+      if (/\bicon\b/i.test(alt)) {
+        const valueSlug = slugify(alt.replace(/\bicon\b/i, ""));
+        icon.setAttribute("src", `https://LOCAL.ICONS/icons/value-${valueSlug}.png`);
+        icon.setAttribute("alt", alt);
+      } else {
+        icon.setAttribute("src", `https://LOCAL.ICONS/icons/service-${slugify(title)}.svg`);
+        icon.setAttribute("alt", title);
+      }
       const linkEl = item.querySelector("a[href]");
       const href = linkEl ? linkEl.getAttribute("href") : null;
       const contentCell = [];
@@ -153,10 +161,10 @@ var CustomImportScript = (() => {
       if (href) {
         const titleLink = document.createElement("a");
         titleLink.setAttribute("href", href);
-        titleLink.textContent = heading.textContent.trim();
+        titleLink.textContent = title;
         h.appendChild(titleLink);
       } else {
-        h.textContent = heading.textContent.trim();
+        h.textContent = title;
       }
       contentCell.push(h);
       if (subtitle) contentCell.push(subtitle);
@@ -174,27 +182,31 @@ var CustomImportScript = (() => {
   // tools/importer/parsers/columns-about.js
   function parse5(element, { document }) {
     const image = element.querySelector("img");
-    const textWrapper = element.querySelector('.flex.flex-col, div[class*="w-267px"], div[class*="w-320px"]');
+    const textWrapper = element.querySelector('.flex.flex-col, div[class*="w-267px"], div[class*="w-320px"], div[class*="w-400px"]');
     if (!image && !textWrapper) {
       element.replaceWith(...element.childNodes);
       return;
     }
     const contentCell = [];
     if (textWrapper) {
-      const inner = textWrapper.querySelector('div[class*="w-267px"], div[class*="w-320px"]') || textWrapper;
+      const inner = textWrapper.querySelector('div[class*="w-267px"], div[class*="w-320px"], div[class*="w-400px"]') || textWrapper;
       const textDivs = Array.from(inner.children).filter(
         (c) => c.tagName === "DIV" && !c.querySelector("button") && c.textContent.trim().length > 0
       );
-      if (textDivs.length > 0) {
-        const lead = document.createElement("h2");
-        lead.textContent = textDivs[0].textContent.trim();
-        contentCell.push(lead);
-        textDivs.slice(1).forEach((d) => {
+      textDivs.forEach((d, idx) => {
+        const list = d.querySelector("ul, ol");
+        if (list) {
+          contentCell.push(list);
+        } else if (idx === 0) {
+          const lead = document.createElement("h2");
+          lead.textContent = d.textContent.trim();
+          contentCell.push(lead);
+        } else {
           const p = document.createElement("p");
           p.textContent = d.textContent.trim();
           contentCell.push(p);
-        });
-      }
+        }
+      });
       const existingLink = [...element.querySelectorAll("a[href]")].find((a) => /learn more about ensemble/i.test(a.textContent));
       const button = [...element.querySelectorAll("button")].find((b) => /learn more about ensemble/i.test(b.textContent)) || [...element.querySelectorAll("button")].find((b) => !/^who we are$/i.test(b.textContent.trim()));
       const label = (existingLink || button)?.textContent.trim();
@@ -291,6 +303,10 @@ var CustomImportScript = (() => {
         "source",
         "iframe"
       ]);
+      element.querySelectorAll("img").forEach((img) => {
+        const src = img.getAttribute("src") || "";
+        if (src.startsWith("blob:") || src.startsWith("data:")) img.remove();
+      });
       element.querySelectorAll('img[src*="LOCAL.ICONS"]').forEach((img) => {
         const src = img.getAttribute("src") || "";
         const idx = src.indexOf("/icons/");

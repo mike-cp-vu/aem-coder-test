@@ -113,6 +113,14 @@ export default function transform(hookName, element, payload) {
       'iframe',
     ]);
 
+    // Lazy placeholder images (blob:/data:) — e.g. the /emea/home/ variant's
+    // mobile menu icons whose header wrapper uses a different class combo than
+    // the primary z-[100]+fixed selector above. They render as about:error.
+    element.querySelectorAll('img').forEach((img) => {
+      const src = img.getAttribute('src') || '';
+      if (src.startsWith('blob:') || src.startsWith('data:')) img.remove();
+    });
+
     // Rewrite committed-icon placeholders to root-relative paths. The service
     // and client parsers emit img src="https://LOCAL.ICONS/icons/<name>.svg"
     // so WebImporter.adjustImageUrls (which absolutizes bare relative paths to
