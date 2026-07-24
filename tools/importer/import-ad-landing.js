@@ -162,6 +162,16 @@ export default {
     WebImporter.rules.transformBackgroundImages(main, document);
     WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
 
+    // 5b. Normalize committed-icon references to root-relative /icons/ paths.
+    // adjustImageUrls (step 5) re-absolutizes the transformer's /icons/ad-*.png
+    // references to the source origin, so strip everything before /icons/ here
+    // to restore the project-served path for the shared ad icons.
+    main.querySelectorAll('img[src*="/icons/"]').forEach((img) => {
+      const src = img.getAttribute('src') || '';
+      const idx = src.indexOf('/icons/');
+      if (idx > 0) img.setAttribute('src', src.slice(idx));
+    });
+
     // 6. Generate sanitized path
     const path = WebImporter.FileUtils.sanitizePath(
       new URL(params.originalURL).pathname.replace(/\/$/, '').replace(/\.html$/, '') || '/index',

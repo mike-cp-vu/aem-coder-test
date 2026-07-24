@@ -13,23 +13,50 @@
  *   cell 2: body — title (h3), optional subtitle (p), description (p)
  *
  * IMAGE HANDLING: the source icons are inline data: base64 placeholders (no
- * fetchable URL), so per the skip-data: rule they are dropped and every card is
- * body-only (a consistent 1-column table), which the block renders gracefully.
- * Any real /static/ or ctfassets icon is kept (yielding a consistent 2-column
- * table).
+ * fetchable URL). The "Our Services" icons are IDENTICAL across all 20 ad pages,
+ * so they were extracted once and committed to /icons/ad-svc-*.png; this parser
+ * restores them by keying off each source item's img alt (First service, ...).
+ * We emit a LOCAL.ICONS placeholder host that the ad-cleanup transformer rewrites
+ * to a root-relative /icons/ path (so WebImporter.adjustImageUrls leaves it
+ * alone). The "Connecting Your AI Ecosystem" icons (alt "Row one") vary per
+ * campaign and are intentionally NOT restored — those items stay body-only.
  */
-export default function parse(element, { document }) {
-  const abs = (s) => (s && s.startsWith('//') ? `https:${s}` : s);
-  const realSrc = (im) => {
-    const s = im.getAttribute('src') || '';
-    return s && !s.startsWith('data:') && !s.startsWith('blob:');
-  };
 
+// Source item alt -> committed shared service icon slug. "Sixth service" is
+// reused for two cards (Adobe Technologies, then Forward Deployed Engineering),
+// disambiguated by occurrence order within the section.
+const SERVICE_ICONS = {
+  'First service': 'ad-svc-ai',
+  'Second service': 'ad-svc-strategy',
+  'Third service': 'ad-svc-streaming',
+  'Fourth service': 'ad-svc-appweb',
+  'Fifth service': 'ad-svc-content',
+  'Sixth service': ['ad-svc-adobe', 'ad-svc-fde'],
+};
+
+export default function parse(element, { document }) {
   const items = Array.from(element.children)
     .filter((c) => c.textContent.trim() || c.querySelector('img'));
 
-  // Decide table shape once: 2-column only if at least one item has a real icon.
-  const anyRealIcon = items.some((it) => Array.from(it.querySelectorAll('img')).some(realSrc));
+  // Resolve the committed shared icon slug for an item from its source img alt.
+  const occ = {};
+  const iconSlugFor = (item) => {
+    const img = item.querySelector('img');
+    const alt = img ? (img.getAttribute('alt') || '').trim() : '';
+    const map = SERVICE_ICONS[alt];
+    if (!map) return null;
+    if (Array.isArray(map)) {
+      occ[alt] = (occ[alt] || 0) + 1;
+      return map[occ[alt] - 1] || map[map.length - 1];
+    }
+    return map;
+  };
+
+  // Decide table shape once: 2-column only if at least one item maps to a
+  // shared service icon (i.e. this is the "Our Services" instance).
+  const anyIcon = items.some((it) => iconSlugFor(it));
+  // reset occurrence counter consumed by the probe above
+  Object.keys(occ).forEach((k) => delete occ[k]);
 
   const cells = [];
   items.forEach((item) => {
@@ -58,13 +85,13 @@ export default function parse(element, { document }) {
 
     if (!body.length) return;
 
-    if (anyRealIcon) {
-      const iconImg = Array.from(item.querySelectorAll('img')).find(realSrc);
+    if (anyIcon) {
+      const slug = iconSlugFor(item);
       const iconCell = [];
-      if (iconImg) {
+      if (slug) {
         const icon = document.createElement('img');
-        icon.setAttribute('src', abs(iconImg.getAttribute('src') || ''));
-        icon.setAttribute('alt', iconImg.getAttribute('alt') || title);
+        icon.setAttribute('src', `https://LOCAL.ICONS/icons/${slug}.png`);
+        icon.setAttribute('alt', title);
         iconCell.push(icon);
       }
       cells.push([iconCell, body]);

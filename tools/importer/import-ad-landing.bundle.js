@@ -211,14 +211,30 @@ var CustomImportScript = (() => {
   }
 
   // tools/importer/parsers/cards-ad-feature.js
+  var SERVICE_ICONS = {
+    "First service": "ad-svc-ai",
+    "Second service": "ad-svc-strategy",
+    "Third service": "ad-svc-streaming",
+    "Fourth service": "ad-svc-appweb",
+    "Fifth service": "ad-svc-content",
+    "Sixth service": ["ad-svc-adobe", "ad-svc-fde"]
+  };
   function parse4(element, { document }) {
-    const abs = (s) => s && s.startsWith("//") ? `https:${s}` : s;
-    const realSrc = (im) => {
-      const s = im.getAttribute("src") || "";
-      return s && !s.startsWith("data:") && !s.startsWith("blob:");
-    };
     const items = Array.from(element.children).filter((c) => c.textContent.trim() || c.querySelector("img"));
-    const anyRealIcon = items.some((it) => Array.from(it.querySelectorAll("img")).some(realSrc));
+    const occ = {};
+    const iconSlugFor = (item) => {
+      const img = item.querySelector("img");
+      const alt = img ? (img.getAttribute("alt") || "").trim() : "";
+      const map = SERVICE_ICONS[alt];
+      if (!map) return null;
+      if (Array.isArray(map)) {
+        occ[alt] = (occ[alt] || 0) + 1;
+        return map[occ[alt] - 1] || map[map.length - 1];
+      }
+      return map;
+    };
+    const anyIcon = items.some((it) => iconSlugFor(it));
+    Object.keys(occ).forEach((k) => delete occ[k]);
     const cells = [];
     items.forEach((item) => {
       const body = [];
@@ -239,13 +255,13 @@ var CustomImportScript = (() => {
         body.push(p);
       });
       if (!body.length) return;
-      if (anyRealIcon) {
-        const iconImg = Array.from(item.querySelectorAll("img")).find(realSrc);
+      if (anyIcon) {
+        const slug = iconSlugFor(item);
         const iconCell = [];
-        if (iconImg) {
+        if (slug) {
           const icon = document.createElement("img");
-          icon.setAttribute("src", abs(iconImg.getAttribute("src") || ""));
-          icon.setAttribute("alt", iconImg.getAttribute("alt") || title);
+          icon.setAttribute("src", `https://LOCAL.ICONS/icons/${slug}.png`);
+          icon.setAttribute("alt", title);
           iconCell.push(icon);
         }
         cells.push([iconCell, body]);
@@ -262,27 +278,33 @@ var CustomImportScript = (() => {
   }
 
   // tools/importer/parsers/cards-ad-points.js
+  var POINT_ICONS = {
+    "Expertise first photo": "ad-why-partnership",
+    "Expertise second photo": "ad-why-products",
+    "Expertise third photo": "ad-why-supplychain",
+    "Expertise fourth photo": "ad-why-crossplatform"
+  };
   function parse5(element, { document }) {
-    const abs = (s) => s && s.startsWith("//") ? `https:${s}` : s;
-    const realSrc = (im) => {
-      const s = im.getAttribute("src") || "";
-      return s && !s.startsWith("data:") && !s.startsWith("blob:");
-    };
     const items = Array.from(element.children).filter((c) => c.textContent.trim() || c.querySelector("img"));
-    const anyRealIcon = items.some((it) => Array.from(it.querySelectorAll("img")).some(realSrc));
+    const slugFor = (item) => {
+      const img = item.querySelector("img");
+      const alt = img ? (img.getAttribute("alt") || "").trim() : "";
+      return POINT_ICONS[alt] || null;
+    };
+    const anyIcon = items.some((it) => slugFor(it));
     const cells = [];
     items.forEach((item) => {
       const text = Array.from(item.querySelectorAll("p, div, span")).map((el) => el.children.length === 0 ? el.textContent.trim() : "").find((t) => t) || item.textContent.trim();
       if (!text) return;
       const p = document.createElement("p");
       p.textContent = text;
-      if (anyRealIcon) {
-        const iconImg = Array.from(item.querySelectorAll("img")).find(realSrc);
+      if (anyIcon) {
+        const slug = slugFor(item);
         const iconCell = [];
-        if (iconImg) {
+        if (slug) {
           const icon = document.createElement("img");
-          icon.setAttribute("src", abs(iconImg.getAttribute("src") || ""));
-          icon.setAttribute("alt", iconImg.getAttribute("alt") || "");
+          icon.setAttribute("src", `https://LOCAL.ICONS/icons/${slug}.png`);
+          icon.setAttribute("alt", text);
           iconCell.push(icon);
         }
         cells.push([iconCell, [p]]);
@@ -389,6 +411,28 @@ var CustomImportScript = (() => {
 
   // tools/importer/transformers/ad-cleanup.js
   var TransformHook = { beforeTransform: "beforeTransform", afterTransform: "afterTransform" };
+  var DEFAULT_CONTENT_ICONS = {
+    "First process": "ad-process-1",
+    "Second Process": "ad-process-2",
+    "Third Process": "ad-process-3",
+    "Fourth Process": "ad-process-4",
+    "adobe-photo": "ad-client-adobe",
+    "paramount-photo": "ad-client-paramount",
+    "dreamworks-photo": "ad-client-dreamworks",
+    "pgatour-photo": "ad-client-pgatour",
+    "natgeo-photo": "ad-client-natgeo",
+    "twitch-photo": "ad-client-twitch",
+    "wondery-photo": "ad-client-wondery",
+    "porsche-photo": "ad-client-porsche",
+    "funimation-photo": "ad-client-funimation",
+    "discovery-photo": "ad-client-discovery",
+    "royalcollege-photo": "ad-client-royalcollege",
+    "samsung-photo": "ad-client-samsung",
+    "Benefits first photo": "ad-adobe-experience-platform",
+    "Benefits second photo": "ad-adobe-experience-manager",
+    "Benefits third photo": "ad-adobe-creative-cloud",
+    "Benefits fourth photo": "ad-adobe-document-cloud"
+  };
   function reconstructButton(btn) {
     const label = btn.textContent.trim();
     if (!label) {
@@ -413,9 +457,22 @@ var CustomImportScript = (() => {
       const header = wrapper.querySelector(":scope > div.bg-\\[\\#fff\\]:first-child");
       if (header) header.remove();
       element.querySelectorAll("div.bg-\\[\\#4485B6\\]").forEach((el) => el.remove());
+      element.querySelectorAll("img").forEach((img) => {
+        const alt = (img.getAttribute("alt") || "").trim();
+        const slug = DEFAULT_CONTENT_ICONS[alt];
+        if (!slug) return;
+        const src = img.getAttribute("src") || "";
+        if (!src.startsWith("data:") && !src.startsWith("blob:")) return;
+        img.setAttribute("src", `https://LOCAL.ICONS/icons/${slug}.png`);
+      });
     }
     if (hookName === TransformHook.afterTransform) {
       element.querySelectorAll("button").forEach((btn) => reconstructButton(btn));
+      element.querySelectorAll('img[src*="LOCAL.ICONS"]').forEach((img) => {
+        const src = img.getAttribute("src") || "";
+        const idx = src.indexOf("/icons/");
+        if (idx !== -1) img.setAttribute("src", src.slice(idx));
+      });
       element.querySelectorAll("img").forEach((img) => {
         const src = img.getAttribute("src") || "";
         if (src.startsWith("blob:") || src.startsWith("data:")) img.remove();
@@ -576,6 +633,11 @@ var CustomImportScript = (() => {
       WebImporter.rules.createMetadata(main, document);
       WebImporter.rules.transformBackgroundImages(main, document);
       WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
+      main.querySelectorAll('img[src*="/icons/"]').forEach((img) => {
+        const src = img.getAttribute("src") || "";
+        const idx = src.indexOf("/icons/");
+        if (idx > 0) img.setAttribute("src", src.slice(idx));
+      });
       const path = WebImporter.FileUtils.sanitizePath(
         new URL(params.originalURL).pathname.replace(/\/$/, "").replace(/\.html$/, "") || "/index"
       );
