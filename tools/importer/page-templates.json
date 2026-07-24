@@ -615,6 +615,53 @@
           ]
         }
       ]
+    },
+    {
+      "name": "products-listing",
+      "urls": [
+        "https://www.ensemble.com/products/"
+      ],
+      "representativeUrl": "https://www.ensemble.com/products/",
+      "coverageGaps": [],
+      "description": "Products listing: intro hero + grid of 5 product showcase cards (image + category + title + description + tech icons + Read more) + Contact CTA",
+      "blocks": [
+        {
+          "name": "hero-about",
+          "instances": [
+            "main > div > *:nth-child(1)"
+          ]
+        },
+        {
+          "name": "cards-products",
+          "instances": [
+            "main > div > *:nth-child(2) div.grid"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "prl-hero",
+          "name": "Intro hero",
+          "selector": "main > div > *:nth-child(1)",
+          "style": null,
+          "blocks": [
+            "hero-about"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "prl-grid",
+          "name": "Product grid",
+          "selector": "main > div > *:nth-child(2)",
+          "style": null,
+          "blocks": [
+            "cards-products"
+          ],
+          "defaultContent": [
+            "main > div > *:nth-child(2) button"
+          ]
+        }
+      ]
     }
   ]
 }

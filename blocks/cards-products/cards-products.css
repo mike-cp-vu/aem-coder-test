@@ -1,0 +1,132 @@
+/*
+ * cards-products
+ * A two-column grid of dark, image-led product showcase cards.
+ * Decorated DOM:
+ *   .cards-products > ul > li
+ *     > .cards-products-card-image  (product screenshot)
+ *     > .cards-products-card-body   (eyebrow, title, description, icon strip, CTA)
+ */
+
+.cards-products > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (width >= 900px) {
+  .cards-products > ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+}
+
+/* one product card — dark background, image on top, body below */
+.cards-products > ul > li {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 0;
+  border-radius: 8px;
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+/* product screenshot */
+.cards-products .cards-products-card-image {
+  line-height: 0;
+}
+
+.cards-products .cards-products-card-image img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+}
+
+/* body */
+.cards-products .cards-products-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 24px;
+}
+
+@media (width >= 900px) {
+  .cards-products .cards-products-card-body {
+    padding: 32px;
+  }
+}
+
+/* category eyebrow */
+.cards-products .cards-products-eyebrow {
+  margin: 0;
+  color: #9a9a9a;
+  font-size: var(--body-font-size-s);
+  font-weight: 600;
+}
+
+/* product title */
+.cards-products .cards-products-card-body h2,
+.cards-products .cards-products-card-body h3 {
+  margin: 0;
+  font-size: var(--heading-size-l);
+  font-weight: 800;
+  line-height: 1.2;
+  color: #fff;
+}
+
+/* description */
+.cards-products .cards-products-card-body p {
+  margin: 0;
+  font-size: var(--body-font-size-m);
+  line-height: 24px;
+  color: #e0e0e0;
+}
+
+/* technology / platform icon strip */
+.cards-products .cards-products-icons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 24px;
+  line-height: 0;
+}
+
+.cards-products .cards-products-icons picture {
+  line-height: 0;
+}
+
+.cards-products .cards-products-icons img {
+  width: auto;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* Read more CTA */
+.cards-products .cards-products-cta-wrapper {
+  margin-top: auto;
+}
+
+.cards-products .cards-products-cta:any-link {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--brand-orange);
+  font-size: var(--body-font-size-s);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.35px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.cards-products .cards-products-cta:any-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}

@@ -1,0 +1,40 @@
+{
+  "variantName": "cards-products",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-07-24T02:42:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.ensemble.com/products/",
+    "originPage": "products page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "spacious",
+    "purpose": "product-showcase",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "product screenshot + category eyebrow + product title + description + technology-icon strip + 'Read more' CTA",
+    "buttonCount": 1,
+    "imageCount": 7
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "product / solution showcase grids with a large screenshot per item",
+      "dark image-led cards pairing a title, description and technology icon strip",
+      "offering grids that end each card with a 'Read more' link"
+    ],
+    "notSuitableFor": [
+      "full-width stacked light service rows with tiny icons (use cards-service-detail)",
+      "icon + title + description feature grids without large screenshots (use cards-services)",
+      "logo-only walls (use cards-clients)",
+      "portfolio image tiles with overlaid label only (use cards-portfolio-listing)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/products/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-24T02:42:00.000Z"
+  }
+}
