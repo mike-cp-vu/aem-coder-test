@@ -1,54 +1,111 @@
+/*
+ * cards-team-detail — "Our Team" department grid.
+ * Source: https://www.ensemble.com/careers/ (teams-container)
+ * Photo on top, uppercase title, description, orange-bullet responsibility list.
+ * Grid: 1 col mobile -> 2 (>=600) -> 3 (>=900). Cards are transparent (no
+ * border/shadow/background); only the image wrapper is rounded.
+ */
+
 .cards-team-detail > ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px; /* mobile gap-y-7 */
 }
 
 .cards-team-detail > ul > li {
   display: flex;
   flex-direction: column;
-  background-color: var(--background-color);
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
 }
 
 .cards-team-detail .cards-team-detail-card-image {
   line-height: 0;
   border-radius: 4px;
   overflow: hidden;
+  position: relative;
+  aspect-ratio: 1 / 1;
 }
 
 .cards-team-detail .cards-team-detail-card-image img {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
   object-fit: cover;
 }
 
 .cards-team-detail .cards-team-detail-card-body {
-  margin-top: 12px;
+  margin: 0;
 }
 
 .cards-team-detail .cards-team-detail-card-body h2,
 .cards-team-detail .cards-team-detail-card-body h3 {
   text-transform: uppercase;
   font-weight: 600;
-  font-size: var(--body-font-size-m);
+  font-size: 17px;
+  line-height: 24px;
+  color: var(--text-color);
   margin: 12px 0;
 }
 
 .cards-team-detail .cards-team-detail-card-body p {
   font-weight: 300;
-  font-size: var(--body-font-size-s);
+  font-size: 12px;
+  line-height: 24px;
+  color: var(--text-color);
+  margin: 0;
 }
 
 .cards-team-detail .cards-team-detail-card-body ul {
-  margin: 8px 0 0;
-  padding-left: 20px;
+  list-style: none;
+  margin: 4px 0 0;
+  padding-left: 0;
 }
 
 .cards-team-detail .cards-team-detail-card-body ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
   font-weight: 300;
-  font-size: var(--body-font-size-s);
-  margin-bottom: 4px;
+  line-height: 20px;
+  color: #000;
+  margin: 0;
+}
+
+.cards-team-detail .cards-team-detail-card-body ul li::before {
+  content: "\2022"; /* orange bullet */
+  flex: 0 0 auto;
+  color: var(--brand-orange);
+  font-size: 24px;
+  line-height: 20px;
+}
+
+@media (width >= 600px) {
+  .cards-team-detail > ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px; /* md:gap-10 */
+  }
+
+  .cards-team-detail .cards-team-detail-card-body h2,
+  .cards-team-detail .cards-team-detail-card-body h3 {
+    font-size: 18px;
+  }
+
+  .cards-team-detail .cards-team-detail-card-body p {
+    font-size: 14px;
+  }
+}
+
+@media (width >= 900px) {
+  .cards-team-detail > ul {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px 32px; /* lg:gap-y-9 lg:gap-x-8 */
+  }
 }

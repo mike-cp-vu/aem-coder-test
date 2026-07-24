@@ -1,32 +1,71 @@
+/*
+ * cards-benefits — "Enjoy Great Benefits" grid.
+ * Source: https://www.ensemble.com/careers/ (benefitsContainer)
+ * Icon (top, centered) + bold title (centered) + left-aligned description.
+ * Grid: 1 col mobile -> 2 (>=600) -> 3 (>=900).
+ */
+
 .cards-benefits > ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 24px;
+  grid-template-columns: 1fr;
+  gap: 36px;
 }
 
 .cards-benefits > ul > li {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 12px;
-  background-color: var(--background-color);
+  padding-bottom: 24px;
 }
 
+/* icon — 60px tall, aspect preserved, centered above the text */
 .cards-benefits .cards-benefits-card-image {
   line-height: 0;
+  text-align: center;
 }
 
 .cards-benefits .cards-benefits-card-image img {
-  width: 100px;
   height: 60px;
+  width: auto;
   object-fit: contain;
 }
 
+/* body holds the bold title + description */
 .cards-benefits .cards-benefits-card-body {
+  margin-top: 16px;
+}
+
+.cards-benefits .cards-benefits-card-body h1,
+.cards-benefits .cards-benefits-card-body h2,
+.cards-benefits .cards-benefits-card-body h3,
+.cards-benefits .cards-benefits-card-body h4 {
+  margin: 0;
+  font-size: 16px;
   font-weight: 600;
-  font-size: var(--body-font-size-s);
+  line-height: 24px;
+  color: var(--text-color);
+  text-align: center;
+}
+
+.cards-benefits .cards-benefits-card-body p {
+  margin: 10px 0 0;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 20px;
+  color: var(--text-color);
+  text-align: left;
+}
+
+@media (width >= 600px) {
+  .cards-benefits > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 900px) {
+  .cards-benefits > ul {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }

@@ -1,27 +1,84 @@
+/* cards-culture -- culture cards: square photo + title + description
+   Styles derived from source computed styles at ensemble.com/careers */
+
 .cards-culture > ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  gap: 24px;
+  grid-template-columns: 1fr;
+  gap: 0 40px;
 }
 
+/* each card: photo on the left, text on the right */
 .cards-culture > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgb(209 213 219); /* gray-300 divider */
+  background-color: transparent;
 }
 
-.cards-culture .cards-culture-card-body {
-  margin: 16px;
-}
-
+/* square rounded photo */
 .cards-culture .cards-culture-card-image {
+  flex: 0 0 auto;
   line-height: 0;
 }
 
-.cards-culture > ul > li img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
+.cards-culture .cards-culture-card-image picture {
+  display: block;
+}
+
+.cards-culture .cards-culture-card-image img {
+  width: 120px;
+  height: 120px;
   object-fit: cover;
+  border-radius: 6px;
+}
+
+/* text body */
+.cards-culture .cards-culture-card-body {
+  flex: 1 1 auto;
+}
+
+.cards-culture .cards-culture-card-body h2,
+.cards-culture .cards-culture-card-body h3 {
+  margin: 0 0 8px;
+  font-family: var(--heading-font-family);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--text-color);
+}
+
+.cards-culture .cards-culture-card-body p {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text-color);
+}
+
+/* tablet and up: larger photos */
+@media (width >= 600px) {
+  .cards-culture .cards-culture-card-image img {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+/* desktop: 2-column grid of cards */
+@media (width >= 900px) {
+  .cards-culture > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cards-culture .cards-culture-card-image img {
+    width: 212px;
+    height: 212px;
+  }
 }

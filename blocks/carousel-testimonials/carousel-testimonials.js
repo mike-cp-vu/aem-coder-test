@@ -1,146 +1,108 @@
-function updateActiveSlide(slide) {
-  const block = slide.closest('.carousel-testimonials');
-  const slideIndex = parseInt(slide.dataset.slideIndex, 10);
-  block.dataset.activeSlide = slideIndex;
+/**
+ * Employee Testimonials carousel.
+ * Authored structure: first row is the lead photo (+ eyebrow/author),
+ * remaining rows are quote slides (each with quote text + author).
+ *
+ * Decorated structure:
+ *   .carousel-testimonials > ul
+ *     > li.carousel-testimonials-photo   -> lead photo (left column)
+ *     > li.carousel-testimonials-panel   -> quote panel (right column)
+ *
+ * Shows one quote slide at a time; prev/next arrows cycle with wrap-around.
+ */
 
-  const slides = block.querySelectorAll('.carousel-testimonials-slide');
+function showSlide(block, index) {
+  const slides = [...block.querySelectorAll('.carousel-testimonials-slide')];
+  if (!slides.length) return;
+  let next = index;
+  if (next < 0) next = slides.length - 1;
+  if (next >= slides.length) next = 0;
 
-  slides.forEach((aSlide, idx) => {
-    aSlide.setAttribute('aria-hidden', idx !== slideIndex);
-    aSlide.querySelectorAll('a').forEach((link) => {
-      if (idx !== slideIndex) {
-        link.setAttribute('tabindex', '-1');
-      } else {
-        link.removeAttribute('tabindex');
+  slides.forEach((slide, idx) => {
+    const active = idx === next;
+    slide.classList.toggle('active', active);
+    slide.setAttribute('aria-hidden', String(!active));
+  });
+  block.dataset.activeSlide = String(next);
+}
+
+export default function decorate(block) {
+  const rows = [...block.children];
+
+  // Extract the lead photo from the first row.
+  const photo = document.createElement('li');
+  photo.className = 'carousel-testimonials-photo';
+  const firstPicture = rows[0] && rows[0].querySelector('picture');
+  if (firstPicture) photo.append(firstPicture);
+
+  // Build quote slides from the remaining rows.
+  const slidesWrapper = document.createElement('div');
+  slidesWrapper.className = 'carousel-testimonials-slides';
+  const slides = [];
+  let authorText = 'Herman, Manager, Solutions Consulting';
+
+  rows.slice(1).forEach((row) => {
+    const p = [...row.querySelectorAll(':scope > div p')];
+    if (!p.length) return;
+    const slide = document.createElement('div');
+    slide.className = 'carousel-testimonials-slide';
+
+    p.forEach((para) => {
+      if (para.querySelector('em')) {
+        authorText = para.textContent.trim();
+        return;
       }
+      slide.append(para);
     });
-  });
-
-  const indicators = block.querySelectorAll('.carousel-testimonials-slide-indicator');
-  indicators.forEach((indicator, idx) => {
-    if (idx !== slideIndex) {
-      indicator.querySelector('button').removeAttribute('disabled');
-    } else {
-      indicator.querySelector('button').setAttribute('disabled', 'true');
-    }
-  });
-}
-
-export function showSlide(block, slideIndex = 0) {
-  const slides = block.querySelectorAll('.carousel-testimonials-slide');
-  let realSlideIndex = slideIndex < 0 ? slides.length - 1 : slideIndex;
-  if (slideIndex >= slides.length) realSlideIndex = 0;
-  const activeSlide = slides[realSlideIndex];
-
-  activeSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
-  block.querySelector('.carousel-testimonials-slides').scrollTo({
-    top: 0,
-    left: activeSlide.offsetLeft,
-    behavior: 'smooth',
-  });
-}
-
-function bindEvents(block) {
-  const slideIndicators = block.querySelector('.carousel-testimonials-slide-indicators');
-  if (!slideIndicators) return;
-
-  slideIndicators.querySelectorAll('button').forEach((button) => {
-    button.addEventListener('click', (e) => {
-      const slideIndicator = e.currentTarget.parentElement;
-      showSlide(block, parseInt(slideIndicator.dataset.targetSlide, 10));
-    });
-  });
-
-  block.querySelector('.slide-prev').addEventListener('click', () => {
-    showSlide(block, parseInt(block.dataset.activeSlide, 10) - 1);
-  });
-  block.querySelector('.slide-next').addEventListener('click', () => {
-    showSlide(block, parseInt(block.dataset.activeSlide, 10) + 1);
-  });
-
-  const slideObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) updateActiveSlide(entry.target);
-    });
-  }, { threshold: 0.5 });
-  block.querySelectorAll('.carousel-testimonials-slide').forEach((slide) => {
-    slideObserver.observe(slide);
-  });
-}
-
-function createSlide(row, slideIndex, carouselId) {
-  const slide = document.createElement('li');
-  slide.dataset.slideIndex = slideIndex;
-  slide.setAttribute('id', `carousel-testimonials-${carouselId}-slide-${slideIndex}`);
-  slide.classList.add('carousel-testimonials-slide');
-
-  row.querySelectorAll(':scope > div').forEach((column, colIdx) => {
-    column.classList.add(`carousel-testimonials-slide-${colIdx === 0 ? 'image' : 'content'}`);
-    slide.append(column);
-  });
-
-  const labeledBy = slide.querySelector('h1, h2, h3, h4, h5, h6');
-  if (labeledBy) {
-    slide.setAttribute('aria-labelledby', labeledBy.getAttribute('id'));
-  }
-
-  return slide;
-}
-
-let carouselId = 0;
-export default async function decorate(block) {
-  carouselId += 1;
-  block.setAttribute('id', `carousel-testimonials-${carouselId}`);
-  const rows = block.querySelectorAll(':scope > div');
-  const isSingleSlide = rows.length < 2;
-
-  block.setAttribute('role', 'region');
-  block.setAttribute('aria-roledescription', 'Carousel');
-
-  const container = document.createElement('div');
-  container.classList.add('carousel-testimonials-slides-container');
-
-  const slidesWrapper = document.createElement('ul');
-  slidesWrapper.classList.add('carousel-testimonials-slides');
-  block.prepend(slidesWrapper);
-
-  let slideIndicators;
-  if (!isSingleSlide) {
-    const slideIndicatorsNav = document.createElement('nav');
-    slideIndicatorsNav.setAttribute('aria-label', 'Carousel Slide Controls');
-    slideIndicators = document.createElement('ol');
-    slideIndicators.classList.add('carousel-testimonials-slide-indicators');
-    slideIndicatorsNav.append(slideIndicators);
-    block.append(slideIndicatorsNav);
-
-    const slideNavButtons = document.createElement('div');
-    slideNavButtons.classList.add('carousel-testimonials-navigation-buttons');
-    slideNavButtons.innerHTML = `
-      <button type="button" class= "slide-prev" aria-label="Previous Slide"></button>
-      <button type="button" class="slide-next" aria-label="Next Slide"></button>
-    `;
-
-    container.append(slideNavButtons);
-  }
-
-  rows.forEach((row, idx) => {
-    const slide = createSlide(row, idx, carouselId);
     slidesWrapper.append(slide);
-
-    if (slideIndicators) {
-      const indicator = document.createElement('li');
-      indicator.classList.add('carousel-testimonials-slide-indicator');
-      indicator.dataset.targetSlide = idx;
-      indicator.innerHTML = `<button type="button" aria-label="Show Slide ${idx + 1} of ${rows.length}"></button>`;
-      slideIndicators.append(indicator);
-    }
-    row.remove();
+    slides.push(slide);
   });
 
-  container.append(slidesWrapper);
-  block.prepend(container);
+  const panel = document.createElement('li');
+  panel.className = 'carousel-testimonials-panel';
 
-  if (!isSingleSlide) {
-    bindEvents(block);
-  }
+  const eyebrow = document.createElement('p');
+  eyebrow.className = 'carousel-testimonials-eyebrow';
+  eyebrow.textContent = 'Employee Testimonials';
+
+  const author = document.createElement('p');
+  author.className = 'carousel-testimonials-author';
+  author.textContent = authorText;
+
+  const controls = document.createElement('div');
+  controls.className = 'carousel-testimonials-controls';
+
+  const prev = document.createElement('button');
+  prev.type = 'button';
+  prev.className = 'carousel-testimonials-nav prev';
+  prev.setAttribute('aria-label', 'Previous testimonial');
+
+  const controlAuthor = document.createElement('span');
+  controlAuthor.className = 'carousel-testimonials-control-author';
+  controlAuthor.textContent = authorText;
+
+  const next = document.createElement('button');
+  next.type = 'button';
+  next.className = 'carousel-testimonials-nav next';
+  next.setAttribute('aria-label', 'Next testimonial');
+
+  controls.append(prev, controlAuthor, next);
+  panel.append(eyebrow, author, slidesWrapper, controls);
+
+  const ul = document.createElement('ul');
+  ul.append(photo, panel);
+
+  block.textContent = '';
+  block.append(ul);
+
+  if (!slides.length) return;
+
+  prev.addEventListener('click', () => {
+    showSlide(block, parseInt(block.dataset.activeSlide || '0', 10) - 1);
+  });
+  next.addEventListener('click', () => {
+    showSlide(block, parseInt(block.dataset.activeSlide || '0', 10) + 1);
+  });
+
+  showSlide(block, 0);
 }
