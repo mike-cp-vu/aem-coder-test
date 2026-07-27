@@ -21,6 +21,7 @@
 .cards-departments .cards-departments-card-image img {
   display: block;
   width: 100%;
+  max-width: 189px;
   aspect-ratio: 189 / 192;
   object-fit: cover;
 }
