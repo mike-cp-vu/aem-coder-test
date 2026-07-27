@@ -75,5 +75,19 @@ export default function transform(hookName, element, payload) {
       const key = (img.getAttribute('alt') || '').trim().toLowerCase();
       if (BADGES[key]) img.setAttribute('src', `https://LOCAL.IMAGES${BADGES[key]}`);
     });
+
+    // The "Think you'd be a good fit?" section imports the JOIN US CTA twice
+    // (the source renders it once). Drop consecutive duplicate CTA links that
+    // point to the same href with the same label.
+    const seenCta = new Set();
+    element.querySelectorAll('a[href="/careers/"], a[href="/careers"]').forEach((a) => {
+      const key = `${a.getAttribute('href')}|${a.textContent.trim().toLowerCase()}`;
+      if (seenCta.has(key)) {
+        const wrapper = a.closest('p') || a;
+        wrapper.remove();
+      } else {
+        seenCta.add(key);
+      }
+    });
   }
 }

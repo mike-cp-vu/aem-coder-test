@@ -106,5 +106,19 @@ export default function parse(element, { document }) {
   }
 
   const block = WebImporter.Blocks.createBlock(document, { name: 'carousel-timeline', cells });
+
+  // Preserve the section heading ("Our story") that precedes the slider as
+  // default content above the block, matching the source. The section's
+  // declared defaultContent selector does not emit it, so surface it here.
+  const headingEl = element.querySelector('h1, h2, h3');
+  if (headingEl && headingEl.textContent.trim()) {
+    const heading = document.createElement('h2');
+    heading.textContent = headingEl.textContent.trim();
+    const frag = document.createDocumentFragment();
+    frag.append(heading, block);
+    element.replaceWith(frag);
+    return;
+  }
+
   element.replaceWith(block);
 }

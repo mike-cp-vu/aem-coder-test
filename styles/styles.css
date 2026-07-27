@@ -407,3 +407,38 @@ main .section.grey .default-content-wrapper a.button {
   margin: 24px auto 0;
 }
 /* stylelint-enable no-descending-specificity */
+
+/* Default-content sections that pair a text block with a trailing image
+   (About "Partner with the best" and "Our Certifications") render as two
+   columns on desktop — text on the left, image(s) on the right — matching the
+   source. Scoped with :has() to only affect wrappers that contain an image
+   paragraph, so ordinary text sections are untouched. */
+@media (width >= 900px) {
+  main .section > .default-content-wrapper:has(> p > picture) {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    column-gap: 48px;
+    align-items: center;
+  }
+
+  /* text (heading + prose) occupies the left column, stacked */
+  main .section > .default-content-wrapper:has(> p > picture) > h1,
+  main .section > .default-content-wrapper:has(> p > picture) > h2,
+  main .section > .default-content-wrapper:has(> p > picture) > p:not(:has(> picture)) {
+    grid-column: 1;
+    margin-left: 0;
+  }
+
+  /* image paragraph(s) occupy the right column */
+  main .section > .default-content-wrapper:has(> p > picture) > p:has(> picture) {
+    grid-column: 2;
+    grid-row: 1 / span 99;
+    align-self: center;
+    margin: 0;
+  }
+
+  main .section > .default-content-wrapper:has(> p > picture) > p > picture img {
+    width: 100%;
+    height: auto;
+  }
+}
