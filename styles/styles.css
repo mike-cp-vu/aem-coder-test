@@ -386,6 +386,11 @@ main .section.grey .default-content-wrapper p {
   color: var(--text-color);
 }
 
+/* brand word "ensemble" highlighted in link blue, matching the source CTA */
+main .section.grey .default-content-wrapper p .brand-word {
+  color: var(--link-color);
+}
+
 /* stylelint-disable no-descending-specificity */
 main .section.center .default-content-wrapper a.button,
 main .section.grey .default-content-wrapper a.button {

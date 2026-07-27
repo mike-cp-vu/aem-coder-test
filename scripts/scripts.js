@@ -214,6 +214,20 @@ export function normalizeInternalLinks(el) {
   });
 }
 
+/**
+ * Highlights the lowercase brand word "ensemble" inside grey CTA bands, matching
+ * the source where it is rendered in the link/brand blue. Scoped to grey-section
+ * default content so ordinary prose is untouched.
+ * @param {HTMLElement} main The main container element
+ */
+function decorateBrandWord(main) {
+  main.querySelectorAll('.section.grey .default-content-wrapper p').forEach((p) => {
+    if (p.querySelector('a, .brand-word')) return;
+    if (!/\bensemble\b/.test(p.textContent)) return;
+    p.innerHTML = p.innerHTML.replace(/\bensemble\b/g, '<span class="brand-word">ensemble</span>');
+  });
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   decorateIcons(main);
@@ -222,6 +236,7 @@ export function decorateMain(main) {
   decorateSectionMetadata(main);
   decorateBlocks(main);
   decorateButtons(main);
+  decorateBrandWord(main);
   normalizeInternalLinks(main);
 }
 
