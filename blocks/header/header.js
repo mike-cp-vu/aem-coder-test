@@ -182,7 +182,10 @@ export default async function decorate(block) {
     toggle.className = 'nav-region-toggle';
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-haspopup', 'true');
-    toggle.innerHTML = `<span class="nav-region-icon" aria-hidden="true"></span><span class="nav-region-label">${regionLink.textContent.trim()}</span><span class="nav-region-caret" aria-hidden="true"></span>`;
+    // The source shows only the globe icon + caret (no text). Keep the label
+    // as an accessible name for screen readers, not visible text.
+    toggle.setAttribute('aria-label', regionLink.textContent.trim());
+    toggle.innerHTML = '<span class="nav-region-icon" aria-hidden="true"></span><span class="nav-region-caret" aria-hidden="true"></span>';
     const menu = document.createElement('ul');
     menu.className = 'nav-region-menu';
     regions.forEach((r) => {
