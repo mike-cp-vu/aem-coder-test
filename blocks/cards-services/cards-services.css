@@ -78,9 +78,18 @@
   color: #0079c0;
 }
 
+/* Section heading ("What we provide") is left-aligned and large, matching
+   the source (36px / 800). */
+.cards-services-container .default-content-wrapper h2 {
+  text-align: left;
+  font-size: var(--heading-font-size-xxl);
+  font-weight: 800;
+}
+
 /* "LEARN MORE ABOUT WHAT WE DO" CTA sits in the section's default content,
-   centered below the grid (matches source). */
-.cards-services-container .default-content-wrapper {
+   centered below the grid (matches source). Scope the centering to the CTA
+   wrapper that follows the grid so the heading above stays left-aligned. */
+.cards-services-wrapper + .default-content-wrapper {
   text-align: center;
   margin-top: 40px;
 }

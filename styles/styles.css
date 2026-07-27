@@ -378,12 +378,12 @@ main .section.grey {
 
 /* CTA band heading/lead line is a large bold statement */
 main .section.grey .default-content-wrapper p {
-  max-width: 760px;
+  max-width: 800px;
   margin: 0 auto;
-  font-size: var(--heading-font-size-l);
-  font-weight: 700;
+  font-size: var(--heading-font-size-xl);
+  font-weight: 800;
   line-height: 1.3;
-  color: var(--heading-color);
+  color: var(--text-color);
 }
 
 /* stylelint-disable no-descending-specificity */

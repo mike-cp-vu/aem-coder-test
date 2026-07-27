@@ -1,7 +1,12 @@
-/* Ensemble footer: dark band, white text, 3-column upper row, centered
-   logo/social/copyright lower row. Matches source (ensemble.com). */
+/* Ensemble footer: dark cityscape photo background, white text, 3-column upper
+   row, centered logo/social/copyright lower row. Matches source (ensemble.com).
+   Navy fallback color shows while the photo loads / if it fails. */
 footer {
   background-color: #152a38;
+  background-image: url('./footer-bg.webp');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   color: #fff;
   font-size: var(--body-font-size-s);
 }

@@ -13,6 +13,9 @@
 
 .cards-clients-container .default-content-wrapper h2 {
   margin-bottom: 56px;
+  text-align: left;
+  font-size: var(--heading-font-size-xxl);
+  font-weight: 800;
 }
 
 .cards-clients > ul {
