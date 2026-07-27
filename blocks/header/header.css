@@ -295,6 +295,12 @@ header nav .nav-sections a:hover {
   color: var(--link-color); /* rgb(40, 134, 187) */
 }
 
+/* active/current nav link: orange underline (matches source) */
+header nav .nav-sections a[aria-current='page'] {
+  border-bottom: 2px solid var(--brand-orange, #f19347);
+  padding-bottom: 2px;
+}
+
 /* region/globe tool link */
 header nav .nav-tools a:any-link {
   color: #333;

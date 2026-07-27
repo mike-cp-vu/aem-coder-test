@@ -150,6 +150,21 @@ export default async function decorate(block) {
         }
       });
     });
+
+    // Mark the nav link for the current page so it gets the active underline
+    // (source shows the current section with an orange bottom border).
+    const here = window.location.pathname.replace(/\/$/, '') || '/';
+    navSections.querySelectorAll('a[href]').forEach((a) => {
+      let linkPath;
+      try {
+        linkPath = new URL(a.href, window.location).pathname.replace(/\/$/, '') || '/';
+      } catch {
+        return;
+      }
+      if (linkPath !== '/' && here.startsWith(linkPath)) {
+        a.setAttribute('aria-current', 'page');
+      }
+    });
   }
 
   // hamburger for mobile
