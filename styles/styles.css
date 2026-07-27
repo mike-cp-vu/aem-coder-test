@@ -313,6 +313,17 @@ main img {
   width: 100%;
 }
 
+/* Border-box reset scoped to page-content blocks. The migrated blocks combine
+   width: 100% with padding on the same element; without border-box that padding
+   is added on top of the width and pushes the element past the viewport (e.g.
+   the cards-portfolio label overlay overflowed 16px on mobile). Scoped to
+   main .block so header/footer/nav chrome and boilerplate primitives are
+   unaffected. */
+main .block,
+main .block * {
+  box-sizing: border-box;
+}
+
 /* sections */
 main > .section {
   margin: 40px 0;

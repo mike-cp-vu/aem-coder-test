@@ -62,6 +62,7 @@
 
 /* category label overlaid at top-left */
 .cards-portfolio .cards-portfolio-card-body {
+  box-sizing: border-box;
   position: absolute;
   top: 0;
   left: 0;
