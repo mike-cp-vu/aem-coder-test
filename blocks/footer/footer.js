@@ -36,7 +36,19 @@ export default async function decorate(block) {
       if (current) current.append(node);
     });
     headingWrapper.textContent = '';
-    columns.forEach((col) => headingWrapper.append(col));
+    // The source orders the columns LOCATIONS, GET IN TOUCH, JOIN OUR TEAM, but
+    // the migrated content arrives GET IN TOUCH first. Reorder by the source
+    // heading sequence; any unlisted column keeps its original relative order.
+    const order = ['locations', 'get in touch', 'join our team'];
+    const rank = (col) => {
+      const h = col.querySelector('h4');
+      const i = h ? order.indexOf(h.textContent.trim().toLowerCase()) : -1;
+      return i === -1 ? order.length : i;
+    };
+    columns
+      .map((col, i) => ({ col, i }))
+      .sort((a, b) => rank(a.col) - rank(b.col) || a.i - b.i)
+      .forEach(({ col }) => headingWrapper.append(col));
 
     // Tag the other content wrapper (logo / social / copyright) for styling.
     footer.querySelectorAll('.default-content-wrapper').forEach((w) => {
