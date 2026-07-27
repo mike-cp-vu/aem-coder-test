@@ -38,10 +38,17 @@ header nav[aria-expanded='true'] {
 
   header nav {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: flex-start;
     gap: 0 32px;
     max-width: 1264px;
     padding: 0 32px;
+  }
+
+  /* Logo stays left; nav links group is pushed to the right, with the region
+     selector immediately after them (matches source layout). */
+  header nav .nav-sections {
+    margin-left: auto;
   }
 
   header nav[aria-expanded='true'] {
@@ -311,5 +318,112 @@ header nav .nav-tools a:hover {
 
   header nav .nav-sections a:any-link {
     font-size: 14px;
+  }
+}
+
+/* ---- Region selector dropdown (Global / EMEA) ---- */
+header nav .nav-region {
+  grid-area: tools;
+  position: relative;
+}
+
+header nav .nav-region-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  border: 0;
+  border-radius: 4px;
+  padding: 6px 8px;
+  background-color: var(--light-color); /* #eff3f4 pill, matches source */
+  color: #333;
+  font: inherit;
+  font-size: var(--body-font-size-s);
+  cursor: pointer;
+}
+
+header nav .nav-region-icon {
+  width: 16px;
+  height: 16px;
+  background: currentcolor;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm165 114h-66a312 312 0 0 0-34-70 187 187 0 0 1 100 70zM256 48c17 0 45 34 59 96H197c14-62 42-96 59-96zM70 320a184 184 0 0 1 0-128h74a416 416 0 0 0 0 128zm21 42h66a312 312 0 0 0 34 70 187 187 0 0 1-100-70zm66-240H91a187 187 0 0 1 100-70 312 312 0 0 0-34 70zm99 342c-17 0-45-34-59-96h118c-14 62-42 96-59 96zm67-136H189a372 372 0 0 1 0-128h134a372 372 0 0 1 0 128zm25 34a416 416 0 0 0 0-128h74a184 184 0 0 1 0 128z"/></svg>') center / contain no-repeat;
+}
+
+header nav .nav-region-caret {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--brand-orange, #e8792b);
+  transition: transform 0.2s ease;
+}
+
+header nav .nav-region-toggle[aria-expanded='true'] .nav-region-caret {
+  transform: rotate(180deg);
+}
+
+header nav .nav-region-menu {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 140px;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 18%);
+  display: none;
+  z-index: 600;
+}
+
+header nav .nav-region-toggle[aria-expanded='true'] + .nav-region-menu {
+  display: block;
+}
+
+header nav .nav-region-menu a:any-link {
+  display: block;
+  padding: 8px 16px;
+  color: #333;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+header nav .nav-region-menu a:hover {
+  background: var(--light-color);
+  color: var(--link-color);
+}
+
+/* ---- Transparent header overlapping a dark hero (homepage) ---- */
+@media (width >= 900px) {
+  /* collapse the reserved header height so main starts at the very top and
+     the hero sits directly under the transparent, overlapping header */
+  body.nav-over-hero header {
+    height: 0;
+  }
+
+  body.nav-over-hero header .nav-wrapper {
+    position: absolute;
+    inset: 0 0 auto;
+    background: none;
+    box-shadow: none;
+  }
+
+  body.nav-over-hero main > .section:first-of-type {
+    margin-top: 0;
+  }
+
+  /* white logo + links over the dark hero */
+  body.nav-over-hero header .nav-brand img {
+    filter: brightness(0) invert(1);
+  }
+
+  body.nav-over-hero header nav .nav-sections a:any-link {
+    color: #fff;
+  }
+
+  body.nav-over-hero header nav .nav-sections a:hover {
+    color: #fff;
+    opacity: 0.75;
   }
 }

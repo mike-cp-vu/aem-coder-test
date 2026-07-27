@@ -165,6 +165,44 @@ export default async function decorate(block) {
   toggleMenu(nav, navSections, isDesktop.matches);
   isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
 
+  // Region selector: the source renders the "Global" tools item as a dropdown
+  // with Global and EMEA options. Build that dropdown from the single tools
+  // link so authors only maintain one entry.
+  const navTools = nav.querySelector('.nav-tools');
+  const regionLink = navTools?.querySelector('a');
+  if (regionLink && /global/i.test(regionLink.textContent)) {
+    const regions = [
+      { label: 'Global', href: '/' },
+      { label: 'EMEA', href: '/emea/' },
+    ];
+    const dropdown = document.createElement('div');
+    dropdown.className = 'nav-region';
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'nav-region-toggle';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-haspopup', 'true');
+    toggle.innerHTML = `<span class="nav-region-icon" aria-hidden="true"></span><span class="nav-region-label">${regionLink.textContent.trim()}</span><span class="nav-region-caret" aria-hidden="true"></span>`;
+    const menu = document.createElement('ul');
+    menu.className = 'nav-region-menu';
+    regions.forEach((r) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = r.href;
+      a.textContent = r.label;
+      li.append(a);
+      menu.append(li);
+    });
+    dropdown.append(toggle, menu);
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+    document.addEventListener('click', () => toggle.setAttribute('aria-expanded', 'false'));
+    regionLink.closest('p')?.replaceWith(dropdown);
+  }
+
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
@@ -173,4 +211,12 @@ export default async function decorate(block) {
   // Migrated nav links carry trailing slashes (/services/) that 404 on EDS;
   // normalize them to the slash-less routes the site actually serves.
   normalizeInternalLinks(nav);
+
+  // Transparent-over-hero header: when the page opens with a dark hero as its
+  // first section, the source overlaps a transparent white-text header on it.
+  // Scope this with a body class so light content pages keep the solid header.
+  const firstSection = document.querySelector('main > .section');
+  if (firstSection && firstSection.querySelector('.hero-home')) {
+    document.body.classList.add('nav-over-hero');
+  }
 }
