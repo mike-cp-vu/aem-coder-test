@@ -121,6 +121,12 @@ footer .footer .footer-meta p:last-child {
   footer .footer .footer-meta {
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    gap: 40px;
+  }
+
+  /* keep the logo and social icons grouped on the left; push the copyright
+     to the far right (matches source, which does not center the icons) */
+  footer .footer .footer-meta p:last-child {
+    margin-left: auto;
   }
 }
