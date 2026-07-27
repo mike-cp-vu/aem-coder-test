@@ -23,20 +23,6 @@ export default function decorate(block) {
       labelLink.replaceWith(...labelLink.childNodes);
       while (li.firstElementChild) tileLink.append(li.firstElementChild);
       li.append(tileLink);
-
-      /* Belt-and-suspenders: force same-tab navigation on click. The plain
-         <a href> is correct, but in some embedded/preview contexts the anchor's
-         default navigation is suppressed; explicitly navigating here still gets
-         through. Guarded so modifier-clicks (new tab/window) behave normally. */
-      tileLink.addEventListener('click', (e) => {
-        const modified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey;
-        if (e.defaultPrevented || e.button !== 0 || modified) return;
-        const href = tileLink.getAttribute('href');
-        if (href) {
-          e.preventDefault();
-          window.location.assign(href);
-        }
-      });
     }
     ul.append(li);
   });
