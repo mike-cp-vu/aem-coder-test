@@ -329,6 +329,15 @@ main > .section {
   margin: 40px 0;
 }
 
+/* Desktop: the source spaces its major sections much further apart than the
+   mobile rhythm. Increase the vertical gap on wide viewports for closer
+   breathing room to the source without doubling page length. */
+@media (width >= 900px) {
+  main > .section {
+    margin: 72px 0;
+  }
+}
+
 main > .section > div {
   max-width: var(--content-max-width);
   margin: auto;
