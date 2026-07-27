@@ -216,7 +216,17 @@ export default async function decorate(block) {
   // first section, the source overlaps a transparent white-text header on it.
   // Scope this with a body class so light content pages keep the solid header.
   const firstSection = document.querySelector('main > .section');
-  if (firstSection && firstSection.querySelector('.hero-home')) {
+  const hero = firstSection && firstSection.querySelector('.hero-home');
+  if (hero) {
     document.body.classList.add('nav-over-hero');
+    // The header stays fixed on scroll. Over the hero it is transparent with
+    // white text; once the user scrolls past the hero it switches to a solid
+    // white bar with dark text so the links stay legible over page content.
+    const onScroll = () => {
+      const past = window.scrollY > hero.offsetHeight - 64;
+      document.body.classList.toggle('nav-scrolled', past);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
 }

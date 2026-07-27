@@ -45,10 +45,11 @@ header nav[aria-expanded='true'] {
     padding: 0 32px;
   }
 
-  /* Logo stays left; nav links group is pushed to the right, with the region
-     selector immediately after them (matches source layout). */
-  header nav .nav-sections {
-    margin-left: auto;
+  /* Logo stays left; the nav links group grows to fill the space and its list
+     is right-justified so the links sit next to the region selector on the
+     right (matches source layout). */
+  header nav .nav-sections ul {
+    justify-content: flex-end;
   }
 
   header nav[aria-expanded='true'] {
@@ -402,18 +403,20 @@ header nav .nav-region-menu a:hover {
     height: 0;
   }
 
+  /* fixed so the header stays pinned while scrolling (matches source) */
   body.nav-over-hero header .nav-wrapper {
-    position: absolute;
+    position: fixed;
     inset: 0 0 auto;
     background: none;
     box-shadow: none;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   body.nav-over-hero main > .section:first-of-type {
     margin-top: 0;
   }
 
-  /* white logo + links over the dark hero */
+  /* over the dark hero: white logo + links */
   body.nav-over-hero header .nav-brand img {
     filter: brightness(0) invert(1);
   }
@@ -425,5 +428,25 @@ header nav .nav-region-menu a:hover {
   body.nav-over-hero header nav .nav-sections a:hover {
     color: #fff;
     opacity: 0.75;
+  }
+
+  /* scrolled past the hero: solid white bar with dark text so links stay
+     legible over page content */
+  body.nav-over-hero.nav-scrolled header .nav-wrapper {
+    background-color: #fff;
+    box-shadow: 0 1px 0 rgb(0 0 0 / 6%);
+  }
+
+  body.nav-over-hero.nav-scrolled header .nav-brand img {
+    filter: none;
+  }
+
+  body.nav-over-hero.nav-scrolled header nav .nav-sections a:any-link {
+    color: #333;
+  }
+
+  body.nav-over-hero.nav-scrolled header nav .nav-sections a:hover {
+    color: var(--link-color);
+    opacity: 1;
   }
 }
