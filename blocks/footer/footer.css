@@ -125,8 +125,10 @@ footer .footer .footer-meta p:last-child {
   }
 
   /* keep the logo and social icons grouped on the left; push the copyright
-     to the far right (matches source, which does not center the icons) */
+     to the far right and right-align its two lines (matches source, which
+     does not center the icons) */
   footer .footer .footer-meta p:last-child {
     margin-left: auto;
+    text-align: right;
   }
 }
