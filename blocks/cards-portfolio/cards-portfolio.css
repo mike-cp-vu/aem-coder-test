@@ -18,6 +18,20 @@
   transition: opacity 0.5s ease;
 }
 
+/* whole-tile link fills the tile so the entire image is clickable */
+.cards-portfolio .cards-portfolio-card-link {
+  display: block;
+  position: absolute;
+  inset: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.cards-portfolio .cards-portfolio-card-link:focus-visible {
+  outline: 2px solid var(--link-color, #2886bb);
+  outline-offset: -2px;
+}
+
 .cards-portfolio > ul > li:hover {
   opacity: 0.9;
 }
