@@ -7,6 +7,15 @@
  *     > .cards-service-detail-card-body   (h2, logo strips, description, actions)
  */
 
+/* The source constrains the services content to a 1536px centred container
+   (wider than the site's default 1400px), so the service copy reads at the
+   same measure as the original. Widen the section wrapper for the service
+   blocks to match. */
+main > .section:has(.cards-service-detail) > div,
+main > .section:has(.cards-service-nav) > div {
+  max-width: 1536px;
+}
+
 .cards-service-detail > ul {
   list-style: none;
   margin: 0;
