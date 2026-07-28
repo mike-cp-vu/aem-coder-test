@@ -350,9 +350,11 @@ header nav .nav-region-toggle {
 }
 
 header nav .nav-region-icon {
-  width: 16px;
-  height: 16px;
-  background: currentcolor;
+  width: 22px;
+  height: 22px;
+
+  /* Source globe is a dark-blue (#005273) stroked icon at ~24px */
+  background: #005273;
   mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm165 114h-66a312 312 0 0 0-34-70 187 187 0 0 1 100 70zM256 48c17 0 45 34 59 96H197c14-62 42-96 59-96zM70 320a184 184 0 0 1 0-128h74a416 416 0 0 0 0 128zm21 42h66a312 312 0 0 0 34 70 187 187 0 0 1-100-70zm66-240H91a187 187 0 0 1 100-70 312 312 0 0 0-34 70zm99 342c-17 0-45-34-59-96h118c-14 62-42 96-59 96zm67-136H189a372 372 0 0 1 0-128h134a372 372 0 0 1 0 128zm25 34a416 416 0 0 0 0-128h74a184 184 0 0 1 0 128z"/></svg>') center / contain no-repeat;
 }
 
