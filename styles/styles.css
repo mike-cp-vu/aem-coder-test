@@ -505,3 +505,17 @@ main.detail-page .detail-cta-row {
 main.detail-page .detail-cta-row > p.button-wrapper {
   margin: 0;
 }
+
+/* Detail-page breadcrumb: the leading "PORTFOLIO/" (or "PRODUCTS/") link is
+   rendered in grey at 14px in the source, not the default link blue. It's the
+   first paragraph of the content wrapper, linking back to the listing; the
+   trailing title text stays dark. */
+main.detail-page .section > .default-content-wrapper > p:first-child:has(> a[href="/portfolio"], > a[href="/products"]) {
+  font-size: 14px;
+}
+
+main.detail-page .section > .default-content-wrapper > p:first-child > a[href="/portfolio"],
+main.detail-page .section > .default-content-wrapper > p:first-child > a[href="/products"] {
+  color: var(--eyebrow-color, #9a9a9a);
+  text-decoration: none;
+}
