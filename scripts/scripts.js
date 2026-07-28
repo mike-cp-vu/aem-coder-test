@@ -255,7 +255,22 @@ function decorateDetailPage(main) {
   const firstWrapper = main.querySelector('.section > .default-content-wrapper');
   const crumbLink = firstWrapper?.querySelector(':scope > p:first-child > a[href]');
   const href = crumbLink ? crumbLink.getAttribute('href') : '';
-  if (/^\/(portfolio|products)(\/|$)/.test(href)) main.classList.add('detail-page');
+  if (!/^\/(portfolio|products)(\/|$)/.test(href)) return;
+  main.classList.add('detail-page');
+
+  // The detail pages close with a "Back to portfolio/products" link and a
+  // "Contact us" CTA. The source renders both as buttons: the back link as an
+  // outlined (secondary) button, contact us as the filled (primary) button
+  // (decorateButtons already promoted the strong-wrapped "Contact us"). Promote
+  // the plain back link in place and center both CTAs — no node reordering, so
+  // it is robust to however section decoration splits the page into wrappers.
+  const backLink = [...main.querySelectorAll('.default-content-wrapper > p > a[href]')]
+    .find((a) => /^back to\b/i.test(a.textContent.trim()));
+  if (backLink) {
+    const backP = backLink.closest('p');
+    backP.className = 'button-wrapper';
+    backLink.className = 'button secondary';
+  }
 }
 
 // eslint-disable-next-line import/prefer-default-export

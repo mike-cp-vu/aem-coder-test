@@ -481,3 +481,10 @@ main.detail-page .section > .default-content-wrapper > h3 {
   line-height: 1.2;
 }
 /* stylelint-enable no-descending-specificity */
+
+/* Detail-page closing CTAs: "Back to portfolio/products" (outlined secondary)
+   and "Contact us" (filled primary) are centered, matching the source. */
+main.detail-page .section > .default-content-wrapper > p.button-wrapper {
+  text-align: center;
+  margin: 24px 0 0;
+}
