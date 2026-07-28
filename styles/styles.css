@@ -483,8 +483,18 @@ main.detail-page .section > .default-content-wrapper > h3 {
 /* stylelint-enable no-descending-specificity */
 
 /* Detail-page closing CTAs: "Back to portfolio/products" (outlined secondary)
-   and "Contact us" (filled primary) are centered, matching the source. */
-main.detail-page .section > .default-content-wrapper > p.button-wrapper {
-  text-align: center;
-  margin: 24px 0 0;
+   and "Contact us" (filled primary) sit side-by-side on one centered row,
+   matching the source. The two CTA paragraphs are adjacent siblings in their
+   own trailing wrapper (tagged .detail-cta-wrapper by scripts.js). */
+main.detail-page .section > .default-content-wrapper.detail-cta-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+main.detail-page .detail-cta-wrapper > p.button-wrapper {
+  margin: 0;
 }

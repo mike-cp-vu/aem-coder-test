@@ -259,17 +259,19 @@ function decorateDetailPage(main) {
   main.classList.add('detail-page');
 
   // The detail pages close with a "Back to portfolio/products" link and a
-  // "Contact us" CTA. The source renders both as buttons: the back link as an
-  // outlined (secondary) button, contact us as the filled (primary) button
-  // (decorateButtons already promoted the strong-wrapped "Contact us"). Promote
-  // the plain back link in place and center both CTAs — no node reordering, so
-  // it is robust to however section decoration splits the page into wrappers.
+  // "Contact us" CTA. The source renders both as buttons on one centered row:
+  // the back link as an outlined (secondary) button, contact us as the filled
+  // (primary) button (decorateButtons already promoted the strong-wrapped
+  // "Contact us"). Promote the plain back link and tag its wrapper so the CSS
+  // lays the two adjacent CTA paragraphs out as a centered row — no node
+  // reordering needed since they are siblings in the same trailing wrapper.
   const backLink = [...main.querySelectorAll('.default-content-wrapper > p > a[href]')]
     .find((a) => /^back to\b/i.test(a.textContent.trim()));
   if (backLink) {
     const backP = backLink.closest('p');
     backP.className = 'button-wrapper';
     backLink.className = 'button secondary';
+    backP.closest('.default-content-wrapper')?.classList.add('detail-cta-wrapper');
   }
 }
 
