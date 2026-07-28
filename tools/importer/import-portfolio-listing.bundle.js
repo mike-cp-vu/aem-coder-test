@@ -1,9 +1,26 @@
 /* eslint-disable */
 var CustomImportScript = (() => {
   var __defProp = Object.defineProperty;
+  var __defProps = Object.defineProperties;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
   var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __propIsEnum = Object.prototype.propertyIsEnumerable;
+  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+  var __spreadValues = (a, b) => {
+    for (var prop in b || (b = {}))
+      if (__hasOwnProp.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    if (__getOwnPropSymbols)
+      for (var prop of __getOwnPropSymbols(b)) {
+        if (__propIsEnum.call(b, prop))
+          __defNormalProp(a, prop, b[prop]);
+      }
+    return a;
+  };
+  var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
   var __export = (target, all) => {
     for (var name in all)
       __defProp(target, name, { get: all[name], enumerable: true });
@@ -69,31 +86,72 @@ var CustomImportScript = (() => {
   function parse2(element, { document }) {
     const tiles = Array.from(element.children);
     const cells = [];
+    const isRealSrc = (im) => {
+      const s = im.getAttribute("src") || "";
+      return s && !s.startsWith("data:") && !s.startsWith("blob:");
+    };
+    const absSrc = (im) => {
+      let s = im.getAttribute("src") || "";
+      if (s.startsWith("//")) s = `https:${s}`;
+      return s;
+    };
+    const isTechIcon = (im) => /\bicon\b/i.test(im.getAttribute("alt") || "");
     tiles.forEach((tile) => {
+      const linkEl = tile.querySelector("a[href]");
+      let href = linkEl ? linkEl.getAttribute("href") || "" : "";
+      if (href.length > 1) href = href.replace(/\/+$/, "");
       const imgs = Array.from(tile.querySelectorAll("img"));
-      const realSrc = (im) => {
-        const s = im.getAttribute("src") || "";
-        return s && !s.startsWith("data:") && !s.startsWith("blob:");
-      };
-      const img = imgs.find((im) => realSrc(im) && (im.getAttribute("alt") || "").trim()) || imgs.slice().reverse().find(realSrc) || imgs[imgs.length - 1];
-      if (!img) return;
-      let src = img.getAttribute("src") || "";
-      if (src.startsWith("//")) src = `https:${src}`;
+      const photoImgs = imgs.filter((im) => isRealSrc(im) && !isTechIcon(im));
+      const photo = photoImgs.find((im) => (im.getAttribute("alt") || "").trim()) || photoImgs[photoImgs.length - 1] || imgs.slice().reverse().find(isRealSrc) || imgs[imgs.length - 1];
+      if (!photo) return;
+      const techIcons = imgs.filter((im) => isRealSrc(im) && isTechIcon(im));
       const lines = Array.from(tile.querySelectorAll("div")).filter((d) => d.children.length === 0 && d.textContent.trim()).map((d) => d.textContent.trim());
+      const seen = /* @__PURE__ */ new Set();
+      const uniqueLines = lines.filter((t) => {
+        if (seen.has(t)) return false;
+        seen.add(t);
+        return true;
+      });
+      const category = uniqueLines[0] || "";
+      const title = uniqueLines[1] || "";
+      const description = uniqueLines.find((t) => t.length > 80) || "";
       const body = [];
-      if (lines[0]) {
+      if (category) {
         const cat = document.createElement("p");
-        cat.textContent = lines[0];
+        cat.textContent = category;
         body.push(cat);
       }
-      if (lines[1]) {
-        const title = document.createElement("h3");
-        title.textContent = lines[1];
-        body.push(title);
+      if (title) {
+        const h = document.createElement("h3");
+        h.textContent = title;
+        body.push(h);
+      }
+      if (description && description !== category && description !== title) {
+        const p = document.createElement("p");
+        p.textContent = description;
+        body.push(p);
+      }
+      if (techIcons.length) {
+        const techP = document.createElement("p");
+        techIcons.forEach((im) => {
+          const icon = document.createElement("img");
+          icon.setAttribute("src", absSrc(im));
+          icon.setAttribute("alt", im.getAttribute("alt") || "");
+          techP.append(icon);
+        });
+        body.push(techP);
+      }
+      if (href) {
+        const cta = document.createElement("a");
+        cta.setAttribute("href", href);
+        cta.textContent = "Read more";
+        const ctaP = document.createElement("p");
+        ctaP.append(cta);
+        body.push(ctaP);
       }
       const cleanImg = document.createElement("img");
-      cleanImg.setAttribute("src", src);
-      cleanImg.setAttribute("alt", img.getAttribute("alt") || (lines[1] || ""));
+      cleanImg.setAttribute("src", absSrc(photo));
+      cleanImg.setAttribute("alt", photo.getAttribute("alt") || title || "");
       cells.push([cleanImg, body]);
     });
     if (cells.length === 0) {
@@ -196,7 +254,7 @@ var CustomImportScript = (() => {
     ...PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [transform2] : []
   ];
   function executeTransformers(hookName, element, payload) {
-    const enhancedPayload = { ...payload, template: PAGE_TEMPLATE };
+    const enhancedPayload = __spreadProps(__spreadValues({}, payload), { template: PAGE_TEMPLATE });
     transformers.forEach((transformerFn) => {
       try {
         transformerFn.call(null, hookName, element, enhancedPayload);

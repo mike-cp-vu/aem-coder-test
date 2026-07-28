@@ -1,7 +1,8 @@
-/* portfolio listing grid: square image tiles with a two-line label
-   (grey category over white bold title) overlaid at the top-left over a dark
-   top-down gradient scrim, with a subtle hover zoom. Values derived from
-   www.ensemble.com/portfolio computed styles. */
+/* portfolio listing grid: square flip cards. The FRONT is the project photo
+   with a category/title overlay over a dark top-down scrim; on hover/focus the
+   card flips (rotateY 180deg, 0.6s) to a white BACK panel with the description,
+   tech-stack icons, and a "Read more" affordance. The whole tile is a link.
+   Values derived from www.ensemble.com/portfolio computed styles. */
 
 .cards-portfolio-listing > ul {
   list-style: none;
@@ -12,14 +13,43 @@
   gap: 16px;
 }
 
-/* each tile: a square, clipped image with an overlaid label */
+/* each tile establishes the 3D perspective for its flip card */
 .cards-portfolio-listing > ul > li {
   position: relative;
   aspect-ratio: 1 / 1;
-  overflow: hidden;
+  perspective: 1000px;
 }
 
-/* image wrapper fills the tile; image scales up slightly on hover */
+/* the flip card: preserves 3D so front/back sit on opposite faces */
+.cards-portfolio-listing .cards-portfolio-listing-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cards-portfolio-listing .cards-portfolio-listing-card:hover,
+.cards-portfolio-listing .cards-portfolio-listing-card:focus-visible,
+.cards-portfolio-listing > ul > li:focus-within .cards-portfolio-listing-card {
+  transform: rotateY(180deg);
+}
+
+/* front and back share the tile box; hide the face turned away from the viewer */
+.cards-portfolio-listing .cards-portfolio-listing-front,
+.cards-portfolio-listing .cards-portfolio-listing-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+/* ---- FRONT: photo + top-left label over a dark scrim ---- */
 .cards-portfolio-listing .cards-portfolio-listing-card-image {
   margin: 0;
   width: 100%;
@@ -39,15 +69,10 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 0.3s ease;
-}
-
-.cards-portfolio-listing > ul > li:hover .cards-portfolio-listing-card-image img {
-  transform: scale(1.05);
 }
 
 /* dark top-down gradient scrim so the top-left label stays legible */
-.cards-portfolio-listing > ul > li::before {
+.cards-portfolio-listing .cards-portfolio-listing-front::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -56,8 +81,7 @@
   pointer-events: none;
 }
 
-/* two-line label overlaid at top-left */
-.cards-portfolio-listing .cards-portfolio-listing-card-body {
+.cards-portfolio-listing .cards-portfolio-listing-front-label {
   position: absolute;
   top: 0;
   left: 0;
@@ -68,20 +92,20 @@
   color: #fff;
 }
 
-.cards-portfolio-listing .cards-portfolio-listing-card-body p,
-.cards-portfolio-listing .cards-portfolio-listing-card-body h3 {
+.cards-portfolio-listing .cards-portfolio-listing-front-label p,
+.cards-portfolio-listing .cards-portfolio-listing-front-label h3 {
   margin: 0;
 }
 
 /* category label: smaller, grey, above the title */
 .cards-portfolio-listing .cards-portfolio-listing-card-category {
-  color: var(--eyebrow-color);
+  color: var(--eyebrow-color, #9a9a9a);
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
 }
 
-/* project title: white, bold; clamp to a short heading like the source */
+/* project title (front): white, bold; clamp to a short heading */
 .cards-portfolio-listing .cards-portfolio-listing-card-title {
   display: -webkit-box;
   color: #fff;
@@ -91,6 +115,62 @@
   overflow: hidden;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+
+/* ---- BACK: white panel, dark text, description + tech icons + CTA ---- */
+.cards-portfolio-listing .cards-portfolio-listing-back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  background: #fff;
+  color: var(--text-color, #1f2937);
+}
+
+.cards-portfolio-listing .cards-portfolio-listing-back-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  color: var(--text-color, #1f2937);
+}
+
+.cards-portfolio-listing .cards-portfolio-listing-card-desc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--text-color, #1f2937);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+/* tech-stack icon row: wraps, small icons */
+.cards-portfolio-listing .cards-portfolio-listing-card-tech {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  margin: 4px 0 0;
+}
+
+.cards-portfolio-listing .cards-portfolio-listing-card-tech picture,
+.cards-portfolio-listing .cards-portfolio-listing-card-tech img {
+  display: block;
+  height: 28px;
+  width: auto;
+}
+
+/* "Read more" affordance: uppercase, bold, link-blue */
+.cards-portfolio-listing .cards-portfolio-listing-card-cta {
+  margin-top: auto;
+  color: var(--link-color, #2886bb);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 /* tablet: 2 columns */
@@ -104,5 +184,35 @@
 @media (width >= 900px) {
   .cards-portfolio-listing > ul {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* reduced motion: no 3D flip — cross-fade the back panel over the front */
+@media (prefers-reduced-motion: reduce) {
+  .cards-portfolio-listing .cards-portfolio-listing-card {
+    transition: none;
+  }
+
+  .cards-portfolio-listing .cards-portfolio-listing-card:hover,
+  .cards-portfolio-listing .cards-portfolio-listing-card:focus-visible,
+  .cards-portfolio-listing > ul > li:focus-within .cards-portfolio-listing-card {
+    transform: none;
+  }
+
+  .cards-portfolio-listing .cards-portfolio-listing-front,
+  .cards-portfolio-listing .cards-portfolio-listing-back {
+    backface-visibility: visible;
+  }
+
+  .cards-portfolio-listing .cards-portfolio-listing-back {
+    transform: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .cards-portfolio-listing > ul > li:focus-within .cards-portfolio-listing-back,
+  .cards-portfolio-listing .cards-portfolio-listing-card:hover .cards-portfolio-listing-back,
+  .cards-portfolio-listing .cards-portfolio-listing-card:focus-visible .cards-portfolio-listing-back {
+    opacity: 1;
   }
 }
