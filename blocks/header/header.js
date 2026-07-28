@@ -138,6 +138,23 @@ export default async function decorate(block) {
     brandLink.closest('.button-container').className = '';
   }
 
+  // The nav fragment ships a white logo asset (fill="white") that is only
+  // visible over the dark hero; on light headers it renders white-on-white and
+  // disappears. Swap in the repo's brand-blue logo SVG (served directly, not
+  // through the media pipeline so it stays crisp) so the logo shows in brand
+  // blue on light headers; the hero-state CSS filter turns it white over the
+  // dark hero, matching the source's color-adaptive inline SVG.
+  const brandPicture = navBrand.querySelector('picture');
+  if (brandPicture) {
+    const brandImg = document.createElement('img');
+    brandImg.src = `${window.hlx.codeBasePath}/icons/ensemble-logo.svg`;
+    brandImg.alt = navBrand.querySelector('img')?.alt || 'Ensemble';
+    brandImg.width = 240;
+    brandImg.height = 36;
+    brandImg.loading = 'eager';
+    brandPicture.replaceWith(brandImg);
+  }
+
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
     navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
