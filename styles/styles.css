@@ -467,3 +467,17 @@ main .section.grey .default-content-wrapper a.button {
     height: auto;
   }
 }
+
+/* Portfolio / product detail pages (main.detail-page, stamped by scripts.js):
+   the source renders the section headings ("The Project", "Client Background",
+   "Technologies", "Results and Deliverables", etc.) at 32px/800. Scope to
+   headings that are DIRECT children of the default-content wrapper so the
+   smaller headings inside blocks (e.g. cards-key-points cards) are untouched. */
+/* stylelint-disable no-descending-specificity */
+main.detail-page .section > .default-content-wrapper > h2,
+main.detail-page .section > .default-content-wrapper > h3 {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+/* stylelint-enable no-descending-specificity */

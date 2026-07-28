@@ -244,6 +244,20 @@ function decorateGreyStatements(main) {
   });
 }
 
+/**
+ * Portfolio and product detail pages open with a breadcrumb paragraph whose
+ * first link points back to the listing (/portfolio or /products). Stamp a
+ * `detail-page` class on main for those pages so the CSS can restore the
+ * source's larger section headings (32px/800) without affecting other pages.
+ * @param {HTMLElement} main The main container element
+ */
+function decorateDetailPage(main) {
+  const firstWrapper = main.querySelector('.section > .default-content-wrapper');
+  const crumbLink = firstWrapper?.querySelector(':scope > p:first-child > a[href]');
+  const href = crumbLink ? crumbLink.getAttribute('href') : '';
+  if (/^\/(portfolio|products)(\/|$)/.test(href)) main.classList.add('detail-page');
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   decorateIcons(main);
@@ -254,6 +268,7 @@ export function decorateMain(main) {
   decorateButtons(main);
   decorateBrandWord(main);
   decorateGreyStatements(main);
+  decorateDetailPage(main);
   normalizeInternalLinks(main);
 }
 
