@@ -26,12 +26,30 @@ export default function decorate(block) {
         body.append(actions);
       }
 
-      /* tag logo-strip paragraphs (paragraphs that only contain images) */
-      [...body.children].forEach((p) => {
+      /* Tag logo-strip paragraphs (paragraphs that only contain images).
+         A strip before the description is a small "platform" strip; a strip
+         after it is a large "client" logo strip. Client strips lay out in
+         equal cells: 5+ logos three per row, 2-4 logos four per row, a lone
+         logo full width — matching the source. */
+      const kids = [...body.children];
+      const descIdx = kids.findIndex(
+        (p) => p.tagName === 'P' && p.textContent.trim() && !p.querySelector('a'),
+      );
+      kids.forEach((p, idx) => {
         if (p.tagName !== 'P') return;
-        const onlyImages = p.querySelector('picture, img')
-          && !p.textContent.trim();
-        if (onlyImages) p.classList.add('cards-service-detail-logos');
+        const onlyImages = p.querySelector('picture, img') && !p.textContent.trim();
+        if (!onlyImages) return;
+        p.classList.add('cards-service-detail-logos');
+        if (descIdx !== -1 && idx < descIdx) {
+          p.classList.add('cards-service-detail-logos-platform');
+        } else {
+          p.classList.add('cards-service-detail-logos-client');
+          const n = p.querySelectorAll('picture').length || p.querySelectorAll('img').length;
+          let cols = '4';
+          if (n === 1) cols = 'full';
+          else if (n >= 5) cols = '3';
+          p.classList.add(`cards-service-detail-logos-cols-${cols}`);
+        }
       });
     }
 
