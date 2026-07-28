@@ -1,10 +1,10 @@
 /*
- * cards-products
- * A two-column grid of dark, image-led product showcase cards.
- * Decorated DOM:
- *   .cards-products > ul > li
- *     > .cards-products-card-image  (product screenshot)
- *     > .cards-products-card-body   (eyebrow, title, description, icon strip, CTA)
+ * cards-products — products listing flip cards (same interaction as the
+ * portfolio listing). The FRONT is the product photo with a category/title
+ * overlay over a dark top-down scrim; on hover/focus the card flips
+ * (rotateY 180deg, 0.6s) to a white BACK panel with the description,
+ * tech-stack icons, and a "Read more" affordance. The whole tile is a link.
+ * Values derived from www.ensemble.com/products computed styles.
  */
 
 .cards-products > ul {
@@ -13,120 +13,209 @@
   padding: 0;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 24px;
+  gap: 16px;
 }
 
-@media (width >= 900px) {
-  .cards-products > ul {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
-  }
-}
-
-/* one product card — dark background, image on top, body below */
+/* each tile establishes the 3D perspective for its flip card */
 .cards-products > ul > li {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border: 0;
-  border-radius: 8px;
-  background-color: #1a1a1a;
-  color: #fff;
+  position: relative;
+  aspect-ratio: 1 / 1;
+  perspective: 1000px;
 }
 
-/* product screenshot */
+/* the flip card: preserves 3D so front/back sit on opposite faces */
+.cards-products .cards-products-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cards-products .cards-products-card:hover,
+.cards-products .cards-products-card:focus-visible,
+.cards-products > ul > li:focus-within .cards-products-card {
+  transform: rotateY(180deg);
+}
+
+/* front and back share the tile box; hide the face turned away from the viewer */
+.cards-products .cards-products-front,
+.cards-products .cards-products-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+/* ---- FRONT: photo + top-left label over a dark scrim ---- */
 .cards-products .cards-products-card-image {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   line-height: 0;
+}
+
+.cards-products .cards-products-card-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .cards-products .cards-products-card-image img {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  height: 100%;
   object-fit: cover;
-  display: block;
+  object-position: center;
 }
 
-/* body */
-.cards-products .cards-products-card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+/* dark top-down gradient scrim so the top-left label stays legible */
+.cards-products .cards-products-front::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: linear-gradient(to bottom, rgb(0 0 0 / 65%) 0%, rgb(0 0 0 / 0%) 45%);
+  pointer-events: none;
+}
+
+.cards-products .cards-products-front-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 30;
   margin: 0;
-  padding: 24px;
-}
-
-@media (width >= 900px) {
-  .cards-products .cards-products-card-body {
-    padding: 32px;
-  }
-}
-
-/* category eyebrow */
-.cards-products .cards-products-eyebrow {
-  margin: 0;
-  color: #9a9a9a;
-  font-size: var(--body-font-size-s);
-  font-weight: 600;
-}
-
-/* product title */
-.cards-products .cards-products-card-body h2,
-.cards-products .cards-products-card-body h3 {
-  margin: 0;
-  font-size: var(--heading-size-l);
-  font-weight: 800;
-  line-height: 1.2;
+  padding: 16px;
+  width: 100%;
   color: #fff;
 }
 
-/* description */
-.cards-products .cards-products-card-body p {
+.cards-products .cards-products-front-label p,
+.cards-products .cards-products-front-label h3 {
   margin: 0;
-  font-size: var(--body-font-size-m);
-  line-height: 24px;
-  color: #e0e0e0;
 }
 
-/* technology / platform icon strip */
-.cards-products .cards-products-icons {
+/* category label: smaller, grey, above the title */
+.cards-products .cards-products-card-category {
+  color: var(--eyebrow-color, #9a9a9a);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* product title (front): white, bold; clamp to a short heading */
+.cards-products .cards-products-card-title {
+  display: -webkit-box;
+  color: #fff;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* ---- BACK: white panel, dark text, description + tech icons + CTA ---- */
+.cards-products .cards-products-back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  background: #fff;
+  color: var(--text-color, #1f2937);
+}
+
+.cards-products .cards-products-back-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  color: var(--text-color, #1f2937);
+}
+
+.cards-products .cards-products-card-desc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--text-color, #1f2937);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+/* tech-stack icon row: wraps, small icons */
+.cards-products .cards-products-card-tech {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 20px 24px;
-  line-height: 0;
+  gap: 12px 16px;
+  margin: 4px 0 0;
 }
 
-.cards-products .cards-products-icons picture {
-  line-height: 0;
-}
-
-.cards-products .cards-products-icons img {
-  width: auto;
+.cards-products .cards-products-card-tech picture,
+.cards-products .cards-products-card-tech img {
+  display: block;
   height: 28px;
-  object-fit: contain;
+  width: auto;
 }
 
-/* Read more CTA */
-.cards-products .cards-products-cta-wrapper {
+/* "Read more" affordance: uppercase, bold, link-blue */
+.cards-products .cards-products-card-cta {
   margin-top: auto;
-}
-
-.cards-products .cards-products-cta:any-link {
-  display: inline-flex;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  color: var(--brand-orange);
-  font-size: var(--body-font-size-s);
+  color: var(--link-color, #2886bb);
+  font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: -0.35px;
-  text-decoration: none;
-  transition: color 0.3s ease;
+  letter-spacing: 0.02em;
 }
 
-.cards-products .cards-products-cta:any-link:hover {
-  color: #fff;
-  text-decoration: underline;
+/* tablet: 2 columns */
+@media (width >= 600px) {
+  .cards-products > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* desktop: 3 columns */
+@media (width >= 900px) {
+  .cards-products > ul {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* reduced motion: no 3D flip — cross-fade the back panel over the front */
+@media (prefers-reduced-motion: reduce) {
+  .cards-products .cards-products-card {
+    transition: none;
+  }
+
+  .cards-products .cards-products-card:hover,
+  .cards-products .cards-products-card:focus-visible,
+  .cards-products > ul > li:focus-within .cards-products-card {
+    transform: none;
+  }
+
+  .cards-products .cards-products-front,
+  .cards-products .cards-products-back {
+    backface-visibility: visible;
+  }
+
+  .cards-products .cards-products-back {
+    transform: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .cards-products > ul > li:focus-within .cards-products-back,
+  .cards-products .cards-products-card:hover .cards-products-back,
+  .cards-products .cards-products-card:focus-visible .cards-products-back {
+    opacity: 1;
+  }
 }
