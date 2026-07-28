@@ -506,6 +506,17 @@ main.detail-page .detail-cta-row > p.button-wrapper {
   margin: 0;
 }
 
+/* Detail-page images (banner + inline figures): the <picture>/<img> default to
+   inline, so a tall banner overflows its ~line-height-tall inline box, leaving
+   a large gap before the following content. Render them as block-level,
+   full-width, auto-height so they sit correctly in the flow. */
+main.detail-page .section > .default-content-wrapper > p > picture,
+main.detail-page .section > .default-content-wrapper > p > picture > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 /* Detail-page breadcrumb: the leading "PORTFOLIO/" (or "PRODUCTS/") link is
    rendered in grey at 14px in the source, not the default link blue. It's the
    first paragraph of the content wrapper, linking back to the listing; the
