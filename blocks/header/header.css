@@ -159,7 +159,10 @@ header .nav-brand {
 
 header nav .nav-brand img {
   width: auto;
-  height: 28px;
+
+  /* Source logo renders ~25px tall; keep the migrated logo at the same height
+     so its stroke weight matches (28px looked noticeably heavier). */
+  height: 25px;
 }
 
 /* sections */
