@@ -149,8 +149,8 @@ export default async function decorate(block) {
     const brandImg = document.createElement('img');
     brandImg.src = `${window.hlx.codeBasePath}/icons/ensemble-logo.svg`;
     brandImg.alt = navBrand.querySelector('img')?.alt || 'Ensemble';
-    brandImg.width = 240;
-    brandImg.height = 36;
+    brandImg.width = 155;
+    brandImg.height = 25;
     brandImg.loading = 'eager';
     brandPicture.replaceWith(brandImg);
   }
