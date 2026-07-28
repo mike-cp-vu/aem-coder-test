@@ -385,11 +385,11 @@ main .section.grey {
   text-align: center;
 }
 
-/* CTA band lead line is a large bold statement. Scope to grey bands that are
-   ONLY a paragraph (the homepage "Let ensemble handle..." CTA); grey sections
-   that also carry a heading (About "Do right by people") use normal prose
-   sizing below. */
-main .section.grey .default-content-wrapper:not(:has(h1, h2, h3)) p {
+/* CTA band lead line is a large bold statement. The .grey-statement class is
+   stamped by scripts.js on grey bands that are ONLY a paragraph (the homepage
+   "Let ensemble handle..." CTA); grey bands that also carry a heading get
+   .grey-prose (About "Do right by people") and use normal prose sizing below. */
+main .section.grey .default-content-wrapper.grey-statement p {
   max-width: 800px;
   margin: 0 auto;
   font-size: var(--heading-font-size-xl);
@@ -400,16 +400,16 @@ main .section.grey .default-content-wrapper:not(:has(h1, h2, h3)) p {
 
 /* Grey statement section with a heading (About "Do right by people"):
    small bold heading + regular-weight prose, centered (matches source). */
-main .section.grey .default-content-wrapper:has(h1, h2, h3) h1,
-main .section.grey .default-content-wrapper:has(h1, h2, h3) h2,
-main .section.grey .default-content-wrapper:has(h1, h2, h3) h3 {
+main .section.grey .default-content-wrapper.grey-prose h1,
+main .section.grey .default-content-wrapper.grey-prose h2,
+main .section.grey .default-content-wrapper.grey-prose h3 {
   font-size: 20px;
   font-weight: 700;
   line-height: 1.3;
   color: var(--text-color);
 }
 
-main .section.grey .default-content-wrapper:has(h1, h2, h3) p {
+main .section.grey .default-content-wrapper.grey-prose p {
   max-width: 640px;
   margin: 12px auto 0;
   font-size: 18px;

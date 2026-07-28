@@ -97,11 +97,11 @@
 /* ---- About "company values" variant ----
    On the About page the cards-services block is used for the values cards
    (People are our greatest asset / We always deliver / Success is central).
-   Unlike the homepage services cards, these have no link in the heading and a
-   single description paragraph. They are centered with the icon stacked on
-   top, a smaller dark heading, and dark centered body text. Scope to cards
-   whose heading has no <a> so the homepage services grid is unaffected. */
-.cards-services > ul > li:not(:has(h3 a)) {
+   These are centered with the icon stacked on top, a smaller dark heading,
+   and dark centered body text. cards-services.js adds the .cards-services-values
+   class when no card heading is a link, so the styling is keyed on an explicit
+   variant class rather than the underlying content shape. */
+.cards-services-values > ul > li {
   flex-direction: column;
   align-items: center;
   gap: 12px;
@@ -109,16 +109,16 @@
   text-align: center;
 }
 
-.cards-services > ul > li:not(:has(h3 a)) .cards-services-card-image img {
+.cards-services-values > ul > li .cards-services-card-image img {
   width: auto;
   height: 56px;
 }
 
-.cards-services > ul > li:not(:has(h3 a)) .cards-services-card-body {
+.cards-services-values > ul > li .cards-services-card-body {
   align-items: center;
 }
 
-.cards-services > ul > li:not(:has(h3 a)) .cards-services-card-body h3 {
+.cards-services-values > ul > li .cards-services-card-body h3 {
   font-size: 20px;
   font-weight: 700;
   color: var(--text-color);
@@ -126,8 +126,8 @@
 
 /* single description paragraph: dark, 14px, centered (NOT the blue tech
    subtitle used on the homepage services cards) */
-.cards-services > ul > li:not(:has(h3 a)) .cards-services-card-body p,
-.cards-services > ul > li:not(:has(h3 a)) .cards-services-card-body h3 + p {
+.cards-services-values > ul > li .cards-services-card-body p,
+.cards-services-values > ul > li .cards-services-card-body h3 + p {
   order: 3;
   margin: 8px 0 0;
   font-size: var(--body-font-size-s);

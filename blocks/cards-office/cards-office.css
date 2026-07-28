@@ -114,35 +114,36 @@
   }
 }
 
-/* ---- About "Our Offices" variant ----
-   On the About page the office block sits in a grey section and shows a single
-   circular skyline photo with a centered city name (no address). The Contact
-   page uses the default rectangular two-photo card, so scope this variant to
-   the grey section so Contact is unaffected. */
-.section.grey .cards-office > ul {
+/* ---- About "Our Offices" (circular) variant ----
+   On the About page the office block shows a single circular skyline photo with
+   a centered city name (no address). The Contact page uses the default
+   rectangular two-photo card. cards-office.js adds the .cards-office-circular
+   class when no card body has an address paragraph, so this variant keys on an
+   explicit class rather than the section's background style. */
+.cards-office-circular > ul {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 40px 48px;
 }
 
-.section.grey .cards-office > ul > li {
+.cards-office-circular > ul > li {
   flex: 0 0 auto;
   width: 180px;
   text-align: center;
 }
 
-.section.grey .cards-office .cards-office-card-image {
+.cards-office-circular .cards-office-card-image {
   display: block;
 }
 
-.section.grey .cards-office .cards-office-card-image img {
+.cards-office-circular .cards-office-card-image img {
   width: 180px;
   height: 180px;
   border-radius: 50%;
 }
 
-.section.grey .cards-office .cards-office-card-body h2 {
+.cards-office-circular .cards-office-card-body h2 {
   margin: 16px 0 0;
   text-align: center;
   font-size: 18px;
@@ -151,12 +152,12 @@
 }
 
 @media (width >= 900px) {
-  .section.grey .cards-office .cards-office-card-image img {
+  .cards-office-circular .cards-office-card-image img {
     width: 180px;
     height: 180px;
   }
 
-  .section.grey .cards-office .cards-office-card-body h2 {
+  .cards-office-circular .cards-office-card-body h2 {
     font-size: 18px;
   }
 }

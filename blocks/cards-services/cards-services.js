@@ -19,4 +19,13 @@ export default function decorate(block) {
   });
   block.textContent = '';
   block.append(ul);
+
+  // Variant detection: the homepage "What we provide" services cards link each
+  // heading to a service anchor; the About "company values" cards do not. When
+  // no card heading is a link, mark the block as the values variant so the CSS
+  // can style it (centered, icon-on-top, dark text) via an explicit class
+  // rather than a fragile structural selector.
+  if (!ul.querySelector('h2 a, h3 a, h4 a, h5 a, h6 a')) {
+    block.classList.add('cards-services-values');
+  }
 }

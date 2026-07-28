@@ -228,6 +228,22 @@ function decorateBrandWord(main) {
   });
 }
 
+/**
+ * Classifies grey default-content bands into two named variants so the CSS keys
+ * on an explicit class rather than a fragile :has()/:not(:has()) heading probe.
+ *  - grey-statement: paragraph-only band (homepage "Let ensemble handle..." CTA)
+ *    rendered as a large bold statement.
+ *  - grey-prose: band that carries a heading (About "Do right by people")
+ *    rendered as a small bold heading + regular-weight prose.
+ * @param {HTMLElement} main The main container element
+ */
+function decorateGreyStatements(main) {
+  main.querySelectorAll('.section.grey .default-content-wrapper').forEach((wrapper) => {
+    if (wrapper.querySelector('h1, h2, h3')) wrapper.classList.add('grey-prose');
+    else wrapper.classList.add('grey-statement');
+  });
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   decorateIcons(main);
@@ -237,6 +253,7 @@ export function decorateMain(main) {
   decorateBlocks(main);
   decorateButtons(main);
   decorateBrandWord(main);
+  decorateGreyStatements(main);
   normalizeInternalLinks(main);
 }
 
