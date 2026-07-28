@@ -479,6 +479,13 @@ main.detail-page .section > .default-content-wrapper > h3 {
   font-size: 32px;
   font-weight: 800;
   line-height: 1.2;
+  margin-top: 56px;
+}
+
+/* Section paragraphs sit close under their heading (source rhythm). */
+main.detail-page .section > .default-content-wrapper > h2 + p,
+main.detail-page .section > .default-content-wrapper > h3 + p {
+  margin-top: 12px;
 }
 /* stylelint-enable no-descending-specificity */
 
