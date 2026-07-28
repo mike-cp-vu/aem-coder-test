@@ -262,16 +262,24 @@ function decorateDetailPage(main) {
   // "Contact us" CTA. The source renders both as buttons on one centered row:
   // the back link as an outlined (secondary) button, contact us as the filled
   // (primary) button (decorateButtons already promoted the strong-wrapped
-  // "Contact us"). Promote the plain back link and tag its wrapper so the CSS
-  // lays the two adjacent CTA paragraphs out as a centered row — no node
-  // reordering needed since they are siblings in the same trailing wrapper.
+  // "Contact us"). Promote the plain back link, then wrap the two adjacent CTA
+  // paragraphs in their own flex row. Wrapping just the two <p>s (not their
+  // parent, which on some pages holds all the page content) keeps the rest of
+  // the layout untouched.
   const backLink = [...main.querySelectorAll('.default-content-wrapper > p > a[href]')]
     .find((a) => /^back to\b/i.test(a.textContent.trim()));
   if (backLink) {
     const backP = backLink.closest('p');
     backP.className = 'button-wrapper';
     backLink.className = 'button secondary';
-    backP.closest('.default-content-wrapper')?.classList.add('detail-cta-wrapper');
+    // Group the back + trailing "Contact us" button paragraph into one row.
+    const contactP = backP.nextElementSibling;
+    if (contactP && contactP.tagName === 'P' && contactP.querySelector('a.button')) {
+      const row = document.createElement('div');
+      row.className = 'detail-cta-row';
+      backP.replaceWith(row);
+      row.append(backP, contactP);
+    }
   }
 }
 

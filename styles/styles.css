@@ -491,17 +491,17 @@ main.detail-page .section > .default-content-wrapper > h3 + p {
 
 /* Detail-page closing CTAs: "Back to portfolio/products" (outlined secondary)
    and "Contact us" (filled primary) sit side-by-side on one centered row,
-   matching the source. The two CTA paragraphs are adjacent siblings in their
-   own trailing wrapper (tagged .detail-cta-wrapper by scripts.js). */
-main.detail-page .section > .default-content-wrapper.detail-cta-wrapper {
+   matching the source. scripts.js wraps the two adjacent CTA paragraphs in a
+   .detail-cta-row so only they are laid out as a flex row. */
+main.detail-page .detail-cta-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 24px;
-  margin-top: 32px;
+  margin-top: 40px;
 }
 
-main.detail-page .detail-cta-wrapper > p.button-wrapper {
+main.detail-page .detail-cta-row > p.button-wrapper {
   margin: 0;
 }
