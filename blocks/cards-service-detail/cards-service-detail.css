@@ -103,10 +103,18 @@
 }
 
 /* client logo strip — larger, centered, wrapping. It is the second (last)
-   logo paragraph, appearing after the description paragraph. */
+   logo paragraph, appearing after the description paragraph. Logos lay out
+   three per row (each in a one-third cell); a partial final row stays
+   centered, matching the source. */
 .cards-service-detail .cards-service-detail-logos ~ .cards-service-detail-logos {
   justify-content: center;
-  gap: 48px 96px;
+  gap: 48px 0;
+}
+
+.cards-service-detail .cards-service-detail-logos ~ .cards-service-detail-logos picture {
+  flex: 0 0 33.333%;
+  display: flex;
+  justify-content: center;
 }
 
 .cards-service-detail .cards-service-detail-logos ~ .cards-service-detail-logos img {
