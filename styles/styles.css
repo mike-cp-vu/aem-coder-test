@@ -431,13 +431,15 @@ main .section.grey .default-content-wrapper a.button {
 }
 /* stylelint-enable no-descending-specificity */
 
-/* Default-content sections that pair a text block with a trailing image
+/* Default-content sections that pair a text block with a TRAILING image
    (About "Partner with the best" and "Our Certifications") render as two
    columns on desktop — text on the left, image(s) on the right — matching the
-   source. Scoped with :has() to only affect wrappers that contain an image
-   paragraph, so ordinary text sections are untouched. */
+   source. Gated on `> p:last-child > picture` so it only fires when the image
+   paragraph is the last element in the wrapper (text-then-image). This keeps
+   pages that lead with a banner image and follow it with body copy (e.g.
+   portfolio/product detail pages) as a normal single column. */
 @media (width >= 900px) {
-  main .section > .default-content-wrapper:has(> p > picture) {
+  main .section > .default-content-wrapper:has(> p:last-child > picture) {
     display: grid;
     grid-template-columns: 3fr 1fr;
     column-gap: 48px;
@@ -445,22 +447,22 @@ main .section.grey .default-content-wrapper a.button {
   }
 
   /* text (heading + prose) occupies the left column, stacked */
-  main .section > .default-content-wrapper:has(> p > picture) > h1,
-  main .section > .default-content-wrapper:has(> p > picture) > h2,
-  main .section > .default-content-wrapper:has(> p > picture) > p:not(:has(> picture)) {
+  main .section > .default-content-wrapper:has(> p:last-child > picture) > h1,
+  main .section > .default-content-wrapper:has(> p:last-child > picture) > h2,
+  main .section > .default-content-wrapper:has(> p:last-child > picture) > p:not(:has(> picture)) {
     grid-column: 1;
     margin-left: 0;
   }
 
   /* image paragraph(s) occupy the right column */
-  main .section > .default-content-wrapper:has(> p > picture) > p:has(> picture) {
+  main .section > .default-content-wrapper:has(> p:last-child > picture) > p:has(> picture) {
     grid-column: 2;
     grid-row: 1 / span 99;
     align-self: center;
     margin: 0;
   }
 
-  main .section > .default-content-wrapper:has(> p > picture) > p > picture img {
+  main .section > .default-content-wrapper:has(> p:last-child > picture) > p > picture img {
     width: 100%;
     height: auto;
   }
