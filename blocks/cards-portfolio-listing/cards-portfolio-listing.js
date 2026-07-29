@@ -110,4 +110,38 @@ export default function decorate(block) {
 
   block.textContent = '';
   block.append(ul);
+
+  // "Load More" pagination — matches the source, which reveals the grid in
+  // batches rather than showing every project at once. Show an initial page of
+  // cards, then reveal another batch per click until all are visible.
+  const items = [...ul.children];
+  const INITIAL = 6;
+  const INCREMENT = 6;
+
+  if (items.length > INITIAL) {
+    let shown = INITIAL;
+
+    const applyVisibility = () => {
+      items.forEach((li, i) => {
+        li.hidden = i >= shown;
+      });
+    };
+
+    const actions = document.createElement('div');
+    actions.className = 'cards-portfolio-listing-actions';
+
+    const loadMore = document.createElement('button');
+    loadMore.type = 'button';
+    loadMore.className = 'cards-portfolio-listing-load-more';
+    loadMore.textContent = 'Load More';
+    loadMore.addEventListener('click', () => {
+      shown += INCREMENT;
+      applyVisibility();
+      if (shown >= items.length) loadMore.remove();
+    });
+
+    actions.append(loadMore);
+    applyVisibility();
+    block.append(actions);
+  }
 }
