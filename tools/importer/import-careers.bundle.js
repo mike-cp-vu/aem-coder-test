@@ -1,9 +1,26 @@
 /* eslint-disable */
 var CustomImportScript = (() => {
   var __defProp = Object.defineProperty;
+  var __defProps = Object.defineProperties;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
   var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __propIsEnum = Object.prototype.propertyIsEnumerable;
+  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+  var __spreadValues = (a, b) => {
+    for (var prop in b || (b = {}))
+      if (__hasOwnProp.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    if (__getOwnPropSymbols)
+      for (var prop of __getOwnPropSymbols(b)) {
+        if (__propIsEnum.call(b, prop))
+          __defNormalProp(a, prop, b[prop]);
+      }
+    return a;
+  };
+  var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
   var __export = (target, all) => {
     for (var name in all)
       __defProp(target, name, { get: all[name], enumerable: true });
@@ -55,6 +72,16 @@ var CustomImportScript = (() => {
     }
     const contentCell = [];
     if (heading) contentCell.push(heading);
+    const heroContainer = element.querySelector('[data-testid="hero-container"]');
+    if (heroContainer && heading) {
+      const variants = Array.from(heroContainer.querySelectorAll(":scope > div > div")).map((d) => {
+        const lines = Array.from(d.querySelectorAll("h1, h2, h3, span, p"));
+        const text = lines.length ? lines.map((l) => l.textContent.replace(/\s+/g, " ").trim()).filter(Boolean).join(" ") : d.textContent.replace(/\s+/g, " ").trim();
+        return text;
+      }).filter(Boolean);
+      const full = variants.sort((a, b) => b.length - a.length)[0] || heading.textContent.replace(/\s+/g, " ").trim();
+      heading.textContent = full;
+    }
     cells.push([contentCell]);
     const block = WebImporter.Blocks.createBlock(document, { name: "hero-home", cells });
     const statsGrid = element.querySelector('div.grid.grid-cols-3, [class*="grid-cols-3"]');
@@ -107,8 +134,20 @@ var CustomImportScript = (() => {
       element.replaceWith(...element.childNodes);
       return;
     }
+    const introEls = [];
+    Array.from(element.querySelectorAll('[data-testid="cultureHeader"]')).forEach((h, i) => {
+      const text = h.textContent.replace(/\s+/g, " ").trim();
+      if (!text) return;
+      const el = document.createElement(i < 2 ? "h2" : "p");
+      el.textContent = text;
+      introEls.push(el);
+    });
     const block = WebImporter.Blocks.createBlock(document, { name: "cards-culture", cells });
-    element.replaceWith(block);
+    if (introEls.length) {
+      element.replaceWith(...introEls, block);
+    } else {
+      element.replaceWith(block);
+    }
   }
 
   // tools/importer/parsers/cards-benefits.js
@@ -143,8 +182,23 @@ var CustomImportScript = (() => {
       element.replaceWith(...element.childNodes);
       return;
     }
+    const introEls = [];
+    const titleEl = element.querySelector('[data-testid="benefitsTitle"]');
+    const subTitleEl = element.querySelector('[data-testid="benefitsSubTitle"]');
+    [titleEl, subTitleEl].forEach((el, i) => {
+      if (!el) return;
+      const text = el.textContent.replace(/\s+/g, " ").trim();
+      if (!text) return;
+      const node = document.createElement(i === 0 ? "h2" : "p");
+      node.textContent = text;
+      introEls.push(node);
+    });
     const block = WebImporter.Blocks.createBlock(document, { name: "cards-benefits", cells });
-    element.replaceWith(block);
+    if (introEls.length) {
+      element.replaceWith(...introEls, block);
+    } else {
+      element.replaceWith(block);
+    }
   }
 
   // tools/importer/parsers/cards-team-detail.js
@@ -211,8 +265,22 @@ var CustomImportScript = (() => {
       element.replaceWith(...element.childNodes);
       return;
     }
+    const introEls = [];
+    const cardSet = new Set(cards);
+    Array.from(element.querySelectorAll("h1, h2")).forEach((h, i) => {
+      if (cards.some((c) => c.contains(h))) return;
+      const text = h.textContent.replace(/\s+/g, " ").trim();
+      if (!text) return;
+      const node = document.createElement(i === 0 ? "h2" : "p");
+      node.textContent = text;
+      introEls.push(node);
+    });
     const block = WebImporter.Blocks.createBlock(document, { name: "cards-team-detail", cells });
-    element.replaceWith(block);
+    if (introEls.length) {
+      element.replaceWith(...introEls, block);
+    } else {
+      element.replaceWith(block);
+    }
   }
 
   // tools/importer/parsers/carousel-testimonials.js
@@ -379,7 +447,7 @@ var CustomImportScript = (() => {
     ...PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [transform2] : []
   ];
   function executeTransformers(hookName, element, payload) {
-    const enhancedPayload = { ...payload, template: PAGE_TEMPLATE };
+    const enhancedPayload = __spreadProps(__spreadValues({}, payload), { template: PAGE_TEMPLATE });
     transformers.forEach((transformerFn) => {
       try {
         transformerFn.call(null, hookName, element, enhancedPayload);

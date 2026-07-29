@@ -119,6 +119,25 @@ export default function parse(element, { document }) {
     return;
   }
 
+  // Preserve the section's intro headings ("Our Team" title + subtitle) as
+  // default content ABOVE the cards. They sit in the container outside any team
+  // card and would otherwise be dropped when the container is replaced. Take the
+  // heading nodes that are not inside a team card.
+  const introEls = [];
+  const cardSet = new Set(cards);
+  Array.from(element.querySelectorAll('h1, h2')).forEach((h, i) => {
+    if (cards.some((c) => c.contains(h))) return;
+    const text = h.textContent.replace(/\s+/g, ' ').trim();
+    if (!text) return;
+    const node = document.createElement(i === 0 ? 'h2' : 'p');
+    node.textContent = text;
+    introEls.push(node);
+  });
+
   const block = WebImporter.Blocks.createBlock(document, { name: 'cards-team-detail', cells });
-  element.replaceWith(block);
+  if (introEls.length) {
+    element.replaceWith(...introEls, block);
+  } else {
+    element.replaceWith(block);
+  }
 }

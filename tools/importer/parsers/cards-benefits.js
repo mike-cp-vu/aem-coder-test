@@ -81,6 +81,25 @@ export default function parse(element, { document }) {
     return;
   }
 
+  // Preserve the section's intro headings ("Enjoy Great Benefits" title and its
+  // subtitle) as default content ABOVE the cards. They live in the container
+  // outside any benefit card and would otherwise be dropped on replace.
+  const introEls = [];
+  const titleEl = element.querySelector('[data-testid="benefitsTitle"]');
+  const subTitleEl = element.querySelector('[data-testid="benefitsSubTitle"]');
+  [titleEl, subTitleEl].forEach((el, i) => {
+    if (!el) return;
+    const text = el.textContent.replace(/\s+/g, ' ').trim();
+    if (!text) return;
+    const node = document.createElement(i === 0 ? 'h2' : 'p');
+    node.textContent = text;
+    introEls.push(node);
+  });
+
   const block = WebImporter.Blocks.createBlock(document, { name: 'cards-benefits', cells });
-  element.replaceWith(block);
+  if (introEls.length) {
+    element.replaceWith(...introEls, block);
+  } else {
+    element.replaceWith(block);
+  }
 }

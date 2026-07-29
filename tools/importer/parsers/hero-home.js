@@ -54,9 +54,37 @@ export default function parse(element, { document }) {
     cells.push([bgImage]);
   }
 
-  // Row 3: single cell holding the headline (and any future subheading/CTA).
+  // Row 3: single cell holding the headline (and any subheading).
   const contentCell = [];
   if (heading) contentCell.push(heading);
+
+  // Careers hero: the headline "People are our greatest asset." is split across
+  // two <h2> lines and duplicated across responsive (mobile/desktop) variants
+  // plus a plain fallback div. `heading` above only captured the first line, so
+  // rebuild a single clean subheading from the longest full phrase available and
+  // drop the partial first line. Guarded to the careers hero-container so the
+  // homepage hero (single H1) is untouched.
+  const heroContainer = element.querySelector('[data-testid="hero-container"]');
+  if (heroContainer && heading) {
+    // Candidate full phrases: each responsive variant wraps the headline in two
+    // <h2> lines ("People are" / "our greatest asset."). Join each variant's
+    // line elements with a space (textContent alone would concatenate them with
+    // no separator), then pick the longest complete phrase.
+    const variants = Array.from(heroContainer.querySelectorAll(':scope > div > div'))
+      .map((d) => {
+        const lines = Array.from(d.querySelectorAll('h1, h2, h3, span, p'));
+        const text = lines.length
+          ? lines.map((l) => l.textContent.replace(/\s+/g, ' ').trim()).filter(Boolean).join(' ')
+          : d.textContent.replace(/\s+/g, ' ').trim();
+        return text;
+      })
+      .filter(Boolean);
+    const full = variants.sort((a, b) => b.length - a.length)[0]
+      || heading.textContent.replace(/\s+/g, ' ').trim();
+    // Replace the partial headline with the full phrase; no separate subheading.
+    heading.textContent = full;
+  }
+
   cells.push([contentCell]);
 
   const block = WebImporter.Blocks.createBlock(document, { name: 'hero-home', cells });

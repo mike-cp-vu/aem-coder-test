@@ -90,6 +90,25 @@ export default function parse(element, { document }) {
     return;
   }
 
+  // Preserve the section's intro headings (the "CAREERS" eyebrow, the
+  // "Our employees are the ones..." headline, and the mantra) as default
+  // content ABOVE the cards. They live in the container but outside any card,
+  // so the card-only extraction above skips them and they would otherwise be
+  // dropped when the container is replaced.
+  const introEls = [];
+  Array.from(element.querySelectorAll('[data-testid="cultureHeader"]')).forEach((h, i) => {
+    const text = h.textContent.replace(/\s+/g, ' ').trim();
+    if (!text) return;
+    // First two are headings (eyebrow + headline); the rest (mantra) is body copy.
+    const el = document.createElement(i < 2 ? 'h2' : 'p');
+    el.textContent = text;
+    introEls.push(el);
+  });
+
   const block = WebImporter.Blocks.createBlock(document, { name: 'cards-culture', cells });
-  element.replaceWith(block);
+  if (introEls.length) {
+    element.replaceWith(...introEls, block);
+  } else {
+    element.replaceWith(block);
+  }
 }
