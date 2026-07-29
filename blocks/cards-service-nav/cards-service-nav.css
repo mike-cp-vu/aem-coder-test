@@ -54,6 +54,12 @@
   text-align: center;
 }
 
+/* Labels wrap to their longest word (min-content), matching the source where
+   e.g. "Streaming OTT" stacks as two lines rather than filling a wide column. */
+.cards-service-nav .cards-service-nav-card-body {
+  width: min-content;
+}
+
 /* hover: icon + label turn brand orange */
 .cards-service-nav > ul > li:hover {
   color: var(--brand-orange);
@@ -74,14 +80,18 @@
 
 @media (width >= 900px) {
   .cards-service-nav > ul {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, max-content);
     column-gap: 96px;
   }
 }
 
+/* Desktop: a single centred row of eight icon-width (58px) columns with a wide
+   96px column gap — matching the source, where the columns are sized to the
+   icon and the labels wrap under them (to their longest word) rather than
+   widening the column or spreading the icons across the full width. */
 @media (width >= 1200px) {
   .cards-service-nav > ul {
-    grid-template-columns: repeat(8, 1fr);
-    column-gap: 40px;
+    grid-template-columns: repeat(8, 58px);
+    column-gap: 96px;
   }
 }
