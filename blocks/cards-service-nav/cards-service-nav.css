@@ -5,15 +5,15 @@
  * Grid: 2 cols mobile -> 3 (>=600) -> 4 (>=900) -> 8 (>=1200).
  */
 
-/* Intro copy above the quick-nav (eyebrow + h1 + lead paragraph). The source
-   constrains this block to a narrow ~672px measure and styles the eyebrow as a
-   small uppercase grey label, so the text reads as a contained intro rather
-   than spanning the full content width. */
+/* Intro copy above the quick-nav (eyebrow + h1 + lead paragraph). The wrapper
+   stays centred with the other sections; only the text is constrained to the
+   source's narrow ~672px measure and left-aligned within the wrapper, so it
+   lines up with the rest of the content and reads as a contained intro. The
+   eyebrow becomes a small uppercase grey label. */
 /* stylelint-disable no-descending-specificity */
-.section.cards-service-nav-container > .default-content-wrapper:first-child {
+.section.cards-service-nav-container > .default-content-wrapper:first-child > p,
+.section.cards-service-nav-container > .default-content-wrapper:first-child > h1 {
   max-width: 672px;
-  margin-left: 0;
-  margin-right: auto;
 }
 
 .section.cards-service-nav-container > .default-content-wrapper:first-child > p:first-child {
