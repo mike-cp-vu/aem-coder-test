@@ -68,7 +68,12 @@
   margin: 0;
 }
 
-.hero-home h1 {
+/* Headline overlay. The homepage hero authors the headline as an H1
+   ("WE DEVELOP ALL THINGS DIGITAL"); the careers hero authors it as an H2
+   ("People are our greatest asset."). Style both so the headline reads as the
+   large white overlay on the hero image in either case. */
+.hero-home h1,
+.hero-home h2 {
   margin: 0;
   color: #fff;
   font-family: var(--heading-font-family);
@@ -88,7 +93,8 @@
   display: none;
 }
 
-.hero-home.no-image h1 {
+.hero-home.no-image h1,
+.hero-home.no-image h2 {
   color: var(--heading-color);
 }
 
@@ -98,7 +104,8 @@
     padding: 80px;
   }
 
-  .hero-home h1 {
+  .hero-home h1,
+  .hero-home h2 {
     font-size: 60px;
     line-height: 82px;
   }
