@@ -5,6 +5,35 @@
  * Grid: 2 cols mobile -> 3 (>=600) -> 4 (>=900) -> 8 (>=1200).
  */
 
+/* Intro copy above the quick-nav (eyebrow + h1 + lead paragraph). The source
+   constrains this block to a narrow ~672px measure and styles the eyebrow as a
+   small uppercase grey label, so the text reads as a contained intro rather
+   than spanning the full content width. */
+/* stylelint-disable no-descending-specificity */
+.section.cards-service-nav-container > .default-content-wrapper:first-child {
+  max-width: 672px;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.section.cards-service-nav-container > .default-content-wrapper:first-child > p:first-child {
+  margin-bottom: 12px;
+  color: var(--eyebrow-color, #9a9a9a);
+  font-size: 14px;
+  line-height: 20px;
+  text-transform: uppercase;
+}
+
+.section.cards-service-nav-container > .default-content-wrapper:first-child > h1 {
+  margin: 0;
+  line-height: 48px;
+}
+
+.section.cards-service-nav-container > .default-content-wrapper:first-child > h1 + p {
+  margin-top: 20px;
+}
+/* stylelint-enable no-descending-specificity */
+
 .cards-service-nav > ul {
   list-style: none;
   margin: 0 auto;
@@ -58,6 +87,7 @@
   transition: filter 0.15s ease;
 }
 
+/* stylelint-disable no-descending-specificity */
 .cards-service-nav .cards-service-nav-card-body,
 .cards-service-nav .cards-service-nav-card-body p {
   margin: 0;
@@ -67,6 +97,7 @@
   color: inherit;
   text-align: center;
 }
+/* stylelint-enable no-descending-specificity */
 
 /* Labels wrap to their longest word (min-content), matching the source where
    e.g. "Streaming OTT" stacks as two lines rather than filling a wide column. */
