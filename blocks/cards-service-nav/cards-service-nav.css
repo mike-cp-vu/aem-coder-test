@@ -17,6 +17,20 @@
   max-width: 100%;
 }
 
+/* The nav sits in the same section as the intro copy above and the first
+   service card below, so it needs its own vertical rhythm to match the source
+   (~56px above on mobile, ~96px on desktop between the quick-nav row and its
+   neighbours). */
+.cards-service-nav {
+  margin: 56px 0;
+}
+
+@media (width >= 900px) {
+  .cards-service-nav {
+    margin: 96px 0;
+  }
+}
+
 .cards-service-nav > ul > li {
   /* no border, no background — just icon + label */
   display: flex;
