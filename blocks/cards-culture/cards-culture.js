@@ -14,4 +14,8 @@ export default function decorate(block) {
   });
   ul.querySelectorAll('picture > img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
   block.replaceChildren(ul);
+
+  // Anchor target for the careers hero "CULTURE" quick-nav card.
+  const section = block.closest('.section');
+  if (section && !section.id) section.id = 'culture';
 }

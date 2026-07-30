@@ -20,6 +20,14 @@
   box-sizing: border-box;
 }
 
+/* Careers hero with quick-nav cards: stack the headline (top/centre) and the
+   cards row (bottom) in a column so both overlay the image. */
+.hero-home.has-cards {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
 /* background image row -- fills the hero */
 .hero-home > div:first-child {
   position: absolute;
@@ -60,8 +68,11 @@
   pointer-events: none;
 }
 
-/* headline row -- overlaid, left, vertically centered */
-.hero-home > div:last-child {
+/* headline row -- overlaid, left, vertically centered. Target the content row
+   that holds the headline (rather than :last-child, which is the cards row on
+   the careers hero). */
+.hero-home > div:not(:first-child):has(h1, h2),
+.hero-home > div:last-child:not(.hero-home-cards-wrapper) {
   position: relative;
   z-index: 2;
   max-width: 520px;
@@ -96,6 +107,88 @@
 .hero-home.no-image h1,
 .hero-home.no-image h2 {
   color: var(--heading-color);
+}
+
+/* ---- Careers hero quick-nav cards ---- */
+.hero-home .hero-home-cards-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: none;
+  margin: 32px 0 0;
+}
+
+.hero-home-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hero-home-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  width: 208px;
+  min-height: 150px;
+  padding: 16px;
+  border: 1px solid rgb(229 231 235 / 60%);
+  background: rgb(0 0 0 / 60%);
+  color: #eff3f4;
+  text-decoration: none;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.hero-home-card:hover,
+.hero-home-card:focus-visible {
+  background: rgb(0 0 0 / 75%);
+  border-color: var(--brand-orange, #ff8e2f);
+}
+
+.hero-home-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hero-home-card-label {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: 0.02em;
+}
+
+.hero-home-card-desc {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 20px;
+}
+
+.hero-home-card-arrow {
+  width: 25px;
+  height: 16px;
+  color: #eff3f4;
+}
+
+.hero-home-card:hover .hero-home-card-arrow,
+.hero-home-card:focus-visible .hero-home-card-arrow {
+  color: var(--brand-orange, #ff8e2f);
+}
+
+/* mobile: cards scroll horizontally so they don't overwhelm the short hero */
+@media (width < 900px) {
+  .hero-home-cards {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hero-home-card {
+    flex: 0 0 auto;
+    width: 180px;
+    min-height: 132px;
+  }
 }
 
 @media (width >= 900px) {

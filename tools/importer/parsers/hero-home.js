@@ -87,6 +87,55 @@ export default function parse(element, { document }) {
 
   cells.push([contentCell]);
 
+  // Careers hero: four quick-nav cards (CULTURE / TESTIMONIALS / BENEFITS /
+  // WORK FOR US) overlaid on the hero. In the source they are <button>s that
+  // scroll to on-page sections; emit each as an anchor link (label + one-line
+  // description) so the block can render them as jump-link cards. The label →
+  // section-anchor map matches the migrated section ids added in the target
+  // blocks. Guarded to the careers hero-container so the homepage hero (which
+  // has no such cards) emits nothing here.
+  if (heroContainer) {
+    const anchorByLabel = {
+      CULTURE: '#culture',
+      TESTIMONIALS: '#testimonials',
+      BENEFITS: '#benefits',
+      'WORK FOR US': '#teams',
+    };
+    const cardButtons = Array.from(heroContainer.querySelectorAll('button'))
+      .filter((b) => {
+        const label = (b.textContent || '').trim().toUpperCase();
+        return Object.keys(anchorByLabel).some((k) => label.startsWith(k));
+      });
+
+    if (cardButtons.length) {
+      const cardCell = [];
+      cardButtons.forEach((btn) => {
+        // The two leaf <div>s hold the label and the description line.
+        const leaves = Array.from(btn.querySelectorAll('div'))
+          .filter((d) => !d.querySelector('div'));
+        const label = leaves[0] ? leaves[0].textContent.replace(/\s+/g, ' ').trim() : '';
+        const desc = leaves[1] ? leaves[1].textContent.replace(/\s+/g, ' ').trim() : '';
+        if (!label) return;
+        const href = anchorByLabel[label.toUpperCase()] || `#${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+
+        const a = document.createElement('a');
+        a.setAttribute('href', href);
+        const strong = document.createElement('strong');
+        strong.textContent = label;
+        a.appendChild(strong);
+        if (desc) {
+          a.appendChild(document.createElement('br'));
+          a.appendChild(document.createTextNode(desc));
+        }
+
+        const p = document.createElement('p');
+        p.appendChild(a);
+        cardCell.push(p);
+      });
+      if (cardCell.length) cells.push([cardCell]);
+    }
+  }
+
   const block = WebImporter.Blocks.createBlock(document, { name: 'hero-home', cells });
 
   // The stats grid lives inside this hero container and is handled by the

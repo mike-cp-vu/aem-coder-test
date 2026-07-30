@@ -12,4 +12,8 @@ export default function decorate(block) {
   });
   block.textContent = '';
   block.append(ul);
+
+  // Anchor target for the careers hero "BENEFITS" quick-nav card.
+  const section = block.closest('.section');
+  if (section && !section.id) section.id = 'benefits';
 }

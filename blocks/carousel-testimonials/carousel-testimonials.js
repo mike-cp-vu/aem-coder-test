@@ -95,6 +95,10 @@ export default function decorate(block) {
   block.textContent = '';
   block.append(ul);
 
+  // Anchor target for the careers hero "TESTIMONIALS" quick-nav card.
+  const section = block.closest('.section');
+  if (section && !section.id) section.id = 'testimonials';
+
   if (!slides.length) return;
 
   prev.addEventListener('click', () => {

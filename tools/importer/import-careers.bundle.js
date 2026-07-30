@@ -83,6 +83,41 @@ var CustomImportScript = (() => {
       heading.textContent = full;
     }
     cells.push([contentCell]);
+    if (heroContainer) {
+      const anchorByLabel = {
+        CULTURE: "#culture",
+        TESTIMONIALS: "#testimonials",
+        BENEFITS: "#benefits",
+        "WORK FOR US": "#teams"
+      };
+      const cardButtons = Array.from(heroContainer.querySelectorAll("button")).filter((b) => {
+        const label = (b.textContent || "").trim().toUpperCase();
+        return Object.keys(anchorByLabel).some((k) => label.startsWith(k));
+      });
+      if (cardButtons.length) {
+        const cardCell = [];
+        cardButtons.forEach((btn) => {
+          const leaves = Array.from(btn.querySelectorAll("div")).filter((d) => !d.querySelector("div"));
+          const label = leaves[0] ? leaves[0].textContent.replace(/\s+/g, " ").trim() : "";
+          const desc = leaves[1] ? leaves[1].textContent.replace(/\s+/g, " ").trim() : "";
+          if (!label) return;
+          const href = anchorByLabel[label.toUpperCase()] || `#${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+          const a = document.createElement("a");
+          a.setAttribute("href", href);
+          const strong = document.createElement("strong");
+          strong.textContent = label;
+          a.appendChild(strong);
+          if (desc) {
+            a.appendChild(document.createElement("br"));
+            a.appendChild(document.createTextNode(desc));
+          }
+          const p = document.createElement("p");
+          p.appendChild(a);
+          cardCell.push(p);
+        });
+        if (cardCell.length) cells.push([cardCell]);
+      }
+    }
     const block = WebImporter.Blocks.createBlock(document, { name: "hero-home", cells });
     const statsGrid = element.querySelector('div.grid.grid-cols-3, [class*="grid-cols-3"]');
     if (statsGrid) {
