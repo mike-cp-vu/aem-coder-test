@@ -59,8 +59,9 @@ Run the same single-page workflow used for Contact — scrape → analyze struct
 3. **Per archetype:** scrape → identify sections/blocks against the mapping table above → extend `tools/importer/parsers/` and `tools/importer/transformers/` → add an entry to `tools/importer/page-templates.json` → generate content HTML for DA upload (via the `generate-import-html`/`page-import` skill rules — never hand-write the HTML).
 4. **Upload to DA** (`da-auth` + `da-content` skills) and run the **DA content-approval** workflow before treating any page as content-complete.
 5. **Visual-fidelity + responsive gate, per page, mandatory:**
-   - Use Chrome DevTools MCP against the local preview, or `stardust:replica`'s measured gate, against the live `ensemble.com` equivalent page.
+   - Capture the local preview via Chrome DevTools MCP; capture the live `ensemble.com` equivalent page via `tools/fidelity-gate/replica/stitch-shot.mjs` (kept on Playwright specifically for its bot-challenge hardening — see AGENTS.md's Visual Verification & Testing section for the full split and why).
    - Check every breakpoint the source site uses (mobile / tablet / desktop — confirm the project's `600px`/`900px`/`1200px` convention from `AGENTS.md` lines up with what the source actually does responsively; don't assume it does).
+   - **Mandatory human visual checkpoint** — even at 0% automated diff, hand the user both URLs per breakpoint and get their own visual confirmation before considering the page done. This project has direct precedent (Contact) of automated 0% passing while real styling issues remained; see AGENTS.md's Visual Verification & Testing section, step 3.
    - A page is not done until it passes this gate — matching desktop only is not sufficient.
 6. **Lint** (`npm run lint`) on every batch of block/script changes.
 
