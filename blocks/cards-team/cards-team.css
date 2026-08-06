@@ -41,6 +41,7 @@
   font-weight: 600;
   line-height: 28px;
   color: var(--text-color); /* rgb(31,41,55) */
+  text-transform: none;
 }
 
 /* Email link -- reset title styling, blue link */
