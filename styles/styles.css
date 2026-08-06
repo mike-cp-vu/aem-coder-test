@@ -354,6 +354,14 @@ main > .section[id] {
   scroll-margin-top: calc(var(--nav-height) + 24px);
 }
 
+/* eyebrow label directly above a page's h1 (e.g. "Contact" above "Contact us") */
+main .default-content-wrapper > p:first-child:has(+ h1) {
+  margin-bottom: 12px;
+  color: var(--eyebrow-color);
+  font-size: var(--body-font-size-s);
+  text-transform: uppercase;
+}
+
 @media (width >= 600px) {
   main > .section > div {
     padding: 0 32px;
