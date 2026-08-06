@@ -1,5 +1,7 @@
 # Contact Page Migration Plan — ensemble.com/contact
 
+> **Status: Complete — kept as reference.** This was the first page migrated and is now the archetype for the `cards-office`/`cards-team`/`form-contact` blocks. Current work is scoped by `.migration/plans/ensemble-site-migration.md` (full-site migration via DA, not Google Docs). Don't redo this page; reuse its blocks.
+
 ## Objective
 Migrate `https://www.ensemble.com/contact/` into this AEM Edge Delivery Services project — reproducing its content structure, block layout, and visual design so it renders correctly in the local preview.
 

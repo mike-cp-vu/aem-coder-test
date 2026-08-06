@@ -117,6 +117,73 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 * Lazy - load all other page content, including the header and footer.
 * Delayed - load things that can be safely loaded later here and incur a performance penalty when loaded earlier
 
+## Migration & Styling Rules
+
+These rules govern any work that migrates or restyles pages against an existing source site — currently the full `https://www.ensemble.com/` site migration tracked under `.migration/plans/ensemble-site-migration.md` and `tools/importer/`. Content is authored via Adobe Document Authoring (DA / da.live); Google Docs are not part of this workflow.
+
+**This is a faithful 1:1 migration, not a redesign.** The target spec for every page IS the current live ensemble.com page — same content, same layout, same visual design, just on a new platform. No creative or "improvement" decisions are in scope: don't fix things you think look dated, don't simplify a layout you find awkward, don't swap fonts/colors/spacing you'd personally choose differently. If the source and the migrated page disagree, the source is right and the migrated page needs to change — never the other way around. The only exception is a genuine platform constraint that makes an exact match impossible (e.g. a Gatsby-only interaction); if you hit one, flag it to the user explicitly rather than silently reinterpreting the design.
+
+### Full-site pipeline — end to end, mostly automated
+The whole migration runs through `stardust`'s site-scale pipeline, not ad hoc per-page scripting. Each stage is scripted and produces a measured pass/fail, not an eyeballed judgment:
+
+1. **`stardust:extract --prep`** — full multi-page crawl of ensemble.com: captures content, design tokens, screenshots, page-type inventory, and module candidates into `stardust/current/`. This is the automated replacement for hand-crawling the site.
+2. **`stardust:replica`** — per page-type archetype (one per template): Phase 2 promotes the captured current state as the target verbatim (never invokes `stardust:direct` — there is no redesign step); Phase 3 recreates the archetype by lifting exact CSS values (container widths, type ramp, spacing, radii, shadows) straight from the source's own stylesheets — not eyeballed; Phase 4 runs the scripted, per-breakpoint fidelity gate (`content-diff.mjs`, `visual-diff.mjs`, `stitch-shot.mjs` + `pixel-compare.mjs`) with numeric pass bars (0 structural diffs, ≤10% pixel diff, ≤8px height delta). Iterates off the instruments, never off eyeballing.
+3. **`stardust:migrate`** — applies each gated archetype to every sibling page in the inventory (structural clone + content-fidelity + delivery-lint), so per-page recreation isn't repeated by hand.
+4. **`stardust:deploy`** (single page) / **`stardust:rollout`** (whole-site bulk sibling) — converts the validated prototypes into this project's actual `blocks/`/`content/` EDS structure per David's Model, gated by a mechanical lint (`davids-model-lint.mjs`, must exit 0) before any DA write. **Delivery is validated against the real deployed artifact, not the standalone prototype:** the atomic per-page contract only flips a page to "deployed" after the live/preview URL passes structural assertions AND a computed-style check (e.g. a block declared as grid/flex must actually compute `display: grid`/`flex`, not silently fall back to block layout — a documented real failure mode where text-level checks pass while the layout is broken).
+5. **`stardust:qa`** — a final, independent, read-only sweep of the deployed site: content fidelity vs. the source capture, template conformance, visual regression, accessibility, performance. Run this after rollout, not as a substitute for the Phase 4 gate.
+
+**Content structure** (what becomes a block vs. default content) still follows `page-import`/`generate-import-html`'s David's Model rules when working directly with `tools/importer/` rather than the stardust pipeline — the two are consistent, not competing conventions.
+
+**Nothing here is a license to skip the Visual Verification gate below.** The scripted diffs are the instrument; running them, reading their output, and confirming a page passes at every breakpoint is still a required step before calling any page done — "the skill ran" is not the same as "the skill passed."
+
+### Content Authoring & Moderation
+- Author and upload content through DA (`da-auth`/`da-content` skills), not Google Docs.
+- Every page MUST clear DA's content-approval workflow before it's treated as migrated — this is a required gate alongside the visual-fidelity gate below, not a substitute for it.
+
+### Architecture & Directories
+- Global CSS variables and typography live in `styles/brand.css` (design tokens) and `styles/styles.css` (structural/layout, `@import`s `brand.css`). Add new tokens to `brand.css`; don't hand-roll new variables inside a block's CSS.
+- All AEM components and their scoped styles live in `/blocks/`, one directory per block (`{blockname}.js` + `{blockname}.css`, optionally `metadata.json` for a variant — see the block palette notes below).
+- Before making structural changes to a block, read its `{blockname}.js`/`{blockname}.css` and explain its current behavior first — don't assume from the name alone.
+
+### CSS Methodologies
+- NEVER use inline styles.
+- All styling must use the CSS variables defined in `styles/brand.css`/`styles/styles.css` — don't introduce new magic values (colors, spacing, font sizes) when an existing variable covers the case.
+- All CSS must be strictly scoped to the block's root class (e.g. `.header-wrapper`), per the existing scoping rule under Code Style Guidelines. Never target unscoped selectors.
+
+### Required Adobe Skills — mandatory, not optional
+This project's EDS workflow runs on the installed `adobe-skills` plugins (`aem-edge-delivery-services`, `stardust` + its `impeccable` dependency). **You MUST invoke the matching skill for the task at hand instead of doing the equivalent work ad hoc** (hand-writing block code without checking existing patterns, hand-crafting import HTML, guessing at aem.live behavior, etc.). Ad hoc work that bypasses a skill listed below is a rules violation, not a shortcut — invoke the skill first, even if you're confident you already know the answer.
+
+| Task | Required skill | Notes |
+|---|---|---|
+| Any block/script/style code change | `content-driven-development` | Orchestrates the CDD workflow end to end; it invokes `analyze-and-plan`, `building-blocks`, `testing-blocks`, `content-modeling`, `code-review` as needed — don't hand-invoke those steps out of order or skip straight to editing files. |
+| Before authoring any new block or variant | `block-inventory` + `block-collection-and-party` | Survey this project's blocks and the Block Collection for a reusable match before writing new block code. Skipping this is how duplicate blocks happen. |
+| Any question about EDS/aem.live behavior, APIs, or conventions | `docs-search` | Search the docs instead of guessing or relying on training-data memory of aem.live behavior, which may be stale. |
+| Migrating a page from ensemble.com | `page-import` | Orchestrates `scrape-webpage` → `identify-page-structure` → `generate-import-html`. Don't hand-write import HTML or parsers outside this flow. |
+| Any DA (da.live) auth or content/upload operation | `da-auth` / `da-content` | Required for every `admin.da.live`/`admin.hlx.page` call — see the Content Authoring & Moderation rule above. |
+| After any code change, before considering it complete | `testing-blocks` | Mandatory browser validation lives here; it's also invoked by `building-blocks` step 5 — don't consider a change tested without it. |
+| Finding existing content to test a block/page against | `find-test-content` | Use before creating new draft/test content by hand. |
+| Full-site crawl/capture of ensemble.com | `stardust:extract --prep` | Automated replacement for hand-crawling the nav/sitemap — captures content, design tokens, screenshots, and the page-type inventory in one pass. |
+| Per-archetype recreation + fidelity gate | `stardust:replica` | Standing default for every page type in this 1:1 migration — never a special case. Lifts exact CSS values from source (Phase 3) and runs the scripted per-breakpoint content/visual/pixel-diff gate (Phase 4). |
+| Applying a gated archetype to its sibling pages | `stardust:migrate` | Don't hand-recreate a page whose template archetype already passed the fidelity gate. |
+| Converting validated prototypes into this project's `blocks/`/`content/` | `stardust:deploy` (one page) / `stardust:rollout` (whole site) | Runs the mechanical David's Model lint before any DA write, and gates final delivery on the actually-deployed live/preview URL (structure + computed-style check), not the standalone prototype. |
+| Final independent check after rollout | `stardust:qa` | Read-only sweep: content fidelity, template conformance, visual regression, accessibility, performance. Not a substitute for the Phase 4 fidelity gate — a check that it held. |
+| Redesign (`stardust:prototype` / `stardust:reskin` / `stardust:direct`) | **Do not use** | These are for intentional redesigns. Out of scope for this project unless the user explicitly asks for a redesign in a future, separate task — never invoke them as part of migration work. |
+
+If a task doesn't map to any row above, proceed normally — this table isn't exhaustive of every possible task, only of the EDS-workflow steps that have a dedicated skill.
+
+### Visual Verification & Testing — mandatory gate before confirming any change
+- **No migration/styling change is "done" until it has been visually verified in a real browser.** Reading the code or the diff is never sufficient — not for a full page, not for a one-line CSS tweak. Never confirm, report, or mark a change complete without having actually run this gate first.
+- Required steps for every change, in order:
+  1. Load the affected page locally via the Chrome DevTools MCP (or run `stardust:replica`'s fidelity gate for a full-page migration pass).
+  2. Screenshot it at, at minimum, three widths: **mobile (~375px), tablet (~768px), desktop (~1440px)** — plus this project's own `600px`/`900px`/`1200px` breakpoints if they land at different widths than the source's actual responsive behavior.
+  3. Screenshot the equivalent live `ensemble.com` page at the same widths.
+  4. Compare side by side and list concrete differences (layout, spacing, type, color, what breaks or reflows at which width) — not a vague "looks close."
+  5. Fix the CSS/markup and repeat from step 2 until no differences remain at **any** checked width.
+- Desktop-only verification does not satisfy this gate. Mobile and tablet are not optional passes to skip when short on time.
+- This applies to every block or page touched by migration/styling work — small fixes still need a before/after screenshot check at all three widths, not just the width where the bug was noticed.
+- **Fidelity bar:** treat any visible difference as a bug to fix, not a judgment call about whether it's "close enough." There is no acceptable design drift in a 1:1 migration — the only permitted deltas are genuine platform constraints, and those must be called out explicitly to the user, never silently absorbed as "good enough." When using `stardust:replica`'s measured pixel-diff gate, keep iterating down, not just below some threshold — 0% diff is the goal, not a stretch target.
+- Every fix must come from a measurement (screenshot diff, computed style comparison, layout inspection) — never from eyeballing or "this probably looks right now."
+
 ## Testing & Quality Assurance
 
 ### Performance
