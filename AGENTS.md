@@ -184,6 +184,13 @@ If a task doesn't map to any row above, proceed normally — this table isn't ex
 - **Fidelity bar:** treat any visible difference as a bug to fix, not a judgment call about whether it's "close enough." There is no acceptable design drift in a 1:1 migration — the only permitted deltas are genuine platform constraints, and those must be called out explicitly to the user, never silently absorbed as "good enough." When using `stardust:replica`'s measured pixel-diff gate, keep iterating down, not just below some threshold — 0% diff is the goal, not a stretch target.
 - Every fix must come from a measurement (screenshot diff, computed style comparison, layout inspection) — never from eyeballing or "this probably looks right now."
 
+### Accessibility findings vs. source-inherited "defects"
+This project's 1:1 mandate and WCAG 2.1 AA (under Testing & Quality Assurance below) can genuinely conflict: `aem-psi-check`/Lighthouse may flag a `color-contrast` (or similar) finding on a color that's a faithful, exact reproduction of source's own low-contrast choice. **Do not silently pick a side.** The color is never yours to change unilaterally just because a check is red, and the check is never something to ignore just because "it's probably source's fault."
+- Measure, don't assume: use `tools/fidelity-gate/contrast-parity.mjs` to compute the WCAG contrast ratio for the flagged element on both the live source and the migrated page. It walks up the DOM for the effective background the same way Lighthouse does, so the numbers are directly comparable.
+- **MATCH** (ratios equal within tolerance) → this is a confirmed source-inherited exception, not a migration defect. Leave the color as-is; the fix belongs upstream on the source site, not here. Record the finding (element, both ratios, verdict) so it doesn't need re-verifying on every future audit run.
+- **DRIFT** (ratios differ) → this is a real defect introduced during migration; fix it to match source's actual color, not to pass WCAG in the abstract.
+- Never resolve this by eyeballing "well it's probably close to source" — every judgment call here must cite the tool's measured numbers for both sides.
+
 ## Testing & Quality Assurance
 
 ### Performance

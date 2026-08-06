@@ -122,7 +122,7 @@ export default function decorate(block) {
 
     // insert a section heading before the field that starts a new group
     if (groups[name]) {
-      const heading = document.createElement('h4');
+      const heading = document.createElement('h3');
       heading.className = 'form-contact-heading';
       heading.textContent = groups[name];
       form.append(heading);

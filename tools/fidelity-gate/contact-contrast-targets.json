@@ -1,0 +1,6 @@
+[
+  { "label": "eyebrow", "text": "Contact" },
+  { "label": "job-title", "text": "PRESIDENT/FOUNDER" },
+  { "label": "email-link", "selector": "a[href^=\"mailto:president\"]" },
+  { "label": "submit-button", "text": "SUBMIT" }
+]
