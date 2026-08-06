@@ -123,18 +123,10 @@ These rules govern any work that migrates or restyles pages against an existing 
 
 **This is a faithful 1:1 migration, not a redesign.** The target spec for every page IS the current live ensemble.com page — same content, same layout, same visual design, just on a new platform. No creative or "improvement" decisions are in scope: don't fix things you think look dated, don't simplify a layout you find awkward, don't swap fonts/colors/spacing you'd personally choose differently. If the source and the migrated page disagree, the source is right and the migrated page needs to change — never the other way around. The only exception is a genuine platform constraint that makes an exact match impossible (e.g. a Gatsby-only interaction); if you hit one, flag it to the user explicitly rather than silently reinterpreting the design.
 
-### Full-site pipeline — end to end, mostly automated
-The whole migration runs through `stardust`'s site-scale pipeline, not ad hoc per-page scripting. Each stage is scripted and produces a measured pass/fail, not an eyeballed judgment:
+### Content pipeline
+`page-import` (via the `aem-edge-delivery-services` skill: `scrape-webpage` → `identify-page-structure` → `generate-import-html`) is the sole content/block pipeline for this migration — it's what actually built and shipped the Contact page. Content structure (what becomes a block vs. default content) follows its David's Model rules.
 
-1. **`stardust:extract --prep`** — full multi-page crawl of ensemble.com: captures content, design tokens, screenshots, page-type inventory, and module candidates into `stardust/current/`. This is the automated replacement for hand-crawling the site.
-2. **`stardust:replica`** — per page-type archetype (one per template): Phase 2 promotes the captured current state as the target verbatim (never invokes `stardust:direct` — there is no redesign step); Phase 3 recreates the archetype by lifting exact CSS values (container widths, type ramp, spacing, radii, shadows) straight from the source's own stylesheets — not eyeballed; Phase 4 runs the scripted, per-breakpoint fidelity gate (`content-diff.mjs`, `visual-diff.mjs`, `stitch-shot.mjs` + `pixel-compare.mjs`) with numeric pass bars (0 structural diffs, ≤10% pixel diff, ≤8px height delta). Iterates off the instruments, never off eyeballing.
-3. **`stardust:migrate`** — applies each gated archetype to every sibling page in the inventory (structural clone + content-fidelity + delivery-lint), so per-page recreation isn't repeated by hand.
-4. **`stardust:deploy`** (single page) / **`stardust:rollout`** (whole-site bulk sibling) — converts the validated prototypes into this project's actual `blocks/`/`content/` EDS structure per David's Model, gated by a mechanical lint (`davids-model-lint.mjs`, must exit 0) before any DA write. **Delivery is validated against the real deployed artifact, not the standalone prototype:** the atomic per-page contract only flips a page to "deployed" after the live/preview URL passes structural assertions AND a computed-style check (e.g. a block declared as grid/flex must actually compute `display: grid`/`flex`, not silently fall back to block layout — a documented real failure mode where text-level checks pass while the layout is broken).
-5. **`stardust:qa`** — a final, independent, read-only sweep of the deployed site: content fidelity vs. the source capture, template conformance, visual regression, accessibility, performance. Run this after rollout, not as a substitute for the Phase 4 gate.
-
-**Content structure** (what becomes a block vs. default content) still follows `page-import`/`generate-import-html`'s David's Model rules when working directly with `tools/importer/` rather than the stardust pipeline — the two are consistent, not competing conventions.
-
-**Nothing here is a license to skip the Visual Verification gate below.** The scripted diffs are the instrument; running them, reading their output, and confirming a page passes at every breakpoint is still a required step before calling any page done — "the skill ran" is not the same as "the skill passed."
+`stardust`'s own authoring pipeline (`extract`/`replica`/`migrate`/`deploy`/`rollout`) is **not used** — it wants to own `blocks/`/`content/` itself through a parallel `stardust/` state tree, which would fight `page-import` for the same directories. The only thing taken from `stardust` is its standalone measurement scripts, copied out into `tools/fidelity-gate/` and run independently of the rest of its pipeline — see the Visual Verification & Testing section below for how they're used.
 
 ### Content Authoring & Moderation
 - Author and upload content through DA (`da-auth`/`da-content` skills), not Google Docs.
@@ -162,34 +154,27 @@ This project's EDS workflow runs on the installed `adobe-skills` plugins (`aem-e
 | Any DA (da.live) auth or content/upload operation | `da-auth` / `da-content` | Required for every `admin.da.live`/`admin.hlx.page` call — see the Content Authoring & Moderation rule above. |
 | After any code change, before considering it complete | `testing-blocks` | Mandatory browser validation lives here; it's also invoked by `building-blocks` step 5 — don't consider a change tested without it. |
 | Finding existing content to test a block/page against | `find-test-content` | Use before creating new draft/test content by hand. |
-| Full-site crawl/capture of ensemble.com | `stardust:extract --prep` | Automated replacement for hand-crawling the nav/sitemap — captures content, design tokens, screenshots, and the page-type inventory in one pass. |
-| Per-archetype recreation + fidelity gate | `stardust:replica` | Standing default for every page type in this 1:1 migration — never a special case. Lifts exact CSS values from source (Phase 3) and runs the scripted per-breakpoint content/visual/pixel-diff gate (Phase 4). |
-| Applying a gated archetype to its sibling pages | `stardust:migrate` | Don't hand-recreate a page whose template archetype already passed the fidelity gate. |
-| Converting validated prototypes into this project's `blocks/`/`content/` | `stardust:deploy` (one page) / `stardust:rollout` (whole site) | Runs the mechanical David's Model lint before any DA write, and gates final delivery on the actually-deployed live/preview URL (structure + computed-style check), not the standalone prototype. |
-| Final independent check after rollout | `stardust:qa` | Read-only sweep: content fidelity, template conformance, visual regression, accessibility, performance. Not a substitute for the Phase 4 fidelity gate — a check that it held. |
-| Redesign (`stardust:prototype` / `stardust:reskin` / `stardust:direct`) | **Do not use** | These are for intentional redesigns. Out of scope for this project unless the user explicitly asks for a redesign in a future, separate task — never invoke them as part of migration work. |
+| Any `stardust` skill (`extract`/`replica`/`migrate`/`deploy`/`rollout`/`prototype`/`reskin`/`direct`) | **Do not use** | `stardust`'s authoring pipeline conflicts with `page-import` (see Content pipeline above). Only its standalone measurement scripts, copied into `tools/fidelity-gate/`, are used. |
 
 If a task doesn't map to any row above, proceed normally — this table isn't exhaustive of every possible task, only of the EDS-workflow steps that have a dedicated skill.
 
 ### Visual Verification & Testing — mandatory gate before confirming any change
-- **No migration/styling change is "done" until it has been visually verified in a real browser.** Reading the code or the diff is never sufficient — not for a full page, not for a one-line CSS tweak. Never confirm, report, or mark a change complete without having actually run this gate first.
-- Required steps for every change, in order:
-  1. Load the affected page locally via the Chrome DevTools MCP (or run `stardust:replica`'s fidelity gate for a full-page migration pass).
-  2. Screenshot it at, at minimum, three widths: **mobile (~375px), tablet (~768px), desktop (~1440px)** — plus this project's own `600px`/`900px`/`1200px` breakpoints if they land at different widths than the source's actual responsive behavior.
-  3. Screenshot the equivalent live `ensemble.com` page at the same widths.
-  4. Compare side by side and list concrete differences (layout, spacing, type, color, what breaks or reflows at which width) — not a vague "looks close."
-  5. Fix the CSS/markup and repeat from step 2 until no differences remain at **any** checked width.
-- Desktop-only verification does not satisfy this gate. Mobile and tablet are not optional passes to skip when short on time.
-- This applies to every block or page touched by migration/styling work — small fixes still need a before/after screenshot check at all three widths, not just the width where the bug was noticed.
-- **Fidelity bar:** treat any visible difference as a bug to fix, not a judgment call about whether it's "close enough." There is no acceptable design drift in a 1:1 migration — the only permitted deltas are genuine platform constraints, and those must be called out explicitly to the user, never silently absorbed as "good enough." When using `stardust:replica`'s measured pixel-diff gate, keep iterating down, not just below some threshold — 0% diff is the goal, not a stretch target.
-- Every fix must come from a measurement (screenshot diff, computed style comparison, layout inspection) — never from eyeballing or "this probably looks right now."
+**No migration/styling change is "done" until it has been through this loop.** Reading the code or the diff is never sufficient — not for a full page, not for a one-line CSS tweak. Every step must come from a measurement — never from eyeballing or "this probably looks right now." Desktop-only verification does not satisfy this gate; mobile and tablet are not optional passes to skip when short on time.
 
-### Accessibility findings vs. source-inherited "defects"
-This project's 1:1 mandate and WCAG 2.1 AA (under Testing & Quality Assurance below) can genuinely conflict: `aem-psi-check`/Lighthouse may flag a `color-contrast` (or similar) finding on a color that's a faithful, exact reproduction of source's own low-contrast choice. **Do not silently pick a side.** The color is never yours to change unilaterally just because a check is red, and the check is never something to ignore just because "it's probably source's fault."
-- Measure, don't assume: use `tools/fidelity-gate/contrast-parity.mjs` to compute the WCAG contrast ratio for the flagged element on both the live source and the migrated page. It walks up the DOM for the effective background the same way Lighthouse does, so the numbers are directly comparable.
-- **MATCH** (ratios equal within tolerance) → this is a confirmed source-inherited exception, not a migration defect. Leave the color as-is; the fix belongs upstream on the source site, not here. Record the finding (element, both ratios, verdict) so it doesn't need re-verifying on every future audit run.
-- **DRIFT** (ratios differ) → this is a real defect introduced during migration; fix it to match source's actual color, not to pass WCAG in the abstract.
-- Never resolve this by eyeballing "well it's probably close to source" — every judgment call here must cite the tool's measured numbers for both sides.
+1. **Test responsive.** `node tools/fidelity-gate/replica/stitch-shot.mjs <local-or-preview-url> out.png --width <px> --settle` at, at minimum, three widths: mobile (~375px), tablet (~768px), desktop (~1440px) — plus this project's own `600px`/`900px`/`1200px` breakpoints if they land at different widths than the source's actual responsive behavior.
+2. **Compare precisely.** Run the same `stitch-shot.mjs` command against the equivalent live `ensemble.com` page at the same widths, then:
+   - `pixel-compare.mjs <live.png> <local.png>` for the visual diff (numeric %, per-band breakdown of where the drift is).
+   - `content-diff.mjs <liveURL> <localURL> --main main` for the structural/text diff (catches things a screenshot can miss or mislead on — see the note below).
+3. **Implement the fix**, guided by exactly what steps 1–2 measured, not by taste.
+4. **Validate again** — repeat steps 1–2 against the same URLs/widths until **0%** pixel diff and 0 structural findings at every width. 0% is the goal, not a stretch target; there's no acceptable design drift in a 1:1 migration except a genuine platform constraint, and that must be flagged to the user explicitly, never silently absorbed as "good enough."
+5. **Confirm Adobe best practices** — see the next section.
+
+**Don't trust a screenshot alone for a content claim.** This session had two false alarms from screenshots that `content-diff.mjs`/DOM inspection disproved: a phantom "missing person" (present, just tagged as a different role) and a phantom dark CSS box (a `stitch-shot` stitching artifact from a sticky header, not a real bug). Cross-check anything a screenshot suggests before reporting it as a bug.
+
+**Accessibility findings vs. source-inherited "defects":** the 1:1 mandate and WCAG 2.1 AA (below) can genuinely conflict — a Lighthouse `color-contrast` finding may be a faithful, exact reproduction of source's own low-contrast choice, not a migration defect. Don't silently pick a side: run `tools/fidelity-gate/contrast-parity.mjs --live <url> --proto <url> --targets <file.json>` to compute the ratio on both sides. **MATCH** (within tolerance) = confirmed exception, leave it — the fix belongs upstream on source, not here; record it in `.migration/contrast-exceptions.md`. **DRIFT** = a real defect, fix it to match source's actual color, not to satisfy WCAG in the abstract.
+
+### Confirm Adobe best practices
+Run `mcp__chrome-devtools__lighthouse_audit` against the local/preview URL — fast and local, no need to wait on a push. Fix anything it flags using the same measure-first discipline as above (route a `color-contrast` finding through the contrast-parity check above before touching any color). Once pushed, treat the real `aem-psi-check` on the PR as confirmation that the local run agreed, not as the first time these are discovered.
 
 ## Testing & Quality Assurance
 
