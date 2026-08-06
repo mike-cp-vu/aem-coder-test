@@ -64,11 +64,17 @@
   text-decoration: underline;
 }
 
-@media (width >= 900px) {
+@media (width >= 768px) {
   .cards-team > ul {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 80px 240px; /* row rhythm ~ pt-20 (80px), col gap lg:gap-x-60 (15rem) */
+    gap: 80px 160px; /* row rhythm ~ pt-20 (80px), col gap md:gap-x-40 (10rem) until the 1024px jump */
+  }
+}
+
+@media (width >= 1024px) {
+  .cards-team > ul {
+    gap: 80px 240px; /* col gap lg:gap-x-60 (15rem) */
   }
 
   .cards-team .cards-team-card-body p:first-child {

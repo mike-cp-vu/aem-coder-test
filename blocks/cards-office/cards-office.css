@@ -91,7 +91,7 @@
 }
 
 /* Tablet: 2 columns */
-@media (width >= 600px) {
+@media (width >= 640px) {
   .cards-office > ul {
     grid-template-columns: 1fr 1fr;
   }
