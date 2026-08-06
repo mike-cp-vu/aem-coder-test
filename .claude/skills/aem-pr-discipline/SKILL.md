@@ -6,7 +6,7 @@ description: "Use this when about to push Edge Delivery Services code changes an
 # AEM PR Discipline
 
 ## Related Skills
-- **visual-fidelity-loop** — run this and get it to pass before opening the PR; a PR shouldn't be the first time a visual change gets checked against source.
+- **testing-blocks** — run this and get it to pass before opening the PR; a PR shouldn't be the first time a change gets browser-validated. For visual/migration changes, also complete the Visual Verification & Testing loop in AGENTS.md before opening the PR.
 
 ## When to Use This Skill
 Any time you're about to push a code/content change intended to become a pull request, or you're already waiting on a feature-branch preview build or CI checks to resolve.
@@ -27,7 +27,7 @@ Once a PR is open, status checks (lint, visual regression, performance audits, e
 **Mark complete when:** you have the actual final status of every check, not an assumption based on how long it's been.
 
 ## Step 4: Write a PR description that names what was measured
-A PR description that just says "fixed the bug" throws away exactly the information a reviewer needs and that the fidelity loop already produced. Include: the feature-preview URL (and, for a visual change, the exact path that demonstrates it), which breakpoints/widths were checked, the actual diff percentages or content-diff results, and the outcome of any accessibility/performance audit. If any known deviation or accepted exception exists (see contrast-parity-judgment), state it explicitly rather than letting a reviewer discover and re-litigate it.
+A PR description that just says "fixed the bug" throws away exactly the information a reviewer needs and that the verification loop already produced. Include: the feature-preview URL (and, for a visual change, the exact path that demonstrates it), which breakpoints/widths were checked, the specific symptoms found and fixed, and the outcome of any accessibility/performance audit. If any known deviation or accepted exception exists (see contrast-parity-judgment), state it explicitly rather than letting a reviewer discover and re-litigate it.
 
 **Mark complete when:** a reviewer could verify your claims from the PR description alone, without re-deriving them from scratch.
 

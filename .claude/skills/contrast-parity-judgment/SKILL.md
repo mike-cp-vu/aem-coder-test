@@ -6,7 +6,7 @@ description: "Use this when an accessibility audit (Lighthouse, PSI, axe, etc.) 
 # Contrast Parity Judgment
 
 ## Related Skills
-- **visual-fidelity-loop** — this skill is normally invoked from that loop's best-practice audit step, but is also usable standalone against any single accessibility finding.
+- This skill is normally invoked from AGENTS.md's "Confirm Adobe best practices" step (after a Lighthouse/PSI audit flags a color-contrast finding), but is also usable standalone against any single accessibility finding.
 
 ## When to Use This Skill
 Whenever an accessibility audit flags a `color-contrast` (or similarly styling-based) finding on a page whose job is to faithfully reproduce an existing source design, rather than to be a fresh, unconstrained design. In that situation there's a real, structural conflict: the mandate to match source exactly and the mandate to meet an accessibility standard can point in opposite directions for the same element. Don't resolve this by picking a side from intuition — measure it.
