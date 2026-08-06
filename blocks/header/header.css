@@ -32,9 +32,19 @@ header nav[aria-expanded='true'] {
 }
 
 @media (width >= 900px) {
-  header .nav-wrapper {
+  /* sticky lives on <header> itself, not .nav-wrapper — .nav-wrapper's
+     immediate parent (header) is height-clamped to var(--nav-height), the
+     same height as .nav-wrapper, leaving no room for a sticky child to
+     stick within it. header's own parent (body) has plenty of scroll
+     room, so sticky works correctly applied here instead. */
+  header {
     position: sticky;
     top: 0;
+    z-index: 500;
+  }
+
+  header .nav-wrapper {
+    position: relative;
   }
 
   header nav {
