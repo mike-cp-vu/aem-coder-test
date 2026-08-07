@@ -437,6 +437,38 @@ main .section.grey .default-content-wrapper p .brand-word {
   color: var(--link-color);
 }
 
+/* "Send us an email" CTA band (contact/emea-contact only — the heading-led
+   .section.center pages start with h1/h2, so these are a no-op there).
+   Both rules key off source's real 1024px "lg" tier (see the --nav-height
+   comment above), not this project's own 900/1200 tiers — measured directly
+   against ensemble.com/contact.
+   Lead line renders as a large bold statement, matching source's
+   text-[24px] font-bold -> lg:text-[32px] font-extrabold. */
+main .section.center .default-content-wrapper > p:first-child {
+  margin: 0 auto;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-color);
+}
+
+/* second line ("We will be in contact soon!"), matching source's
+   text-sm md:text-[14px] -> lg:text-[16px]. */
+main .section.center .default-content-wrapper > p:first-child + p {
+  font-size: 14px;
+}
+
+@media (width >= 1024px) {
+  main .section.center .default-content-wrapper > p:first-child {
+    font-size: 32px;
+    font-weight: 800;
+  }
+
+  main .section.center .default-content-wrapper > p:first-child + p {
+    font-size: 16px;
+  }
+}
+
 /* stylelint-disable no-descending-specificity */
 main .section.center .default-content-wrapper a.button,
 main .section.grey .default-content-wrapper a.button {
