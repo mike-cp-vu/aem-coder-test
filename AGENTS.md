@@ -117,6 +117,72 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 * Lazy - load all other page content, including the header and footer.
 * Delayed - load things that can be safely loaded later here and incur a performance penalty when loaded earlier
 
+## Migration & Styling Rules
+
+These rules govern any work that migrates or restyles pages against an existing source site — currently the full `https://www.ensemble.com/` site migration tracked under `.migration/plans/ensemble-site-migration.md` and `tools/importer/`. Content is authored via Adobe Document Authoring (DA / da.live); Google Docs are not part of this workflow.
+
+**This is a faithful 1:1 migration, not a redesign.** The target spec for every page IS the current live ensemble.com page — same content, same layout, same visual design, just on a new platform. No creative or "improvement" decisions are in scope: don't fix things you think look dated, don't simplify a layout you find awkward, don't swap fonts/colors/spacing you'd personally choose differently. If the source and the migrated page disagree, the source is right and the migrated page needs to change — never the other way around. The only exception is a genuine platform constraint that makes an exact match impossible (e.g. a Gatsby-only interaction); if you hit one, flag it to the user explicitly rather than silently reinterpreting the design.
+
+### Content pipeline
+`page-import` (via the `aem-edge-delivery-services` skill: `scrape-webpage` → `identify-page-structure` → `generate-import-html`) is the sole content/block pipeline for this migration — it's what actually built and shipped the Contact page. Content structure (what becomes a block vs. default content) follows its David's Model rules.
+
+`stardust`'s own authoring pipeline (`extract`/`replica`/`migrate`/`deploy`/`rollout`) is **not used** — it wants to own `blocks/`/`content/` itself through a parallel `stardust/` state tree, which would fight `page-import` for the same directories. `stardust`'s standalone measurement scripts were previously copied out into `tools/fidelity-gate/`; the screenshot/pixel-diff scripts there (`stitch-shot.mjs`, `pixel-compare.mjs`, `content-diff.mjs`, `stitch-chunks.mjs`) are no longer part of the mandatory workflow — see Visual Verification & Testing below. Two narrow utilities from that same directory remain in active use for unrelated purposes: `contrast-parity.mjs` (accessibility parity checks) and `sanitise.js` (DA content-write integrity).
+
+### Content Authoring & Moderation
+- Author and upload content through DA (`da-auth`/`da-content` skills), not Google Docs. If the `da-live-admin` MCP server (see below) is configured in the session, prefer its read/write/list/delete/copy/move tools over raw `curl`/`npx` calls to `admin.da.live`/`admin.hlx.page` — this is the branch `da-auth`'s own Option B already anticipates ("if a DA MCP server is configured in the session, use its authentication tool"). It's a transport swap only; every rule below still applies regardless of which transport made the call.
+- Every page MUST clear DA's content-approval workflow before it's treated as migrated — this is a required gate alongside the visual-fidelity gate below, not a substitute for it.
+- **Sanitize non-ASCII content before every DA write.** DA corrupts raw UTF-8 on ingestion (accented characters, em dashes, etc. can come back mangled); HTML entities survive the round-trip. Run content through `tools/fidelity-gate/sanitise.js` before the write, every time, even for a small edit — whether the write goes out via raw REST or a `da-live-admin` MCP tool call.
+- **Verify a publish via the rendered `.plain.html`, not the write call's reported success.** A `200` from the preview/live trigger (or a DA MCP write/publish tool reporting success) only means the request was accepted — it doesn't prove the content actually changed or rendered correctly. Fetch `.plain.html` on both the preview and live URLs after publishing and confirm the expected content is actually there.
+
+### Architecture & Directories
+- Global CSS variables and typography live in `styles/brand.css` (design tokens) and `styles/styles.css` (structural/layout, `@import`s `brand.css`). Add new tokens to `brand.css`; don't hand-roll new variables inside a block's CSS.
+- All AEM components and their scoped styles live in `/blocks/`, one directory per block (`{blockname}.js` + `{blockname}.css`, optionally `metadata.json` for a variant — see the block palette notes below).
+- Before making structural changes to a block, read its `{blockname}.js`/`{blockname}.css` and explain its current behavior first — don't assume from the name alone.
+
+### CSS Methodologies
+- NEVER use inline styles.
+- All styling must use the CSS variables defined in `styles/brand.css`/`styles/styles.css` — don't introduce new magic values (colors, spacing, font sizes) when an existing variable covers the case.
+- All CSS must be strictly scoped to the block's root class (e.g. `.header-wrapper`), per the existing scoping rule under Code Style Guidelines. Never target unscoped selectors.
+
+### Required Adobe Skills — mandatory, not optional
+This project's EDS workflow runs on the installed `adobe-skills` plugins (`aem-edge-delivery-services`, `stardust` + its `impeccable` dependency). **You MUST invoke the matching skill for the task at hand instead of doing the equivalent work ad hoc** (hand-writing block code without checking existing patterns, hand-crafting import HTML, guessing at aem.live behavior, etc.). Ad hoc work that bypasses a skill listed below is a rules violation, not a shortcut — invoke the skill first, even if you're confident you already know the answer.
+
+| Task | Required skill | Notes |
+|---|---|---|
+| Any block/script/style code change | `content-driven-development` | Orchestrates the CDD workflow end to end; it invokes `analyze-and-plan`, `building-blocks`, `testing-blocks`, `content-modeling`, `code-review` as needed — don't hand-invoke those steps out of order or skip straight to editing files. |
+| Before authoring any new block or variant | `block-inventory` + `block-collection-and-party` | Survey this project's blocks and the Block Collection for a reusable match before writing new block code. Skipping this is how duplicate blocks happen. |
+| Any question about EDS/aem.live behavior, APIs, or conventions | `docs-search` | Search the docs instead of guessing or relying on training-data memory of aem.live behavior, which may be stale. |
+| Migrating a page from ensemble.com | `page-import` | Orchestrates `scrape-webpage` → `identify-page-structure` → `generate-import-html`. Don't hand-write import HTML or parsers outside this flow. |
+| Any DA (da.live) auth or content/upload operation | `da-auth` / `da-content`, via the `da-live-admin` MCP server when configured | Required for every `admin.da.live`/`admin.hlx.page` call — see the Content Authoring & Moderation rule above. `da-live-admin` (Adobe's early-access DA MCP, `https://mcp.adobeaemcloud.com/adobe/mcp/da`) exposes the same operations as MCP tools; sanitization and `.plain.html` verification rules apply regardless of transport. |
+| After any code change, before considering it complete | `testing-blocks` | Mandatory browser validation lives here; it's also invoked by `building-blocks` step 5 — don't consider a change tested without it. |
+| Finding existing content to test a block/page against | `find-test-content` | Use before creating new draft/test content by hand. |
+| Any `stardust` skill (`extract`/`replica`/`migrate`/`deploy`/`rollout`/`prototype`/`reskin`/`direct`) | **Do not use** | `stardust`'s authoring pipeline conflicts with `page-import` (see Content pipeline above). Only its standalone measurement scripts, copied into `tools/fidelity-gate/`, are used. |
+
+If a task doesn't map to any row above, proceed normally — this table isn't exhaustive of every possible task, only of the EDS-workflow steps that have a dedicated skill.
+
+### Visual Verification & Testing — mandatory gate before confirming any change
+**No migration/styling change is "done" until it has been through this loop.** Reading the code or the diff is never sufficient. The loop has three layers, sized to the task at hand — don't run the heaviest one when a lighter one already answers the question.
+
+**1. General browser validation — any code change.** Use the `testing-blocks` skill (Browser/Playwright MCP is its recommended method): lint, render check, console-error check, compare against acceptance criteria/design. Don't consider a change tested without it.
+
+**2. Targeted-fix loop — whenever a specific issue is pinpointed** (a user report, a Lighthouse finding, a spotted discrepancy):
+1. Name the exact symptom precisely — "the hero banner text overlaps the image on mobile," not "mobile looks off."
+2. Reproduce it with Browser MCP at the viewport(s) where it actually occurs — don't sweep every breakpoint for a symptom that only shows up at one width.
+3. Apply the minimal fix that targets that symptom.
+4. Re-verify with Browser MCP that the exact symptom is gone — a before/after screenshot of the affected element/viewport is enough; this doesn't need a full multi-breakpoint walkthrough.
+5. Confirm with the user before calling it done.
+
+**3. Full-page migration comparison — when validating an entire migrated page against its live `ensemble.com` source** (required by the 1:1-migration mandate above, not just for a single symptom):
+1. Use Browser MCP directly against both the live URL and the local/preview URL, at three fixed breakpoints: 375×667 (mobile), 768×1024 (tablet), 1920×1080 (desktop). No chunk-and-stitch capture, no numeric pixel-diff tooling — a direct screenshot comparison at each width is the whole check.
+2. List concrete discrepancies using the same precise-symptom framing as the targeted-fix loop above, then fix each one with that loop.
+3. **Human visual checkpoint — mandatory, even when nothing looks wrong.** Hand the user the exact local/preview and live-source URLs for every breakpoint tested and wait for them to actually look — don't treat your own screenshot comparison as the final word. Re-run this checkpoint after re-validating a fix, not just once up front.
+4. Repeat until every breakpoint matches and the user has explicitly confirmed — there's no acceptable design drift in a 1:1 migration except a genuine platform constraint, which must be flagged to the user explicitly, never silently absorbed as "close enough."
+
+**Accessibility findings vs. source-inherited "defects":** the 1:1 mandate and WCAG 2.1 AA (below) can genuinely conflict — a Lighthouse `color-contrast` finding may be a faithful, exact reproduction of source's own low-contrast choice, not a migration defect. Don't silently pick a side: run `tools/fidelity-gate/contrast-parity.mjs --live <url> --proto <url> --targets <file.json>` to compute the ratio on both sides. **MATCH** (within tolerance) = confirmed exception, leave it — the fix belongs upstream on source, not here; record it in `.migration/contrast-exceptions.md`. **DRIFT** = a real defect, fix it to match source's actual color, not to satisfy WCAG in the abstract.
+
+### Confirm Adobe best practices
+Run `mcp__chrome-devtools__lighthouse_audit` against the local/preview URL — fast and local, no need to wait on a push. Fix anything it flags using the same measure-first discipline as above (route a `color-contrast` finding through the contrast-parity check above before touching any color). Once pushed, treat the real `aem-psi-check` on the PR as confirmation that the local run agreed, not as the first time these are discovered.
+
 ## Testing & Quality Assurance
 
 ### Performance

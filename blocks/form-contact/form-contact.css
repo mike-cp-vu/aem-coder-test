@@ -8,6 +8,12 @@
   margin-inline: auto;
 }
 
+/* Source's "Contact Us" heading uses the darker body text color, not the
+   site's default heading color. */
+.form-contact-container .default-content-wrapper h2 {
+  color: var(--text-color);
+}
+
 .form-contact .form-contact-form {
   display: flex;
   flex-direction: column;

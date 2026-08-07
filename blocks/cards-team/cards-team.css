@@ -22,16 +22,6 @@
   margin: 0;
 }
 
-/* Name -- font-semibold text-[18px] lg:font-bold lg:text-[24px] */
-.cards-team .cards-team-card-body h3 {
-  margin: 0;
-  font-family: var(--heading-font-family);
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 28px;
-  color: var(--text-color); /* rgb(31,41,55) */
-}
-
 /* Job title -- uppercase grey, semibold */
 .cards-team .cards-team-card-body p {
   margin: 0;
@@ -40,6 +30,18 @@
   line-height: 28px;
   color: #7d7d7d; /* rgb(125,125,125) */
   text-transform: uppercase;
+}
+
+/* Name -- font-semibold text-[18px] lg:font-bold lg:text-[24px]
+   Source has no heading here (plain text), so this targets position, not a heading tag. */
+.cards-team .cards-team-card-body p:first-child {
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  color: var(--text-color); /* rgb(31,41,55) */
+  text-transform: none;
 }
 
 /* Email link -- reset title styling, blue link */
@@ -62,14 +64,20 @@
   text-decoration: underline;
 }
 
-@media (width >= 900px) {
+@media (width >= 768px) {
   .cards-team > ul {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 80px 240px; /* row rhythm ~ pt-20 (80px), col gap lg:gap-x-60 (15rem) */
+    gap: 80px 160px; /* row rhythm ~ pt-20 (80px), col gap md:gap-x-40 (10rem) until the 1024px jump */
+  }
+}
+
+@media (width >= 1024px) {
+  .cards-team > ul {
+    gap: 80px 240px; /* col gap lg:gap-x-60 (15rem) */
   }
 
-  .cards-team .cards-team-card-body h3 {
+  .cards-team .cards-team-card-body p:first-child {
     font-size: 24px;
     font-weight: 700;
   }
