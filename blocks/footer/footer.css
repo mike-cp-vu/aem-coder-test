@@ -107,14 +107,18 @@ footer .footer .footer-meta p:last-child {
 
 /* stylelint-enable no-descending-specificity */
 
-@media (width >= 900px) {
+/* Source's own footer layout breaks at 768px, not this project's 900px
+   desktop tier, and its side gutter matches the 80px used by the header
+   and main content at that width — both measured directly against
+   ensemble.com/contact. */
+@media (width >= 768px) {
   footer .footer {
-    padding: 64px 32px 40px;
+    padding: 64px 80px 40px;
   }
 
   footer .footer .footer-columns {
-    grid-template-columns: 1fr 1fr 1.4fr 1fr;
-    gap: 0 64px;
+    grid-template-columns: 0.5fr 0.9fr 0.65fr 0.5fr;
+    gap: 0 48px;
   }
 
   footer .footer .footer-meta {
