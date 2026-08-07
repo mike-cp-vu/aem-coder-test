@@ -166,11 +166,35 @@ If a task doesn't map to any row above, proceed normally — this table isn't ex
 **1. General browser validation — any code change.** Use the `testing-blocks` skill (Browser/Playwright MCP is its recommended method): lint, render check, console-error check, compare against acceptance criteria/design. Don't consider a change tested without it.
 
 **2. Targeted-fix loop — whenever a specific issue is pinpointed** (a user report, a Lighthouse finding, a spotted discrepancy):
-1. Name the exact symptom precisely — "the hero banner text overlaps the image on mobile," not "mobile looks off."
-2. Reproduce it with Browser MCP at the viewport(s) where it actually occurs — don't sweep every breakpoint for a symptom that only shows up at one width.
-3. Apply the minimal fix that targets that symptom.
-4. Re-verify with Browser MCP that the exact symptom is gone — a before/after screenshot of the affected element/viewport is enough; this doesn't need a full multi-breakpoint walkthrough.
-5. Confirm with the user before calling it done.
+1. Name the exact symptom precisely, including the interaction sequence needed to reach the state where it occurs — "after tapping the burger toggle at 375px width, the expanded nav panel doesn't cover the full viewport height," not "mobile nav looks off." For stateful UI (menus, toggles, hover/focus states), the interaction sequence IS part of the symptom — a static description isn't specific enough to fix or verify.
+2. Reproduce it at the viewport(s) where it occurs: drive the interaction sequence via `browsermcp` on the live page and via `chrome-devtools` MCP (or Playwright) on the local page. Pull `browser_get_console_logs` on the live side and the local tool's console output on the local side in the same pass — a JS error on one side that the other doesn't have means the root cause is a broken handler, not a CSS mismatch; stop and fix the script bug instead of iterating on CSS. Don't sweep every breakpoint for a symptom that only shows up at one width.
+3. **Diagnose with the canonical snippet** below before writing any fix. Run it locally via `chrome-devtools` MCP `evaluate_script` (fully automated — no bot-management risk on your own dev server). For the live side, read behavioral/ARIA state from a `browsermcp` `browser_snapshot` directly where possible; for raw CSS computed-style/geometry values, ask the user to run the same snippet in their live DevTools console (same tab `browsermcp` is driving) and paste back the JSON — this is the one data point no automated tool can safely fetch (see the live-URL caveat below). Diff the two JSON results property-by-property as text. This is the authoritative "what exactly differs," never a guess from a screenshot.
+4. Apply the minimal fix targeting the properties/attributes the diff reported as different.
+5. Lint the changed file(s) (`npm run lint`, or a scoped `npx stylelint <file>`/`npx eslint <file>` per the per-file scoping note in this repo's Commands section) — catches unscoped-selector violations and syntax errors before spending another round-trip.
+6. Re-run step 3's diagnostic. If it still differs, return to step 4 — this is a fast, deterministic recheck, not a screenshot-plus-human cycle, so cascade/specificity misses (the fix didn't actually win) get caught here instead of burning a slow round.
+7. Once the diff shows no remaining difference, capture Browser MCP evidence (a before/after screenshot of the affected element/viewport, same interaction sequence as step 1/2) — this is evidence for the user, not a self-certification. Present the screenshot and the diff result; don't declare the symptom visually fixed on your own judgment.
+8. Hand that evidence to the user and get their explicit confirmation before calling it done — same principle as the mandatory human checkpoint in the full-page comparison below: the AI's own read of a screenshot is never the final word.
+
+**Canonical diagnostic snippet** (step 3 above) — one snippet, reused verbatim every time (swap `SELECTOR` and extend `ATTRS` per symptom), not hand-invented per fix:
+
+```js
+(() => {
+  const el = document.querySelector('SELECTOR');
+  if (!el) return { error: 'not found' };
+  const cs = getComputedStyle(el);
+  const rect = el.getBoundingClientRect();
+  const PROPS = ['display','position','top','right','bottom','left','width','height',
+    'margin','padding','transform','opacity','z-index','background-color','color',
+    'font-size','font-weight','transition','box-shadow'];
+  const ATTRS = ['aria-expanded','class']; // extend per symptom, e.g. aria-hidden
+  const out = { rect: { w: rect.width, h: rect.height, x: rect.x, y: rect.y } };
+  PROPS.forEach((p) => { out[p] = cs.getPropertyValue(p); });
+  ATTRS.forEach((a) => { out[a] = el.getAttribute(a); });
+  return out;
+})()
+```
+
+**Never point Playwright, `chrome-devtools` MCP, or any other fresh-automated-browser-context tool at the live ensemble.com URL.** Ensemble.com sits behind Cloudflare/Akamai-class bot management (confirmed by the escalation ladder built into the retired `stitch-shot.mjs`/`live-session.mjs`) — a fresh automated context risks a silent challenge/interstitial instead of real content. Only `browsermcp` (drives your actual, already-open Chrome — real cookies/history/fingerprint) or your own manual DevTools paste are safe against the live URL. This is a real, currently-unaddressed gap in `contrast-parity.mjs` too (it has no challenge detection) — a known follow-up, not something this note fixes retroactively.
 
 **3. Full-page migration comparison — when validating an entire migrated page against its live `ensemble.com` source** (required by the 1:1-migration mandate above, not just for a single symptom):
 1. Use Browser MCP directly against both the live URL and the local/preview URL, at three fixed breakpoints: 375×667 (mobile), 768×1024 (tablet), 1920×1080 (desktop). No chunk-and-stitch capture, no numeric pixel-diff tooling — a direct screenshot comparison at each width is the whole check.
