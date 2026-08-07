@@ -36,16 +36,6 @@ export default async function decorate(block) {
       if (current) current.append(node);
     });
     headingWrapper.textContent = '';
-    // The source orders the columns LOCATIONS, GET IN TOUCH, JOIN OUR TEAM, but
-    // the migrated content arrives GET IN TOUCH first. Reorder by the source
-    // heading sequence; any unlisted column keeps its original relative order.
-    const order = ['locations', 'get in touch', 'join our team'];
-    const rank = (col) => {
-      if (col.classList.contains('footer-legal')) return order.length; // legal column sits last
-      const h = col.querySelector('h4');
-      const i = h ? order.indexOf(h.textContent.trim().toLowerCase()) : -1;
-      return i === -1 ? order.length + 1 : i;
-    };
     // The source keeps the legal links (Privacy / Cookies / Terms) as their own
     // right-aligned column, but the migrated content nests that list inside the
     // JOIN OUR TEAM column (a bare <ul> with no <h4>). Split it into its own
@@ -61,10 +51,17 @@ export default async function decorate(block) {
       }
     }
 
-    columns
-      .map((col, i) => ({ col, i }))
-      .sort((a, b) => rank(a.col) - rank(b.col) || a.i - b.i)
-      .forEach(({ col }) => headingWrapper.append(col));
+    // Source's mobile wrapper isn't a flex/grid container, so its `order-last`
+    // utility on GET IN TOUCH is inert there — mobile keeps authored DOM order
+    // (GET IN TOUCH, LOCATIONS, JOIN OUR TEAM, then legal), and only swaps to
+    // LOCATIONS-first once the grid layout kicks in at 768px. Tag each column
+    // by its heading id so the CSS can do that swap with `order` at 768px+.
+    columns.forEach((col) => {
+      const id = col.querySelector('h4')?.id;
+      if (id) col.dataset.heading = id;
+    });
+
+    columns.forEach((col) => headingWrapper.append(col));
 
     // Tag the other content wrapper (logo / social / copyright) for styling.
     footer.querySelectorAll('.default-content-wrapper').forEach((w) => {

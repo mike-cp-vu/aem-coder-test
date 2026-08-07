@@ -97,8 +97,10 @@
   }
 }
 
-/* Desktop: 3 columns, taller images matching source (240px @ xl) */
-@media (width >= 900px) {
+/* Desktop: 3 columns, taller images matching source (240px @ xl). Source's
+   own breakpoint here is 1024px, not this project's 900px tablet tier —
+   measured directly against ensemble.com/contact. */
+@media (width >= 1024px) {
   .cards-office > ul {
     grid-template-columns: 1fr 1fr 1fr;
     row-gap: 64px;

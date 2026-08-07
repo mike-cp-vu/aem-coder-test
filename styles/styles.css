@@ -29,7 +29,7 @@
   --body-font-size-xs: 12px;
 
   /* heading sizes */
-  --heading-font-size-xxl: 30px;
+  --heading-font-size-xxl: 24px;
   --heading-font-size-xl: 24px;
   --heading-font-size-l: 20px;
   --heading-font-size-m: 18px;
@@ -38,6 +38,14 @@
 
   /* nav height */
   --nav-height: 64px;
+}
+
+/* Source's nav row grows from 64px to 88px tall at 1024px — its own real
+   breakpoint here, measured directly, not this project's 900/1200 tiers. */
+@media (width >= 1024px) {
+  :root {
+    --nav-height: 88px;
+  }
 }
 
 @media (width >= 900px) {
@@ -72,7 +80,9 @@ body.appear {
 }
 
 header {
-  height: var(--nav-height);
+  /* source reserves 40px of empty white space above the nav row itself,
+     at every width — measured directly against ensemble.com/contact. */
+  height: calc(var(--nav-height) + 40px);
 }
 
 header .header,
@@ -100,9 +110,14 @@ h6 {
   scroll-margin: 40px;
 }
 
-h1,
-h2 {
-  font-weight: 800;
+/* Source drops h1/h2 to weight 700 below its 900px desktop tier (matching the
+   base h1-h6 rule above) — measured directly against ensemble.com/contact,
+   where mobile headings read lighter than the 800 weight used at desktop. */
+@media (width >= 900px) {
+  h1,
+  h2 {
+    font-weight: 800;
+  }
 }
 
 h1 { font-size: var(--heading-font-size-xxl); }
@@ -324,15 +339,22 @@ main .block * {
 
 /* sections */
 main > .section {
-  margin: 40px 0;
+  margin: 92px 0;
 }
 
-/* Desktop: the source spaces its major sections much further apart than the
-   mobile rhythm. Increase the vertical gap on wide viewports for closer
-   breathing room to the source without doubling page length. */
-@media (width >= 900px) {
+/* Source's own section rhythm breaks at 768px/1024px, not this project's
+   600/900/1200 tablet/desktop convention — measured directly against
+   ensemble.com/contact (92px / 112px / 128px), so matched here exactly
+   rather than snapped to the nearest stock breakpoint. */
+@media (width >= 768px) {
   main > .section {
-    margin: 72px 0;
+    margin: 112px 0;
+  }
+}
+
+@media (width >= 1024px) {
+  main > .section {
+    margin: 128px 0;
   }
 }
 
@@ -349,7 +371,7 @@ main > .section:first-of-type {
 /* In-page jump targets (e.g. careers hero quick-nav cards) sit below the fixed
    header, so offset the scroll position by the nav height plus a little room. */
 main > .section[id] {
-  scroll-margin-top: calc(var(--nav-height) + 24px);
+  scroll-margin-top: calc(var(--nav-height) + 40px + 24px);
 }
 
 /* eyebrow label directly above a page's h1 (e.g. "Contact" above "Contact us") */
@@ -360,13 +382,16 @@ main .default-content-wrapper > p:first-child:has(+ h1) {
   text-transform: uppercase;
 }
 
-@media (width >= 600px) {
+/* Source's own content-gutter breaks at 640px/768px, not this project's
+   600/900 tablet/desktop convention — measured directly against
+   ensemble.com/contact, where the 16/32/80px steps land there instead. */
+@media (width >= 640px) {
   main > .section > div {
     padding: 0 32px;
   }
 }
 
-@media (width >= 900px) {
+@media (width >= 768px) {
   main > .section > div {
     padding: 0 80px;
   }
