@@ -95,6 +95,43 @@
   text-transform: uppercase;
 }
 
+/* Each heading line is its own div (see hero-home.js's splitHeadlineLines) so
+   a 20px gap can sit between lines independent of line-height — matches
+   source's own mb-5-per-line markup (measured: 64px line box + 20px gap =
+   84px pitch between lines, no gap after the last line). */
+.hero-home-line:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+/* Entrance animation: the heading and the blue tint fade/slide in on load
+   (source does this on every hero-home render, not just first paint). Scoped
+   entirely behind prefers-reduced-motion so a "reduce motion" preference sees
+   the final state immediately, with no separate override needed. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-home::before {
+    opacity: 0;
+    animation: hero-home-tint-in 1.6s ease-out 0.2s forwards;
+  }
+
+  .hero-home h1,
+  .hero-home h2 {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: hero-home-heading-in 1.4s ease-out 0.4s forwards;
+  }
+
+  @keyframes hero-home-tint-in {
+    to { opacity: 1; }
+  }
+
+  @keyframes hero-home-heading-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
 /* no-image fallback: keep text readable on light background */
 .hero-home.no-image {
   min-height: 0;
@@ -191,12 +228,55 @@
   }
 }
 
-@media (width >= 900px) {
-  .hero-home {
-    min-height: 523px;
-    padding: 80px;
+/* Homepage hero only (the section also contains cards-stats as a sibling
+   block; the careers hero-home variant has no cards-stats and keeps its own
+   centered padding untouched). pt-36 (144px nav clearance) and the mx inline
+   margin apply at every breakpoint on source, not just desktop — confirmed
+   identical at 375/900/1728px via getBoundingClientRect on www.ensemble.com,
+   not derived from this project's own --nav-height. */
+.hero-home-container.cards-stats-container .hero-home {
+  padding-top: 144px;
+  padding-bottom: 0;
+  padding-inline: 40px;
+  min-height: 794px; /* 144 + source's own 650px mobile hero height (h-heroTablet) */
+
+  /* Below its lg breakpoint, source top-anchors the heading (`top-10`) rather
+     than centering it — centering only kicks in at lg (`lg:top-1/2
+     lg:-translate-y-1/2`), confirmed via getBoundingClientRect on
+     www.ensemble.com. Centering at every size (this block's previous
+     behavior) left a large empty gap between the nav and the heading on
+     mobile/tablet that source doesn't have. */
+  align-items: flex-start;
+}
+
+/* the 40px "top-10" offset from the content zone's own top, on top of the
+   144px nav clearance above (144 + 40 = 184px from the page top — matches
+   source exactly at 375px width) */
+.hero-home-container.cards-stats-container .hero-home > div:not(:first-child):has(h1, h2) {
+  margin-top: 40px;
+}
+
+@media (width >= 768px) {
+  .hero-home-container.cards-stats-container .hero-home {
+    min-height: 667px; /* 144 + source's 523px hero height (h-hero, applies from 768px up) */
+  }
+}
+
+@media (width >= 1024px) {
+  .hero-home-container.cards-stats-container .hero-home {
+    padding-inline: 80px;
+    align-items: center;
   }
 
+  .hero-home-container.cards-stats-container .hero-home > div:not(:first-child):has(h1, h2) {
+    margin-top: 0;
+  }
+}
+
+/* Source only bumps to the larger size at its xl breakpoint (1280px,
+   `xl:text-6xl xl:leading-[82px]` on the live h1) — not at 900px, confirmed
+   via the live DOM's class list. */
+@media (width >= 1280px) {
   .hero-home h1,
   .hero-home h2 {
     font-size: 60px;

@@ -18,22 +18,32 @@
   font-weight: 800;
 }
 
+/* Source has no horizontal gap at all — each logo sits in a plain 50%/25%-
+   wide flex cell (no gap-x class in the live DOM) and is centered within it
+   via justify-content, so the visible horizontal spacing is just the cell's
+   own leftover width around the fixed-size image. Only gap-y is real (40px
+   below lg, 44px at lg+). Mixing an explicit column-gap with a calc()-reduced
+   percentage (this file's previous approach) doesn't match that and was the
+   source of the misalignment. */
 .cards-clients > ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: center;
-  gap: 40px 48px;
+  row-gap: 40px;
 }
 
+/* 2 per row below sm (640px), 4 per row from sm up — source's one and only
+   column-count breakpoint (not this project's generic 600/900 tiers, and not
+   the same breakpoint as the image-size bump below, which is lg/1024). */
 .cards-clients > ul > li {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 calc(50% - 24px);
+  flex: 0 0 50%;
+  box-sizing: border-box;
 }
 
 .cards-clients .cards-clients-card-image {
@@ -41,39 +51,37 @@
   align-items: center;
   justify-content: center;
   line-height: 0;
-  width: 100%;
 }
 
 .cards-clients .cards-clients-card-image picture {
   display: inline-flex;
 }
 
+/* Fixed box, not object-fit: contain — source sets no object-fit, so its
+   default (fill/stretch) applies: every logo is forced to the exact same
+   112x36 (176x56 at lg) box regardless of its own aspect ratio, rather than
+   scaling to fit while preserving it. The imported SVGs are already the
+   correct flat #9A9A9A grey (confirmed directly against the source file) —
+   no grayscale filter or opacity reduction needed, source renders at full
+   opacity. */
 .cards-clients > ul > li img {
-  width: auto;
-  height: auto;
-  max-height: 56px;
-  max-width: 176px;
-  object-fit: contain;
-  filter: grayscale(100%);
-  opacity: 0.85;
+  width: 112px;
+  height: 36px;
 }
 
-@media (width >= 600px) {
-  .cards-clients > ul {
-    gap: 48px 96px;
-  }
-
+@media (width >= 640px) {
   .cards-clients > ul > li {
-    flex: 0 0 calc(25% - 72px);
+    flex: 0 0 25%;
   }
 }
 
-@media (width >= 900px) {
+@media (width >= 1024px) {
   .cards-clients > ul {
-    gap: 56px 144px;
+    row-gap: 44px;
   }
 
-  .cards-clients > ul > li {
-    flex: 0 0 calc(25% - 108px);
+  .cards-clients > ul > li img {
+    width: 176px;
+    height: 56px;
   }
 }

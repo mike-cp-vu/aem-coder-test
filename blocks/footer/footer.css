@@ -8,13 +8,17 @@ footer {
   background-position: center;
   background-size: cover;
   color: #fff;
-  font-size: var(--body-font-size-s);
+  font-size: var(--body-font-size-xs);
 }
 
+/* Source shrink-wraps the whole footer content (both rows) to its own
+   content width and centers that box — it does not stretch edge-to-edge
+   with a fixed side gutter until the 768px tier (md:px-20). */
 footer .footer {
-  max-width: var(--content-max-width, 1200px);
-  margin: auto;
-  padding: 56px 24px 40px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 56px 0 40px;
 }
 
 footer .footer p {
@@ -34,25 +38,50 @@ footer .footer a:hover {
 /* column headings */
 footer .footer h4 {
   margin: 0 0 16px;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: 12px;
+  font-weight: 600;
   text-transform: uppercase;
   color: #fff;
 }
 
 footer .footer ul {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   list-style: none;
-  margin: 0 0 24px;
+  margin: 0;
   padding: 0;
-  line-height: 1.9;
+  line-height: 1.5;
+}
+
+/* PHONE/FAX and the legal links are tightly stacked in source (space-y-1,
+   4px) rather than the normal 16px list-item rhythm used everywhere else */
+footer .footer .footer-legal ul,
+footer .footer .footer-column[data-heading="get-in-touch"] ul {
+  gap: 4px;
 }
 
 /* upper row: three columns */
 footer .footer .footer-columns {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px 48px;
+  gap: 0 48px;
+}
+
+/* mobile: 16px space above every column but the first, and a divider line
+   (16px padding + a faint border) below every column but the last (legal
+   links never gets one, matching source) */
+footer .footer .footer-column {
+  margin-top: 16px;
+}
+
+footer .footer .footer-column:first-child {
+  margin-top: 0;
+}
+
+footer .footer .footer-column:not(:last-child) {
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgb(255 255 255 / 20%);
 }
 
 /* JOIN OUR TEAM lead paragraph */
@@ -68,16 +97,12 @@ footer .footer .footer-column > p:nth-of-type(2) a {
   letter-spacing: 0.04em;
 }
 
-/* legal links column: right-aligned Privacy / Cookies / Terms */
-footer .footer .footer-legal {
-  text-align: right;
-}
-
 /* lower row: logo, social icons, copyright */
 /* stylelint-disable no-descending-specificity */
 footer .footer .footer-meta {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
   margin-top: 40px;
   padding-top: 32px;
@@ -88,9 +113,10 @@ footer .footer .footer-meta img {
   width: auto;
 }
 
-/* social icon row */
+/* social icon row: shown above the logo on mobile, matching source */
 footer .footer .footer-meta p:nth-of-type(2) {
   display: flex;
+  order: -1;
   gap: 16px;
   align-items: center;
 }
@@ -102,19 +128,61 @@ footer .footer .footer-meta p:nth-of-type(2) img {
 footer .footer .footer-meta p:last-child {
   font-size: var(--body-font-size-xs);
   line-height: 1.6;
+  text-align: center;
   color: rgb(255 255 255 / 80%);
 }
 
 /* stylelint-enable no-descending-specificity */
 
-@media (width >= 900px) {
+/* Source's own footer layout breaks at 768px, not this project's 900px
+   desktop tier, and its side gutter matches the 80px used by the header
+   and main content at that width — both measured directly against
+   ensemble.com/contact. */
+@media (width >= 768px) {
+  footer .footer h4 {
+    font-size: 14px;
+  }
+
   footer .footer {
-    padding: 64px 32px 40px;
+    width: auto;
+    max-width: var(--content-max-width, 1200px);
+    padding: 64px 80px 40px;
   }
 
   footer .footer .footer-columns {
-    grid-template-columns: 1fr 1fr 1.4fr 1fr;
-    gap: 0 64px;
+    grid-template-columns: 0.5fr 0.9fr 0.65fr 0.5fr;
+    gap: 0 48px;
+  }
+
+  footer .footer .footer-column {
+    margin-top: 0;
+  }
+
+  footer .footer .footer-column:not(:last-child) {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  /* LOCATIONS/GET IN TOUCH swap places at this breakpoint — mobile keeps
+     authored order (GET IN TOUCH first), desktop matches source's
+     `order-last` utility, which only takes effect once this is a grid. */
+  footer .footer .footer-column[data-heading="get-in-touch"] {
+    order: 1;
+  }
+
+  footer .footer .footer-column[data-heading="locations"] {
+    order: 0;
+  }
+
+  footer .footer .footer-column[data-heading="join-our-team"] {
+    order: 2;
+  }
+
+  /* legal links column: right-aligned Privacy / Cookies / Terms (matches
+     source, which only right-aligns this column from 768px up) */
+  footer .footer .footer-legal {
+    order: 3;
+    text-align: right;
   }
 
   footer .footer .footer-meta {
@@ -126,8 +194,24 @@ footer .footer .footer-meta p:last-child {
   /* keep the logo and social icons grouped on the left; push the copyright
      to the far right and right-align its two lines (matches source, which
      does not center the icons) */
+  footer .footer .footer-meta p:nth-of-type(2) {
+    order: 0;
+  }
+
   footer .footer .footer-meta p:last-child {
     margin-left: auto;
     text-align: right;
+  }
+}
+
+/* Source's footer text/heading sizes bump up again at 1024px, its real
+   desktop tier — matches the --nav-height precedent in styles/styles.css. */
+@media (width >= 1024px) {
+  footer {
+    font-size: var(--body-font-size-s);
+  }
+
+  footer .footer h4 {
+    font-size: 16px;
   }
 }

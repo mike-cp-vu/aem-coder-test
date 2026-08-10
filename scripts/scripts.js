@@ -249,13 +249,20 @@ function decorateGreyStatements(main) {
  * first link points back to the listing (/portfolio or /products). Stamp a
  * `detail-page` class on main for those pages so the CSS can restore the
  * source's larger section headings (32px/800) without affecting other pages.
+ *
+ * Detection is based on the page's own URL, not content — a detail page's
+ * path always has a slug after the listing segment (e.g.
+ * /emea/portfolio/{slug}/ or /products/{slug}/), which the listing pages
+ * themselves (/portfolio, /products) don't have. This used to check the
+ * first link found in content instead, which broke the homepage: its own
+ * "View Our portfolio" CTA is coincidentally the page's first
+ * `.default-content-wrapper > p > a`, with an href of exactly `/portfolio`,
+ * so it was misdetected as a detail-page breadcrumb.
  * @param {HTMLElement} main The main container element
  */
 function decorateDetailPage(main) {
-  const firstWrapper = main.querySelector('.section > .default-content-wrapper');
-  const crumbLink = firstWrapper?.querySelector(':scope > p:first-child > a[href]');
-  const href = crumbLink ? crumbLink.getAttribute('href') : '';
-  if (!/^\/(portfolio|products)(\/|$)/.test(href)) return;
+  const { pathname } = window.location;
+  if (!/^\/(emea\/)?portfolio\/.+/.test(pathname) && !/^\/products\/.+/.test(pathname)) return;
   main.classList.add('detail-page');
 
   // The detail pages close with a "Back to portfolio/products" link and a

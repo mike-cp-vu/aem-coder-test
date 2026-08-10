@@ -3,6 +3,10 @@
     "da-live-admin": {
       "type": "http",
       "url": "https://mcp.adobeaemcloud.com/adobe/mcp/da"
+    },
+    "browsermcp": {
+      "command": "npx",
+      "args": ["@browsermcp/mcp@latest"]
     }
   }
 }
