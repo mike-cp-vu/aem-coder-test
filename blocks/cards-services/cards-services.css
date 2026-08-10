@@ -5,9 +5,53 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
   grid-template-columns: 1fr;
   gap: 40px;
+}
+
+/* Below source's own sm breakpoint (640px), the homepage services variant
+   shows a plain divided list (see cards-services.js's decorateMobileList)
+   instead of the icon+description grid (`sm:hidden` on source's grid). The
+   About "company values" variant has no mobile-list equivalent and keeps its
+   grid at every width — scoped out via :not(.cards-services-values). */
+.cards-services-values > ul {
+  display: grid;
+}
+
+.cards-services:not(.cards-services-values) > ul {
+  display: none;
+}
+
+.cards-services-mobile-list {
+  border-top: 1px solid var(--section-light-grey-blue);
+}
+
+/* :any-link matches the global `a:any-link` rule's specificity (styles.css)
+   so this actually wins instead of falling back to link-blue */
+.cards-services-mobile-link:any-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 17px 16px;
+  border-bottom: 1px solid var(--section-light-grey-blue);
+  color: #000;
+  font-size: 18px;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.cards-services-mobile-link:hover,
+.cards-services-mobile-link:active {
+  color: var(--brand-orange);
+  text-decoration: none;
+}
+
+.cards-services-mobile-link svg {
+  flex: 0 0 auto;
+  width: 21px;
+  height: 16px;
+  color: #000;
 }
 
 /* Each service item: icon to the LEFT of the title / subtitle / description,
@@ -137,9 +181,15 @@
   text-align: center;
 }
 
-/* tablet: 2 columns */
-@media (width >= 600px) {
-  .cards-services > ul {
+/* tablet: 2 columns. 640px (not this project's generic 600px) so this lines
+   up exactly with the mobile-list cutoff above, with no overlap. */
+@media (width >= 640px) {
+  .cards-services-mobile-list {
+    display: none;
+  }
+
+  .cards-services:not(.cards-services-values) > ul {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 60px;
   }

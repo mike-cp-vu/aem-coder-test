@@ -101,8 +101,84 @@
   text-decoration: none;
 }
 
-/* tablet: 2 columns */
-@media (width >= 600px) {
+/* Below source's own small-screen breakpoint (640px, not this project's
+   generic 600px — matches source's real `hidden sm:grid` cutoff), the grid
+   becomes a horizontally swipeable, scroll-snapped carousel: tiles are
+   fixed-width so neighboring slides peek in at both edges (matches source's
+   Slick carousel look), with prev/next arrows below (see
+   .cards-portfolio-arrows). See cards-portfolio.js's showTile() for the
+   wrap-around paging logic. */
+@media (width < 640px) {
+  .cards-portfolio {
+    position: relative;
+  }
+
+  .cards-portfolio > ul {
+    display: flex;
+    grid-template-columns: none;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-inline: 40px;
+  }
+
+  .cards-portfolio > ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cards-portfolio > ul > li {
+    flex: 0 0 220px;
+    scroll-snap-align: center;
+  }
+}
+
+.cards-portfolio-arrows {
+  display: none;
+}
+
+/* Source positions the arrows absolutely (`absolute bottom-[-36px]`),
+   overlapping the bottom edge of the carousel track rather than sitting
+   below it in normal flow -- so they don't add their own flow height on top
+   of the ul's and the CTA button's margins. Matched here the same way,
+   floating inside the whitespace the button's own margin-top already
+   reserves below. */
+@media (width < 640px) {
+  .cards-portfolio-arrows {
+    display: flex;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -36px;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+  }
+
+  /* 16x16 (source's own `w-4 h-4`) deliberately squishes the 31:24 icon into
+     a square — matches source's actual rendering, not a corrected aspect
+     ratio. */
+  .cards-portfolio-arrows button {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--heading-color);
+    cursor: pointer;
+  }
+
+  .cards-portfolio-arrows button svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* tablet: 2 columns. 640px (not this project's generic 600px) so this picks
+   up exactly where the carousel mode above leaves off, with no overlap. */
+@media (width >= 640px) {
   .cards-portfolio > ul {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -123,4 +199,36 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
   }
+}
+
+/* "View Our portfolio" CTA below the grid: source centers this button and
+   uses a plain black border/text (`border-black text-black`) with an orange
+   fill on hover, not this project's default secondary-button treatment
+   (var(--text-color), a dark slate rather than true black). Scoped to this
+   section's own container class, not the shared .button.secondary rule in
+   styles.css, so other pages' secondary buttons are unaffected. */
+.cards-portfolio-container .default-content-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+  margin-bottom: 56px;
+}
+
+@media (width >= 640px) {
+  .cards-portfolio-container .default-content-wrapper {
+    margin-top: 24px;
+    margin-bottom: 0;
+  }
+}
+
+.cards-portfolio-container .button.secondary {
+  border-color: #000;
+  color: #000;
+}
+
+.cards-portfolio-container .button.secondary:hover,
+.cards-portfolio-container .button.secondary:focus-visible {
+  border-color: var(--brand-orange);
+  background-color: var(--brand-orange);
+  color: #fff;
 }

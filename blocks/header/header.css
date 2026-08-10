@@ -115,6 +115,13 @@ header nav .nav-hamburger-icon::after {
   display: block;
   position: relative;
   width: 20px;
+
+  /* matches source's icon exactly (a hardcoded #333333 fill, confirmed via
+     getComputedStyle) rather than this project's --text-color token, which
+     is a close but different shade — same reasoning as the nav links' own
+     hardcoded #333 below. Stays this color even over the dark hero: source
+     never inverts this icon, unlike the logo/links. */
+  color: #333;
 }
 
 header nav .nav-hamburger-icon::before,
@@ -180,9 +187,16 @@ header .nav-brand {
 header nav .nav-brand img {
   width: auto;
 
-  /* Source logo renders ~25px tall; keep the migrated logo at the same height
-     so its stroke weight matches (28px looked noticeably heavier). */
-  height: 25px;
+  /* Source's own logo SVG is 20px tall below its lg (1024px) breakpoint and
+     25px only at lg+ (`lg:h-[25px]`, confirmed via the live DOM) — not a flat
+     25px at every width. */
+  height: 20px;
+}
+
+@media (width >= 1024px) {
+  header nav .nav-brand img {
+    height: 25px;
+  }
 }
 
 /* sections */
@@ -447,57 +461,94 @@ header nav .nav-region-menu a:hover {
 }
 
 /* ---- Transparent header overlapping a dark hero (homepage) ---- */
-@media (width >= 900px) {
-  /* collapse the reserved header height so main starts at the very top and
-     the hero sits directly under the transparent, overlapping header */
-  body.nav-over-hero header {
-    height: 0;
-  }
 
-  /* fixed so the header stays pinned while scrolling (matches source) */
-  body.nav-over-hero header .nav-wrapper {
-    position: fixed;
-    inset: 0 0 auto;
-    background: none;
-    box-shadow: none;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
-  }
+/* Applies at every breakpoint — source overlays a transparent, white-text nav
+   on the hero even at mobile widths (confirmed directly against a live
+   375px-wide screenshot of www.ensemble.com), not just desktop. The
+   `body.nav-over-hero header .nav-wrapper` selector below already has higher
+   specificity than the plain `header .nav-wrapper` rule the >=900px block
+   above uses for `position: relative`, so it wins there without needing its
+   own media query. Below 900px, an OPEN mobile menu forces solid + dark
+   regardless of scroll position (see the `nav[aria-expanded]` override at the
+   bottom) — a full-screen panel needs to stay legible on its own. */
 
-  body.nav-over-hero main > .section:first-of-type {
-    margin-top: 0;
-  }
+/* collapse the reserved header height so main starts at the very top and
+   the hero sits directly under the transparent, overlapping header */
+body.nav-over-hero header {
+  height: 0;
+}
 
-  /* over the dark hero: white logo + links */
-  body.nav-over-hero header .nav-brand img {
-    filter: brightness(0) invert(1);
-  }
+/* fixed so the header stays pinned while scrolling (matches source) */
+body.nav-over-hero header .nav-wrapper {
+  position: fixed;
+  inset: 0 0 auto;
+  background: none;
+  box-shadow: none;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
 
-  body.nav-over-hero header nav .nav-sections a:any-link {
-    color: #fff;
-  }
+body.nav-over-hero main > .section:first-of-type {
+  margin-top: 0;
+}
 
-  body.nav-over-hero header nav .nav-sections a:hover {
-    color: #fff;
-    opacity: 0.75;
-  }
+/* over the dark hero: white logo + links, but NOT the hamburger — source
+   keeps its hamburger icon a plain dark grey (#333) at all times, even over
+   the dark hero (confirmed via getComputedStyle + a direct screenshot of
+   www.ensemble.com at 375px: the icon's own fill is a hardcoded #333333 with
+   no color-inverting filter applied). Low-contrast, but that's what source
+   actually renders, so it's left at its default (unstyled) color here too. */
+body.nav-over-hero header .nav-brand img {
+  filter: brightness(0) invert(1);
+}
 
-  /* scrolled past the hero: solid white bar with dark text so links stay
-     legible over page content */
-  body.nav-over-hero.nav-scrolled header .nav-wrapper {
+body.nav-over-hero header nav .nav-sections a:any-link {
+  color: #fff;
+}
+
+body.nav-over-hero header nav .nav-sections a:hover {
+  color: #fff;
+  opacity: 0.75;
+}
+
+/* the button's own opaque background (var(--background-color), normally
+   invisible against the equally-solid nav bar) reads as a stray white square
+   once the bar itself goes transparent — drop it so only the white bars show
+   against the hero photo */
+body.nav-over-hero header nav .nav-hamburger button {
+  background: none;
+}
+
+/* scrolled past the hero: solid white bar with dark text so links stay
+   legible over page content */
+body.nav-over-hero.nav-scrolled header .nav-wrapper {
+  background-color: #fff;
+  box-shadow: 0 1px 0 rgb(0 0 0 / 6%);
+}
+
+body.nav-over-hero.nav-scrolled header .nav-brand img {
+  filter: none;
+}
+
+body.nav-over-hero.nav-scrolled header nav .nav-sections a:any-link {
+  color: #333;
+}
+
+body.nav-over-hero.nav-scrolled header nav .nav-sections a:hover {
+  color: var(--link-color);
+  opacity: 1;
+}
+
+@media (width < 900px) {
+  body.nav-over-hero header .nav-wrapper:has(nav[aria-expanded='true']) {
     background-color: #fff;
     box-shadow: 0 1px 0 rgb(0 0 0 / 6%);
   }
 
-  body.nav-over-hero.nav-scrolled header .nav-brand img {
+  body.nav-over-hero header .nav-wrapper:has(nav[aria-expanded='true']) .nav-brand img {
     filter: none;
   }
 
-  body.nav-over-hero.nav-scrolled header nav .nav-sections a:any-link {
+  body.nav-over-hero header .nav-wrapper:has(nav[aria-expanded='true']) nav .nav-sections a:any-link {
     color: #333;
-  }
-
-  body.nav-over-hero.nav-scrolled header nav .nav-sections a:hover {
-    color: var(--link-color);
-    opacity: 1;
   }
 }

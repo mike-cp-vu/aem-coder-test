@@ -500,6 +500,15 @@ main .section.grey .default-content-wrapper a.button {
 }
 /* stylelint-enable no-descending-specificity */
 
+/* homepage "Let ensemble handle..." CTA only: source's own button has an
+   explicit uppercase class here ("CONTACT US"), unlike e.g. the contact
+   page's email CTA in a .section.center, which stays lowercase
+   ("inquiries@ensemble.com") on source — confirmed directly against both
+   live pages, so this can't be a shared .center/.grey rule. */
+main .section.grey .default-content-wrapper a.button {
+  text-transform: uppercase;
+}
+
 /* Default-content sections that pair a text block with a TRAILING image
    (About "Partner with the best" and "Our Certifications") render as two
    columns on desktop — text on the left, image(s) on the right — matching the

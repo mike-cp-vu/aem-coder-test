@@ -56,6 +56,10 @@
   margin-top: 24px;
 }
 
+/* Source renders two separate buttons with different copy ("WHO WE ARE" on
+   mobile, "LEARN MORE ABOUT ENSEMBLE" at md+) and toggles which is visible —
+   replicated here via a ::before label instead of authoring two links, since
+   the underlying href/action is identical either way. */
 .columns-about a:any-link {
   display: inline-block;
   margin-top: 0;
@@ -64,13 +68,18 @@
   padding: 16px 48px;
   color: #000;
   background-color: transparent;
-  font-size: 14px;
+  font-size: 0;
   font-weight: 700;
   line-height: 20px;
   letter-spacing: -0.35px;
-  text-transform: uppercase;
   text-decoration: none;
   transition: all 0.3s ease;
+}
+
+.columns-about a:any-link::before {
+  content: 'WHO WE ARE';
+  font-size: 14px;
+  text-transform: uppercase;
 }
 
 .columns-about a:any-link:hover,
@@ -83,30 +92,49 @@
 
 /* Desktop: side-by-side, text vertically centered */
 @media (width >= 900px) {
+  /* no max-height here: source's own row measured 683px tall at 1728px
+     width, well past its nominal 520px cap, so that cap evidently isn't
+     actually binding at wider viewports — letting the aspect-ratio'd image
+     determine height freely matches what source actually renders. */
   .columns-about > div {
     flex-direction: row;
     align-items: center;
     gap: 72px;
-    max-height: 520px;
   }
 
+  /* aspect-ratio pins the portrait crop directly (measured 512x683 on
+     www.ensemble.com, ~3:4) rather than leaving the image's rendered height
+     to whatever the row's flex/content cascade happens to produce — that
+     incidental height wasn't tall enough to reach the portrait proportions
+     source actually shows, even after the text column above was narrowed. */
   .columns-about > div > .columns-about-img-col {
     order: 0;
     flex: 0 0 33%;
-    align-self: stretch;
+    aspect-ratio: 3 / 4;
   }
 
   .columns-about > div > .columns-about-img-col img {
     height: 100%;
   }
 
+  /* max-width: source caps the heading/description/button block to ~320px,
+     not the text column's full flex-grow width — the narrower measure is
+     what causes the heading to wrap to 2 lines and, in turn, drives the row
+     (and therefore the image) taller. Confirmed via getBoundingClientRect on
+     www.ensemble.com: a 696px-wide flex column containing a 320px-wide
+     inner block. */
   .columns-about > div > div:not(.columns-about-img-col) {
     order: 1;
     flex: 3;
+    max-width: 320px;
   }
 
   .columns-about > div > div:not(.columns-about-img-col) > :first-child {
     font-size: 24px;
     line-height: 32px;
+  }
+
+  .columns-about a:any-link::before {
+    content: 'LEARN MORE ABOUT ENSEMBLE';
   }
 }
