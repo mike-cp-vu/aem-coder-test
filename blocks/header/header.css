@@ -45,10 +45,19 @@ header nav {
 }
 
 header nav[aria-expanded='true'] {
+  /* Two equal 1fr spacer rows sandwich the auto-sized sections+tools rows,
+     centering that combined group vertically in the remaining space while
+     the hamburger/brand row stays pinned to the top — matches source's
+     `flex flex-col items-center justify-center` treatment of its mobile
+     menu panel without needing a wrapper element around the two. */
   grid-template:
     'hamburger brand' var(--nav-height)
-    'sections sections' 1fr
-    'tools tools' var(--nav-height) / auto 1fr;
+    '.        .'       1fr
+    'sections sections' auto
+    'tools    tools'    auto
+    '.        .'        1fr
+    / auto 1fr;
+  row-gap: 40px;
   overflow-y: auto;
 
   /* nav sits inside .nav-wrapper's 40px top padding, so its own 100dvh would
@@ -224,15 +233,26 @@ header nav .nav-sections {
 }
 
 header nav[aria-expanded='true'] .nav-sections {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   visibility: visible;
-  align-self: start;
 }
 
 header nav .nav-sections ul {
   list-style: none;
   padding-left: 0;
-  font-size: var(--body-font-size-s);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+
+  /* Source's mobile/tablet menu links are text-2xl (24px) flat at every
+     width below its lg breakpoint, not this project's responsive heading
+     scale — reusing brand.css's flat 24px token rather than introducing a
+     new magic value. */
+  font-size: var(--heading-size-l);
 }
 
 header nav .nav-sections ul > li {
@@ -252,10 +272,6 @@ header nav .nav-sections ul > li > ul > li {
     display: block;
     visibility: visible;
     white-space: nowrap;
-  }
-
-  header nav[aria-expanded='true'] .nav-sections {
-    align-self: unset;
   }
 
   header nav .nav-sections .nav-drop {
@@ -286,6 +302,8 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections ul {
     display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 24px;
     margin: 0;
   }
