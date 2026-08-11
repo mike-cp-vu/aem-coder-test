@@ -29,6 +29,7 @@
 /* text column */
 .columns-about > div > div:not(.columns-about-img-col) {
   order: 1;
+  margin-inline: 12px; /* source's own mobile mx-3; overridden by the wider 32px/36px inset at >=768px below */
 }
 
 /* lead line: first element in text column, large + semibold */
@@ -36,13 +37,19 @@
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  line-height: 1.33;
+  line-height: 28px; /* source's own text-lg line-height (28px), not a 1.33 ratio guess */
   color: var(--text-color);
 }
 
-/* body paragraph */
+/* body paragraph: source's own mobile margin utility (`mt-4.2`) isn't a valid
+   Tailwind scale key, so it generates no CSS and the paragraph actually sits
+   flush against the heading below 768px — confirmed via direct measurement
+   on www.ensemble.com, not a guess. Replicated here (margin: 0) rather than
+   "corrected" per the project's 1:1-migration mandate; restored to the
+   source's own valid 24px value (`mt-6`) at >=768px below, where it's a real
+   utility. */
 .columns-about > div > div:not(.columns-about-img-col) p {
-  margin: 24px 0 0;
+  margin: 0;
   font-size: 16px;
   line-height: 24px;
   color: var(--text-color);
@@ -51,9 +58,12 @@
 /* CTA: plain link rendered as an outline (secondary) button
    (source: 1px solid black, transparent bg, uppercase, orange on hover).
    The authored link is not bold/em, so EDS does not add .button --
-   style the link directly within the block. */
+   style the link directly within the block. Source centers only the
+   mobile "WHO WE ARE" button (`mx-auto`); the desktop button has no such
+   class, so it's reset to left-aligned at >=768px below. */
 .columns-about > div > div:not(.columns-about-img-col) p:last-child {
   margin-top: 24px;
+  text-align: center;
 }
 
 /* Source renders two separate buttons with different copy ("WHO WE ARE" on
@@ -90,26 +100,40 @@
   text-decoration: none;
 }
 
-/* Desktop: side-by-side, text vertically centered */
-@media (width >= 900px) {
-  /* no max-height here: source's own row measured 683px tall at 1728px
-     width, well past its nominal 520px cap, so that cap evidently isn't
-     actually binding at wider viewports — letting the aspect-ratio'd image
-     determine height freely matches what source actually renders. */
+/* Tablet/desktop: side-by-side, text vertically centered. Source's own
+   layout switch (stacked -> side-by-side, CTA copy swap, image 100% ->
+   33% width) happens at its md breakpoint (768px, confirmed live) — not
+   this project's generic 900px tier.
+
+   Rebuilt as a real 2-column grid (matching source's own `grid-cols-2`)
+   instead of a flex row with a hardcoded gap/max-width: source's image
+   wrapper is `w-full md:w-2/3` *centered* within its own 50%-wide grid
+   cell (`place-self-center`), and the text wrapper is the full 50% cell
+   inset by a fixed `mx-8`/`lg:mx-9` margin on BOTH sides — not the cell's
+   full width. Modeling it exactly that way (percentage width + centering
+   for the image, fixed inset margins for the text) reproduces source's
+   real scaling continuously across every desktop width for free: e.g. the
+   visual gap between image and text works out to (row/12 + inset), which
+   matches direct measurements at 900/1024/1152/1280/1440/1728px without
+   needing a separate hardcoded gap value per width. A flat `gap`/
+   `max-width` (this block's previous approach) can only match one sampled
+   width at a time. */
+@media (width >= 768px) {
   .columns-about > div {
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
-    gap: 72px;
   }
 
   /* aspect-ratio pins the portrait crop directly (measured 512x683 on
      www.ensemble.com, ~3:4) rather than leaving the image's rendered height
-     to whatever the row's flex/content cascade happens to produce — that
-     incidental height wasn't tall enough to reach the portrait proportions
-     source actually shows, even after the text column above was narrowed. */
+     to whatever the row's content cascade happens to produce. width:66.667%
+     + centering (source's own w-2/3 + place-self-center) is what actually
+     produces the image's ~33%-of-row visual width — not a flex-basis. */
   .columns-about > div > .columns-about-img-col {
     order: 0;
-    flex: 0 0 33%;
+    width: 66.667%;
+    margin-inline: auto;
     aspect-ratio: 3 / 4;
   }
 
@@ -117,24 +141,37 @@
     height: 100%;
   }
 
-  /* max-width: source caps the heading/description/button block to ~320px,
-     not the text column's full flex-grow width — the narrower measure is
-     what causes the heading to wrap to 2 lines and, in turn, drives the row
-     (and therefore the image) taller. Confirmed via getBoundingClientRect on
-     www.ensemble.com: a 696px-wide flex column containing a 320px-wide
-     inner block. */
   .columns-about > div > div:not(.columns-about-img-col) {
     order: 1;
-    flex: 3;
-    max-width: 320px;
+    margin-inline: 32px; /* source's own md:mx-8 */
+  }
+
+  .columns-about > div > div:not(.columns-about-img-col) p {
+    margin-top: 24px; /* source's own valid md:mt-6, unlike mobile's inert mt-4.2 above */
+  }
+
+  .columns-about > div > div:not(.columns-about-img-col) p:last-child {
+    text-align: left;
+  }
+
+  .columns-about a:any-link::before {
+    content: 'LEARN MORE ABOUT ENSEMBLE';
+  }
+}
+
+/* Source bumps the inset margin and heading size again at its lg breakpoint
+   (measured as exactly 1024/1025px live — Tailwind's lg is technically
+   64.0625em/1025px, but this project rounds to 1024px everywhere else, so
+   matched here the same way for consistency). Confirmed flat 24px/32px
+   heading size and 36px inset from 1024px all the way to 1728px+ (no
+   further step), so one rule covers the rest of the desktop range. */
+@media (width >= 1024px) {
+  .columns-about > div > div:not(.columns-about-img-col) {
+    margin-inline: 36px; /* source's own lg:mx-9 */
   }
 
   .columns-about > div > div:not(.columns-about-img-col) > :first-child {
     font-size: 24px;
     line-height: 32px;
-  }
-
-  .columns-about a:any-link::before {
-    content: 'LEARN MORE ABOUT ENSEMBLE';
   }
 }

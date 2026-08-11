@@ -54,9 +54,6 @@
   color: #000;
 }
 
-/* Each service item: icon to the LEFT of the title / subtitle / description,
-   tops aligned (matches source: two-column row, ~8px gap between icon and
-   text). */
 .cards-services > ul > li {
   display: flex;
   flex-direction: row;
@@ -165,6 +162,7 @@
 .cards-services-values > ul > li .cards-services-card-body h3 {
   font-size: 20px;
   font-weight: 700;
+  line-height: 1.2; /* explicit: decouples this from the homepage grid's own staged line-height changes below */
   color: var(--text-color);
 }
 
@@ -181,8 +179,31 @@
   text-align: center;
 }
 
+/* Homepage services grid only: source positions the icon as an ABSOLUTE
+   overlay (`absolute top-[20px] left-[-25px]`) inside a `position:relative`
+   card, bleeding outside the card's own left edge — it does NOT sit in flow
+   next to the text and does not push the text column right. Confirmed via
+   direct measurement: source's text column starts at exactly card-left+40px
+   (the card's own pl-10 padding) at every width, regardless of the icon.
+   Scoped out of the values variant (:not(.cards-services-values)), which
+   keeps its icon in normal flow, stacked above centered text. */
+.cards-services:not(.cards-services-values) > ul > li {
+  position: relative;
+}
+
+.cards-services:not(.cards-services-values) .cards-services-card-image {
+  position: absolute;
+  top: 20px;
+  left: -25px;
+}
+
 /* tablet: 2 columns. 640px (not this project's generic 600px) so this lines
-   up exactly with the mobile-list cutoff above, with no overlap. */
+   up exactly with the mobile-list cutoff above, with no overlap. Both
+   column-count rules below share the identical `:not(.cards-services-values)`
+   selector (same specificity) so the later one in source order always wins —
+   a mismatched selector here previously let the 2-column rule always beat
+   the >=1280px 3-column rule regardless of viewport, since `:not()` counts
+   as an extra class in specificity. */
 @media (width >= 640px) {
   .cards-services-mobile-list {
     display: none;
@@ -190,15 +211,66 @@
 
   .cards-services:not(.cards-services-values) > ul {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+
+    /* minmax(0, 1fr), not bare 1fr: a bare 1fr track's minimum size is its
+       content's auto min-width, so at this width (tightest fit, right after
+       the new 96px margin-inline above) a long heading forced the grid to
+       overflow its own box rather than shrink the tracks evenly. Source's
+       compiled Tailwind grid-cols-2 already resolves to minmax(0, 1fr). */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 60px;
+
+    /* source's own sm:mx-24: an inset ADDITIONAL to the page's normal section
+       gutter, scoped to this specific grid only — confirmed via direct
+       measurement (source's grid sits 96px further in than the section's
+       own edge at every width from 640px up). */
+    margin-inline: 96px;
+  }
+
+  .cards-services:not(.cards-services-values) > ul > li {
+    /* source's own max-w-[260px], unconditional from 640px up: the column
+       itself keeps growing with the grid, but the card's content stops
+       growing past 260px, leaving whitespace in wider cells. */
+    max-width: 260px;
+  }
+
+  /* size/line-height/weight stay at this "small" tier through 1279px (see
+     the >=1280px block below for the size bump, and >=1025px for the
+     separate weight-only bump — source's own bold/700 here, not the base
+     rule's 800, confirmed via direct measurement). */
+  .cards-services:not(.cards-services-values) .cards-services-card-body h3 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
   }
 }
 
-/* xl desktop: 3 columns with generous gap */
-@media (width >= 1200px) {
-  .cards-services > ul {
-    grid-template-columns: repeat(3, 1fr);
+@media (width >= 768px) {
+  .cards-services:not(.cards-services-values) .cards-services-card-body h3 {
+    max-width: 128px;
+  }
+}
+
+@media (width >= 1025px) {
+  .cards-services:not(.cards-services-values) .cards-services-card-body h3 {
+    font-weight: 800;
+  }
+}
+
+/* xl desktop: 3 columns with generous gap. Source's real xl breakpoint is
+   1280px, confirmed via direct measurement (not this project's previous
+   1200px guess) — and the heading's font-size/line-height bump (unlike its
+   font-weight bump above) shares this exact same breakpoint, since both are
+   driven by the same `xl:` Tailwind prefix in source. */
+@media (width >= 1280px) {
+  .cards-services:not(.cards-services-values) > ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* same overflow reasoning as the 2-column rule above */
     gap: 100px;
+  }
+
+  .cards-services:not(.cards-services-values) .cards-services-card-body h3 {
+    font-size: 30px;
+    line-height: 36px;
+    max-width: 192px;
   }
 }

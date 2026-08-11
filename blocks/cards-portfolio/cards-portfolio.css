@@ -221,6 +221,18 @@
   }
 }
 
+/* The button's own <p class="button-wrapper"> still carries the global 12px
+   margin-bottom (styles.css) even once the flex container's own margin above
+   is zeroed — as a flex item its margin doesn't collapse away like a normal
+   block child's would, so it was adding a stray 12px on top of the section's
+   own >=768px rhythm override (styles.css) and pushing the gap before
+   "What we provide" to 92px instead of source's actual 80px. */
+@media (width >= 768px) {
+  .cards-portfolio-container .button-wrapper {
+    margin-bottom: 0;
+  }
+}
+
 .cards-portfolio-container .button.secondary {
   border-color: #000;
   color: #000;
