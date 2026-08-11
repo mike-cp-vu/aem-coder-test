@@ -3,7 +3,11 @@ import { normalizeInternalLinks } from '../../scripts/scripts.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
-const isDesktop = window.matchMedia('(min-width: 900px)');
+// Source switches from the hamburger/mobile menu to the horizontal desktop
+// nav at its own lg breakpoint (1024px, confirmed by the `lg:hidden`/
+// `hidden lg:flex` classes on its nav markup), not this project's usual
+// 900px tablet/desktop tier.
+const isDesktop = window.matchMedia('(min-width: 1024px)');
 
 function closeOnEscape(e) {
   if (e.code === 'Escape') {
@@ -178,7 +182,10 @@ export default async function decorate(block) {
       } catch {
         return;
       }
-      if (linkPath !== '/' && here.startsWith(linkPath)) {
+      // Home's own path ('/') is a prefix of every other path, so it needs an
+      // exact match instead of the startsWith check the other links use.
+      const isCurrent = linkPath === '/' ? here === '/' : here.startsWith(linkPath);
+      if (isCurrent) {
         a.setAttribute('aria-current', 'page');
       }
     });

@@ -24,15 +24,43 @@ header nav {
   margin: auto;
   max-width: 1248px;
   height: var(--nav-height);
-  padding: 0 24px;
+  padding: 0 16px;
   font-family: var(--body-font-family);
 }
 
+/* Match main content's own gutter breakpoints (styles.css:385-398, measured
+   against ensemble.com/contact at 640px/768px, not this repo's usual
+   600/900px convention) so the nav bar stays aligned with page content below
+   the 1024px desktop breakpoint (source's own lg tier — see the isDesktop
+   comment in header.js). */
+@media (width >= 640px) {
+  header nav {
+    padding: 0 32px;
+  }
+}
+
+@media (width >= 768px) {
+  header nav {
+    padding: 0 80px;
+  }
+}
+
 header nav[aria-expanded='true'] {
+  /* Source's own menu content div is `pt-[93px] pb-[93px]` — a FIXED pixel
+     padding, not proportional centering — so the links sit a fixed distance
+     below the top bar, not vertically centered in the viewport. The 93px
+     top offset itself lives on .nav-sections below, matching source's own
+     div 1:1. max-content (not auto) keeps these rows sized to their content
+     — grid's track-sizing algorithm stretches bare `auto` tracks to soak up
+     any leftover space in a definite-height container regardless of
+     align-content, which pushed everything down the viewport's full height. */
   grid-template:
     'hamburger brand' var(--nav-height)
-    'sections sections' 1fr
-    'tools tools' var(--nav-height) / auto 1fr;
+    'sections sections' max-content
+    'tools    tools'    max-content
+    / auto 1fr;
+  row-gap: 40px;
+  align-content: start;
   overflow-y: auto;
 
   /* nav sits inside .nav-wrapper's 40px top padding, so its own 100dvh would
@@ -40,7 +68,7 @@ header nav[aria-expanded='true'] {
   min-height: calc(100dvh - 40px);
 }
 
-@media (width >= 900px) {
+@media (width >= 1024px) {
   /* sticky lives on <header> itself, not .nav-wrapper — .nav-wrapper's
      immediate parent (header) is height-clamped to var(--nav-height), the
      same height as .nav-wrapper, leaving no room for a sticky child to
@@ -168,7 +196,7 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
   transform: rotate(-45deg);
 }
 
-@media (width >= 900px) {
+@media (width >= 1024px) {
   header nav .nav-hamburger {
     display: none;
     visibility: hidden;
@@ -208,15 +236,45 @@ header nav .nav-sections {
 }
 
 header nav[aria-expanded='true'] .nav-sections {
-  display: block;
   visibility: visible;
-  align-self: start;
+}
+
+@media (width < 1024px) {
+  /* Scoped explicitly rather than relying on cascade order: this selector's
+     [aria-expanded='true'] attribute gives it higher specificity than the
+     >=1024px override's plain `header nav .nav-sections` rule below, and
+     aria-expanded stays 'true' at desktop too (see the comment near
+     .nav-tools) — so without this media query these mobile-only rules would
+     win at desktop as well and break its block/row layout. */
+  header nav[aria-expanded='true'] .nav-sections {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* Source's own pt-[93px] is measured from the very top of its overlay
+       panel — its close button is floated, so it does NOT push that
+       padding down first. Our hamburger/brand row is a real (non-floated)
+       grid row that already occupies the first 64px, so adding the full
+       93px on top of it and the 40px row-gap overshot source's actual
+       ~93px-from-viewport-top position by 100px+. No extra offset needed
+       here — the existing 40px row-gap alone lands close to source's mark. */
+  }
 }
 
 header nav .nav-sections ul {
   list-style: none;
   padding-left: 0;
-  font-size: var(--body-font-size-s);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+
+  /* Source's mobile/tablet menu links are text-2xl (24px) flat at every
+     width below its lg breakpoint, not this project's responsive heading
+     scale — reusing brand.css's flat 24px token rather than introducing a
+     new magic value. */
+  font-size: var(--heading-size-l);
 }
 
 header nav .nav-sections ul > li {
@@ -231,15 +289,11 @@ header nav .nav-sections ul > li > ul > li {
   font-weight: 400;
 }
 
-@media (width >= 900px) {
+@media (width >= 1024px) {
   header nav .nav-sections {
     display: block;
     visibility: visible;
     white-space: nowrap;
-  }
-
-  header nav[aria-expanded='true'] .nav-sections {
-    align-self: unset;
   }
 
   header nav .nav-sections .nav-drop {
@@ -270,6 +324,8 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections ul {
     display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 24px;
     margin: 0;
   }
@@ -318,14 +374,14 @@ header nav .nav-tools {
 }
 
 /* Collapsed mobile bar hides the region/globe selector entirely (desktop's
-   own >=900px override always leaves nav's aria-expanded at 'true', so this
+   own >=1024px override always leaves nav's aria-expanded at 'true', so this
    never matches there — see the header nav[aria-expanded='true'] rule near
    the top of this file for why). */
 header nav[aria-expanded='false'] .nav-tools {
   display: none;
 }
 
-@media (width < 900px) {
+@media (width < 1024px) {
   /* Expanded mobile menu: the region/globe selector reappears here, centered
      below the nav links — measured directly against ensemble.com/contact. */
   header nav[aria-expanded='true'] .nav-tools {
@@ -368,7 +424,7 @@ header nav .nav-tools a:hover {
   color: var(--link-color);
 }
 
-@media (width >= 900px) {
+@media (width >= 1024px) {
   header nav {
     max-width: var(--content-max-width, 1200px);
   }
@@ -466,9 +522,9 @@ header nav .nav-region-menu a:hover {
    on the hero even at mobile widths (confirmed directly against a live
    375px-wide screenshot of www.ensemble.com), not just desktop. The
    `body.nav-over-hero header .nav-wrapper` selector below already has higher
-   specificity than the plain `header .nav-wrapper` rule the >=900px block
+   specificity than the plain `header .nav-wrapper` rule the >=1024px block
    above uses for `position: relative`, so it wins there without needing its
-   own media query. Below 900px, an OPEN mobile menu forces solid + dark
+   own media query. Below 1024px, an OPEN mobile menu forces solid + dark
    regardless of scroll position (see the `nav[aria-expanded]` override at the
    bottom) — a full-screen panel needs to stay legible on its own. */
 
@@ -538,7 +594,7 @@ body.nav-over-hero.nav-scrolled header nav .nav-sections a:hover {
   opacity: 1;
 }
 
-@media (width < 900px) {
+@media (width < 1024px) {
   body.nav-over-hero header .nav-wrapper:has(nav[aria-expanded='true']) {
     background-color: #fff;
     box-shadow: 0 1px 0 rgb(0 0 0 / 6%);
