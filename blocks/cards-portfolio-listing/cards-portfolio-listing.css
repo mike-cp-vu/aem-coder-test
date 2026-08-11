@@ -187,12 +187,20 @@
   }
 }
 
-/* "Load More" actions row — centred beneath the grid, matching the source. */
+/* Actions row — centred beneath the grid, holding "Load More" and "Contact
+   us" side by side, matching the source. Wraps onto centred stacked lines on
+   narrow viewports rather than overflowing, same approach as .detail-cta-row. */
 .cards-portfolio-listing .cards-portfolio-listing-actions {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
   gap: 28px;
   margin-top: 40px;
+}
+
+.cards-portfolio-listing .cards-portfolio-listing-actions > p.button-wrapper {
+  margin: 0;
 }
 
 .cards-portfolio-listing .cards-portfolio-listing-load-more {
