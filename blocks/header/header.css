@@ -46,20 +46,21 @@ header nav {
 }
 
 header nav[aria-expanded='true'] {
-  /* Unequal 1fr/1.5fr spacer rows sandwich the auto-sized sections+tools
-     rows, biasing that combined group toward the top of the remaining
-     space (source's own menu sits higher than dead-center) while the
-     hamburger/brand row stays pinned to the very top — matches source's
-     `flex flex-col items-center justify-center` treatment of its mobile
-     menu panel without needing a wrapper element around the two. */
+  /* Source's own menu content div is `pt-[93px] pb-[93px]` — a FIXED pixel
+     padding, not proportional centering — so the links sit a fixed distance
+     below the top bar, not vertically centered in the viewport. The 93px
+     top offset itself lives on .nav-sections below, matching source's own
+     div 1:1. max-content (not auto) keeps these rows sized to their content
+     — grid's track-sizing algorithm stretches bare `auto` tracks to soak up
+     any leftover space in a definite-height container regardless of
+     align-content, which pushed everything down the viewport's full height. */
   grid-template:
     'hamburger brand' var(--nav-height)
-    '.        .'       1fr
-    'sections sections' auto
-    'tools    tools'    auto
-    '.        .'        1.5fr
+    'sections sections' max-content
+    'tools    tools'    max-content
     / auto 1fr;
   row-gap: 40px;
+  align-content: start;
   overflow-y: auto;
 
   /* nav sits inside .nav-wrapper's 40px top padding, so its own 100dvh would
@@ -235,10 +236,25 @@ header nav .nav-sections {
 }
 
 header nav[aria-expanded='true'] .nav-sections {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   visibility: visible;
+}
+
+@media (width < 1024px) {
+  /* Scoped explicitly rather than relying on cascade order: this selector's
+     [aria-expanded='true'] attribute gives it higher specificity than the
+     >=1024px override's plain `header nav .nav-sections` rule below, and
+     aria-expanded stays 'true' at desktop too (see the comment near
+     .nav-tools) — so without this media query these mobile-only rules would
+     win at desktop as well and break its block/row layout. */
+  header nav[aria-expanded='true'] .nav-sections {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* Matches source's own menu div (`pt-[93px]`) exactly — the fixed gap
+       below the top bar that puts the first link where source puts it. */
+    padding-top: 93px;
+  }
 }
 
 header nav .nav-sections ul {
