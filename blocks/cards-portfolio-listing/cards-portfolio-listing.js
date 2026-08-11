@@ -118,6 +118,28 @@ export default function decorate(block) {
   const INITIAL = 6;
   const INCREMENT = 6;
 
+  // The source renders "Load More" and "Contact us" as two buttons sharing one
+  // centered row. Authors place "Contact us" as a plain paragraph right after
+  // the block; by the time a block's own decorate() runs, scripts.js's
+  // decorateButtons() has already turned it into a sibling p.button-wrapper,
+  // so pull it out of that sibling default-content-wrapper into this block's
+  // own actions row alongside Load More.
+  const blockWrapper = block.parentElement;
+  const ctaWrapper = blockWrapper?.nextElementSibling;
+  const ctaPara = ctaWrapper?.classList.contains('default-content-wrapper')
+    ? ctaWrapper.querySelector(':scope > p.button-wrapper')
+    : null;
+
+  let actions;
+  const ensureActions = () => {
+    if (!actions) {
+      actions = document.createElement('div');
+      actions.className = 'cards-portfolio-listing-actions';
+      block.append(actions);
+    }
+    return actions;
+  };
+
   if (items.length > INITIAL) {
     let shown = INITIAL;
 
@@ -126,9 +148,6 @@ export default function decorate(block) {
         li.hidden = i >= shown;
       });
     };
-
-    const actions = document.createElement('div');
-    actions.className = 'cards-portfolio-listing-actions';
 
     const loadMore = document.createElement('button');
     loadMore.type = 'button';
@@ -140,8 +159,12 @@ export default function decorate(block) {
       if (shown >= items.length) loadMore.remove();
     });
 
-    actions.append(loadMore);
+    ensureActions().append(loadMore);
     applyVisibility();
-    block.append(actions);
+  }
+
+  if (ctaPara) {
+    ensureActions().append(ctaPara);
+    if (!ctaWrapper.children.length) ctaWrapper.remove();
   }
 }
