@@ -182,7 +182,10 @@ export default async function decorate(block) {
       } catch {
         return;
       }
-      if (linkPath !== '/' && here.startsWith(linkPath)) {
+      // Home's own path ('/') is a prefix of every other path, so it needs an
+      // exact match instead of the startsWith check the other links use.
+      const isCurrent = linkPath === '/' ? here === '/' : here.startsWith(linkPath);
+      if (isCurrent) {
         a.setAttribute('aria-current', 'page');
       }
     });
