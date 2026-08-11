@@ -368,6 +368,79 @@ main > .section:first-of-type {
   margin-top: 0;
 }
 
+/* Homepage hero->portfolio->services adjacency only, mobile widths (<768px):
+   the generic 92px section rhythm above is too wide here on both sides —
+   measured directly against ensemble.com/'s live layout at 375px, not
+   /contact (where the generic rhythm was measured). Source's real gap above
+   the portfolio slider is just 16px (no separate margin, all from the
+   slider section's own top padding), and the gap below the "View Our
+   portfolio" button is 88px.
+
+   The button's own wrapper already carries a 56px margin-bottom
+   (cards-portfolio.css, matches source's own mb-14) — but that margin
+   collapses with `.cards-portfolio-container`'s margin-bottom AND the next
+   section's margin-top into ONE shared margin (parent/child and adjoining
+   sibling margins all collapse to their max, not their sum), so raising
+   these overrides only has an effect once they exceed 56px; below that
+   they're silently absorbed into the button's own margin. 76px is what
+   closes the remaining gap (confirmed by direct measurement, not derived
+   algebraically — the last ~12px comes from elsewhere in the collapsed
+   chain, e.g. the next heading's own top margin).
+
+   Each selector below carries 2 classes (or a sibling-scoped pair), giving
+   it higher specificity than the single-class `main > .section` rule above
+   regardless of source order — and the sibling-combinator forms only match
+   this exact homepage adjacency, leaving cards-services-container's generic
+   rhythm untouched wherever else it's used (e.g. the About page). */
+@media (width < 768px) {
+  .hero-home-container.cards-stats-container {
+    margin-bottom: 16px;
+  }
+
+  .section.cards-portfolio-container {
+    margin-bottom: 76px;
+  }
+
+  .hero-home-container.cards-stats-container + .cards-portfolio-container {
+    margin-top: 16px;
+  }
+
+  .cards-portfolio-container + .cards-services-container {
+    margin-top: 76px;
+  }
+}
+
+/* Same homepage adjacency, tablet/desktop (>=768px): source's own padding
+   here (`pt-4 sm:pt-8 md:pt-10` / `pb-4 sm:pb-8 md:pb-10`) plateaus at 40px
+   at its md breakpoint (768px) and never changes again — confirmed flat at
+   768/1024/1920px via direct measurement, so one rule covers every width
+   from 768px up instead of stepping with the generic 112px/128px rhythm.
+   The button's flex *container* (.default-content-wrapper) has its own
+   margin-bottom zeroed at this width (cards-portfolio.css's >=640px
+   override), so unlike the mobile case above it doesn't collapse into this
+   chain — the override values below equal the full target gap directly
+   (40px above, 80px = 40px+40px below). The button's own <p.button-wrapper>
+   still needed its stray global 12px margin-bottom zeroed separately (see
+   cards-portfolio.css's own >=768px override) since flex-item margins don't
+   collapse the way block margins do. */
+@media (width >= 768px) {
+  .hero-home-container.cards-stats-container {
+    margin-bottom: 40px;
+  }
+
+  .section.cards-portfolio-container {
+    margin-bottom: 80px;
+  }
+
+  .hero-home-container.cards-stats-container + .cards-portfolio-container {
+    margin-top: 40px;
+  }
+
+  .cards-portfolio-container + .cards-services-container {
+    margin-top: 80px;
+  }
+}
+
 /* In-page jump targets (e.g. careers hero quick-nav cards) sit below the fixed
    header, so offset the scroll position by the nav height plus a little room. */
 main > .section[id] {
