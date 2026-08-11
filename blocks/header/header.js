@@ -3,7 +3,11 @@ import { normalizeInternalLinks } from '../../scripts/scripts.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
-const isDesktop = window.matchMedia('(min-width: 900px)');
+// Source switches from the hamburger/mobile menu to the horizontal desktop
+// nav at its own lg breakpoint (1024px, confirmed by the `lg:hidden`/
+// `hidden lg:flex` classes on its nav markup), not this project's usual
+// 900px tablet/desktop tier.
+const isDesktop = window.matchMedia('(min-width: 1024px)');
 
 function closeOnEscape(e) {
   if (e.code === 'Escape') {

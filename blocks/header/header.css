@@ -31,7 +31,8 @@ header nav {
 /* Match main content's own gutter breakpoints (styles.css:385-398, measured
    against ensemble.com/contact at 640px/768px, not this repo's usual
    600/900px convention) so the nav bar stays aligned with page content below
-   the 900px desktop breakpoint. */
+   the 1024px desktop breakpoint (source's own lg tier — see the isDesktop
+   comment in header.js). */
 @media (width >= 640px) {
   header nav {
     padding: 0 32px;
@@ -45,9 +46,10 @@ header nav {
 }
 
 header nav[aria-expanded='true'] {
-  /* Two equal 1fr spacer rows sandwich the auto-sized sections+tools rows,
-     centering that combined group vertically in the remaining space while
-     the hamburger/brand row stays pinned to the top — matches source's
+  /* Unequal 1fr/1.5fr spacer rows sandwich the auto-sized sections+tools
+     rows, biasing that combined group toward the top of the remaining
+     space (source's own menu sits higher than dead-center) while the
+     hamburger/brand row stays pinned to the very top — matches source's
      `flex flex-col items-center justify-center` treatment of its mobile
      menu panel without needing a wrapper element around the two. */
   grid-template:
@@ -55,7 +57,7 @@ header nav[aria-expanded='true'] {
     '.        .'       1fr
     'sections sections' auto
     'tools    tools'    auto
-    '.        .'        1fr
+    '.        .'        1.5fr
     / auto 1fr;
   row-gap: 40px;
   overflow-y: auto;
@@ -65,7 +67,7 @@ header nav[aria-expanded='true'] {
   min-height: calc(100dvh - 40px);
 }
 
-@media (width >= 900px) {
+@media (width >= 1024px) {
   /* sticky lives on <header> itself, not .nav-wrapper — .nav-wrapper's
      immediate parent (header) is height-clamped to var(--nav-height), the
      same height as .nav-wrapper, leaving no room for a sticky child to
@@ -193,7 +195,7 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
   transform: rotate(-45deg);
 }
 
-@media (width >= 900px) {
+@media (width >= 1024px) {
   header nav .nav-hamburger {
     display: none;
     visibility: hidden;
@@ -267,7 +269,7 @@ header nav .nav-sections ul > li > ul > li {
   font-weight: 400;
 }
 
-@media (width >= 900px) {
+@media (width >= 1024px) {
   header nav .nav-sections {
     display: block;
     visibility: visible;
@@ -352,14 +354,14 @@ header nav .nav-tools {
 }
 
 /* Collapsed mobile bar hides the region/globe selector entirely (desktop's
-   own >=900px override always leaves nav's aria-expanded at 'true', so this
+   own >=1024px override always leaves nav's aria-expanded at 'true', so this
    never matches there — see the header nav[aria-expanded='true'] rule near
    the top of this file for why). */
 header nav[aria-expanded='false'] .nav-tools {
   display: none;
 }
 
-@media (width < 900px) {
+@media (width < 1024px) {
   /* Expanded mobile menu: the region/globe selector reappears here, centered
      below the nav links — measured directly against ensemble.com/contact. */
   header nav[aria-expanded='true'] .nav-tools {
@@ -402,7 +404,7 @@ header nav .nav-tools a:hover {
   color: var(--link-color);
 }
 
-@media (width >= 900px) {
+@media (width >= 1024px) {
   header nav {
     max-width: var(--content-max-width, 1200px);
   }
@@ -500,9 +502,9 @@ header nav .nav-region-menu a:hover {
    on the hero even at mobile widths (confirmed directly against a live
    375px-wide screenshot of www.ensemble.com), not just desktop. The
    `body.nav-over-hero header .nav-wrapper` selector below already has higher
-   specificity than the plain `header .nav-wrapper` rule the >=900px block
+   specificity than the plain `header .nav-wrapper` rule the >=1024px block
    above uses for `position: relative`, so it wins there without needing its
-   own media query. Below 900px, an OPEN mobile menu forces solid + dark
+   own media query. Below 1024px, an OPEN mobile menu forces solid + dark
    regardless of scroll position (see the `nav[aria-expanded]` override at the
    bottom) — a full-screen panel needs to stay legible on its own. */
 
@@ -572,7 +574,7 @@ body.nav-over-hero.nav-scrolled header nav .nav-sections a:hover {
   opacity: 1;
 }
 
-@media (width < 900px) {
+@media (width < 1024px) {
   body.nav-over-hero header .nav-wrapper:has(nav[aria-expanded='true']) {
     background-color: #fff;
     box-shadow: 0 1px 0 rgb(0 0 0 / 6%);
