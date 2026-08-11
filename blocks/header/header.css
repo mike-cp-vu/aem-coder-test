@@ -24,8 +24,24 @@ header nav {
   margin: auto;
   max-width: 1248px;
   height: var(--nav-height);
-  padding: 0 24px;
+  padding: 0 16px;
   font-family: var(--body-font-family);
+}
+
+/* Match main content's own gutter breakpoints (styles.css:385-398, measured
+   against ensemble.com/contact at 640px/768px, not this repo's usual
+   600/900px convention) so the nav bar stays aligned with page content below
+   the 900px desktop breakpoint. */
+@media (width >= 640px) {
+  header nav {
+    padding: 0 32px;
+  }
+}
+
+@media (width >= 768px) {
+  header nav {
+    padding: 0 80px;
+  }
 }
 
 header nav[aria-expanded='true'] {
